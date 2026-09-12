@@ -205,10 +205,12 @@ class Store:
             file.flush()
             os.fsync(file.fileno())
         temporary.replace(path)
+        from . import query_projection
         with self.engine.begin() as con:
             con.execute(insert(s.runs).values(run_id=revision_id, pipeline_version=policy_version, status="complete",
                 manifest={"input_hash": digest(records), "edges": len(edges), "artifact_sha256": hashlib.sha256(content).hexdigest(),
-                          "threshold": threshold, "review_threshold": review_threshold, "computation": computation}))
+                          "threshold": threshold, "review_threshold": review_threshold, "computation": computation,
+                          "query_projection_version": query_projection.VERSION}))
             if edges:
                 unique_edges = {}
                 for edge in edges:
@@ -227,6 +229,7 @@ class Store:
             if identities.lineage:
                 con.execute(insert(s.lineage), [{"revision_id": revision_id, "from_entity": item.from_entity,
                     "to_entity": item.to_entity, "relation": item.kind} for item in identities.lineage])
+            query_projection.write(con, payload, hashlib.sha256(content).hexdigest())
         return {"revision_id": revision_id, "parent_revision": parent, "entity_count": len(entities), "computation": computation}
 
     def _payload(self, revision_id, *, published_only=True):
@@ -243,7 +246,8 @@ class Store:
         return json.loads(content)
 
     def publish(self, revision_id, *, expected_parent):
-        self._payload(revision_id, published_only=False)
+        from . import query_projection
+        payload = self._payload(revision_id, published_only=False)
         with self.engine.begin() as con:
             self._lock(con)
             row = con.execute(select(s.revisions).where(s.revisions.c.revision_id == revision_id)).mappings().one()
@@ -254,18 +258,113 @@ class Store:
                 raise VersionConflict("Published parent changed; rebuild the candidate")
             if digest(self.active_records(con)) != row["input_hash"] or self._event_cutoff(con) != row["event_cutoff"]:
                 raise VersionConflict("Source records or decisions changed; rebuild the candidate")
+            if self._projection_state(con, row) is None and self._legacy_projection(con, revision_id):
+                query_projection.write(con, payload, row["artifact_sha256"])
+            query_projection.verify(con, payload, row["artifact_sha256"])
             con.execute(update(s.revisions).where(s.revisions.c.revision_id == revision_id).values(status="published", published_at=now()))
             con.execute(update(s.current).values(revision_id=revision_id))
         return {"revision_id": revision_id, "status": "published"}
 
-    def entities(self, query="", *, revision=None):
+    def _projection_state(self, con, revision):
+        from .query_projection import VERSION
+        state = con.execute(select(s.query_projections).where(
+            s.query_projections.c.revision_id == revision["revision_id"])).mappings().one_or_none()
+        if state and (state["projection_version"] != VERSION or state["artifact_sha256"] != revision["artifact_sha256"]):
+            raise ValueError("Query projection version or artifact binding is invalid; rebuild the projection")
+        return state
+
+    def _legacy_projection(self, con, revision):
+        manifest = con.execute(select(s.runs.c.manifest).where(s.runs.c.run_id == revision)).scalar_one()
+        return "query_projection_version" not in manifest
+
+    def _ensure_query_projection(self, revision):
+        from . import query_projection
+        with self.engine.connect() as con:
+            row = con.execute(select(s.revisions).where(s.revisions.c.revision_id == revision,
+                s.revisions.c.status == "published")).mappings().one_or_none()
+            if not row:
+                raise KeyError("Published revision not found")
+            state = self._projection_state(con, row)
+            if state:
+                return dict(state)
+            if not self._legacy_projection(con, revision):
+                raise ValueError("Published query projection is missing; rebuild it from the verified artifact")
+        payload = self._payload(revision)
+        with self.engine.begin() as con:
+            self._lock(con)
+            state = self._projection_state(con, row)
+            if state is None:
+                query_projection.write(con, payload, row["artifact_sha256"])
+                state = query_projection.verify(con, payload, row["artifact_sha256"])
+            return dict(state)
+
+    def rebuild_query_projection(self, revision=None):
+        """Rebuild derived query rows atomically; never change identity/source history."""
+        from . import query_projection
         revision = revision or self.current_revision()
         if not revision:
-            return []
+            raise KeyError("Published revision not found")
         payload = self._payload(revision)
-        return [entity for entity in payload["entities"].values() if not query or any(
-            query.casefold() in str(value).casefold() for member in entity["members"]
-            for value in (payload["records"][member].get("name", ""), *payload["records"][member].get("aliases", [])))]
+        with self.engine.begin() as con:
+            self._lock(con)
+            row = con.execute(select(s.revisions).where(s.revisions.c.revision_id == revision)).mappings().one()
+            query_projection.write(con, payload, row["artifact_sha256"])
+            return query_projection.verify(con, payload, row["artifact_sha256"])
+
+    def projection_status(self, revision=None, *, verify=False):
+        """Inspect readiness; verify=True rechecks the artifact and every projected row."""
+        from . import query_projection
+        revision = revision or self.current_revision()
+        if not revision:
+            return {"revision_id": None, "ready": False, "status": "no_published_revision"}
+        with self.engine.connect() as con:
+            row = con.execute(select(s.revisions).where(s.revisions.c.revision_id == revision,
+                s.revisions.c.status == "published")).mappings().one_or_none()
+            if not row:
+                raise KeyError("Published revision not found")
+            state = self._projection_state(con, row)
+            if state is None:
+                return {"revision_id": revision, "ready": False, "status": "missing"}
+            if verify:
+                state = query_projection.verify(con, self._payload(revision), row["artifact_sha256"])
+            return {**dict(state), "ready": True, "status": "ready"}
+
+    def _entity_select(self, revision, query):
+        statement = select(s.query_entities).where(s.query_entities.c.revision_id == revision)
+        if query:
+            matching = select(s.query_values.c.entity_id).where(s.query_values.c.revision_id == revision,
+                s.query_values.c.entity_id == s.query_entities.c.entity_id,
+                s.query_values.c.value_folded.contains(query.casefold(), autoescape=True)).exists()
+            statement = statement.where(matching)
+        return statement
+
+    def entities_page(self, query="", *, revision=None, offset=0, limit=100):
+        if not isinstance(query, str) or not isinstance(offset, int) or offset < 0:
+            raise ValueError("query must be text and offset a non-negative integer")
+        if not isinstance(limit, int) or limit < 1:
+            raise ValueError("limit must be a positive integer")
+        revision = revision or self.current_revision()
+        result = {"revision_id": revision, "total": 0, "offset": offset, "limit": limit, "items": []}
+        if not revision:
+            return result
+        state = self._ensure_query_projection(revision)
+        with self.engine.connect() as con:
+            statement = self._entity_select(revision, query)
+            total = con.execute(select(func.count()).select_from(statement.subquery())).scalar_one() if query else state["entity_count"]
+            rows = con.execute(statement.order_by(s.query_entities.c.entity_id).offset(offset).limit(limit)).mappings().all()
+            members = {row["entity_id"]: [] for row in rows}
+            identifiers = list(members)
+            for start in range(0, len(identifiers), 1000):
+                for entity_id, record_id in con.execute(select(s.memberships.c.entity_id, s.memberships.c.record_id)
+                    .where(s.memberships.c.revision_id == revision, s.memberships.c.entity_id.in_(identifiers[start:start + 1000]))
+                    .order_by(s.memberships.c.entity_id, s.memberships.c.record_id)):
+                    members[entity_id].append(record_id)
+        result.update(total=total, items=[{"entity_id": row["entity_id"], "canonical": row["canonical"],
+                                          "members": members[row["entity_id"]]} for row in rows])
+        return result
+
+    def entities(self, query="", *, revision=None):
+        return self.entities_page(query, revision=revision, limit=2147483647)["items"]
 
     def _constraints(self, con, records, policy, cutoff, *, revoked=None):
         latest = {}
@@ -378,11 +477,21 @@ class Store:
         selected = revision or self.current_revision()
         if not selected:
             raise KeyError("Entity not found")
-        payload = self._payload(selected)
-        if entity_id in payload["entities"]:
-            entity = payload["entities"][entity_id]
-            return {**entity, "revision_id": selected, "status": "current" if not revision else "historical",
-                "records": [payload["records"][member] for member in entity["members"]]}
+        self._ensure_query_projection(selected)
+        with self.engine.connect() as con:
+            entity = con.execute(select(s.query_entities).where(s.query_entities.c.revision_id == selected,
+                s.query_entities.c.entity_id == entity_id)).mappings().one_or_none()
+            if entity:
+                rows = con.execute(select(s.records.c.source_id, s.versions).select_from(s.memberships)
+                    .join(s.versions, s.memberships.c.record_version_id == s.versions.c.record_version_id)
+                    .join(s.records, s.memberships.c.record_id == s.records.c.record_id)
+                    .where(s.memberships.c.revision_id == selected, s.memberships.c.entity_id == entity_id)
+                    .order_by(s.memberships.c.record_id)).mappings().all()
+                records = [{**row["payload"], "record_id": row["record_id"],
+                            "record_version_id": row["record_version_id"], "source": row["source_id"]} for row in rows]
+                return {"entity_id": entity_id, "canonical": entity["canonical"],
+                    "members": [record["record_id"] for record in records], "revision_id": selected,
+                    "status": "current" if not revision else "historical", "records": records}
         if revision:
             raise KeyError("Entity not present in that revision")
         with self.engine.connect() as con:
@@ -404,9 +513,15 @@ class Store:
                 continue
             reached.add(node)
             queue.extend(graph.get(node, ()))
-        destinations = sorted(reached.intersection(payload["entities"]))
+        destinations = []
+        identifiers = sorted(reached)
+        with self.engine.connect() as con:
+            for start in range(0, len(identifiers), 1000):
+                destinations.extend(con.execute(select(s.query_entities.c.entity_id).where(
+                    s.query_entities.c.revision_id == selected,
+                    s.query_entities.c.entity_id.in_(identifiers[start:start + 1000]))).scalars())
         return {"entity_id": entity_id, "revision_id": selected, "status": "retired",
-            "destinations": destinations}
+            "destinations": sorted(destinations)}
 
     def history(self):
         with self.engine.connect() as con:

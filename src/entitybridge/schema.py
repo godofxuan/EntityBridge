@@ -6,6 +6,7 @@ from sqlalchemy import (
                         Column,
                         Float,
                         ForeignKey,
+                        ForeignKeyConstraint,
                         Index,
                         Integer,
                         MetaData,
@@ -76,3 +77,20 @@ lineage = Table("entity_lineage", metadata,
                 Column("relation", String(20), primary_key=True))
 current = Table("current_revision", metadata, Column("workspace", String(40), primary_key=True),
                 Column("revision_id", String(36)), Column("generation", Integer, nullable=False))
+
+query_projections = Table("query_projection", metadata,
+    Column("revision_id", ForeignKey("identity_revision.revision_id"), primary_key=True),
+    Column("projection_version", String(40), nullable=False),
+    Column("artifact_sha256", String(64), nullable=False),
+    Column("content_sha256", String(64), nullable=False),
+    Column("entity_count", Integer, nullable=False), Column("member_count", Integer, nullable=False),
+    Column("search_value_count", Integer, nullable=False))
+query_entities = Table("query_entity", metadata,
+    Column("revision_id", ForeignKey("identity_revision.revision_id"), primary_key=True),
+    Column("entity_id", String(36), primary_key=True), Column("canonical", JSON, nullable=False))
+query_values = Table("query_search_value", metadata,
+    Column("revision_id", String(36), primary_key=True), Column("entity_id", String(36), primary_key=True),
+    Column("ordinal", Integer, primary_key=True), Column("value_folded", Text, nullable=False),
+    ForeignKeyConstraint(["revision_id", "entity_id"], ["query_entity.revision_id", "query_entity.entity_id"]))
+Index("ix_membership_revision_entity_record", memberships.c.revision_id, memberships.c.entity_id,
+      memberships.c.record_id)

@@ -1,0 +1,119 @@
+{
+  "format": "entitybridge-v03-public-evidence-v1",
+  "source_records_redistributed": false,
+  "files": {
+    "fodors_zagats_v1_report.json": {
+      "sha256": "cb6809f2f59dc0b6928eb9329dd7633f7ada9efcf4751c074b202b2fb4cfa3f7",
+      "bytes": 92174
+    },
+    "fodors_zagats_v1_frozen_config.json": {
+      "sha256": "f1eb5ee749f23d866ebfd699e51c85088eaffcc7ba2e6d84f8d52884d286bb80",
+      "bytes": 73853
+    },
+    "fodors_zagats_v1_protocol.json": {
+      "sha256": "595383437e52f25f35db0f5a7ff9b0f8b679402d9ffa5f68bc3476a7482983d8",
+      "bytes": 1940
+    },
+    "fodors_zagats_v1_input_verification.json": {
+      "sha256": "fe9ec91b597b9d6b187d2b526bd171c8e8fc1859b11aaf3fe7b10d65644e51cb",
+      "bytes": 174
+    },
+    "fodors_zagats_v1_evaluation_source.zip": {
+      "sha256": "fde47411a972b35693eb958d9b07018f308f0e29fb0dc5190fcb166500c9884d",
+      "bytes": 25530
+    },
+    "fodors_zagats_v2_report.json": {
+      "sha256": "44f751203cdbeae72a222308c09ad8c92bc442202cc1e2a62f43545a01e045e9",
+      "bytes": 96102
+    },
+    "fodors_zagats_v2_frozen_config.json": {
+      "sha256": "c7df06438f3439fe6f6c7cef0450c32cd8faa2c21a08904d03743e66ab896dc7",
+      "bytes": 72615
+    },
+    "fodors_zagats_v2_protocol.json": {
+      "sha256": "c9fd2ccfd0e3c9c9c12128e4079594e6b9cf4640b0b7fce6f1f6705cd980460d",
+      "bytes": 2031
+    },
+    "fodors_zagats_v2_input_verification.json": {
+      "sha256": "fe9ec91b597b9d6b187d2b526bd171c8e8fc1859b11aaf3fe7b10d65644e51cb",
+      "bytes": 174
+    },
+    "fodors_zagats_v2_evaluation_source.zip": {
+      "sha256": "600df6f8eb254954fd8ffd9e1e83b57ad5794e3608af510c86eb49b9df7a8587",
+      "bytes": 26109
+    },
+    "fodors_zagats_dataset_manifest.json": {
+      "sha256": "6ed86e4f071ff97a05f9c705c19fdd178db82ffa8db0dcb22df89fbcb14b72b8",
+      "bytes": 4469
+    },
+    "dblp_acm_v1_report.json": {
+      "sha256": "cd7de7ec681ed08d5b26ceb602ffe619758ca6b5cd4d72ce5e97e12daf7f1532",
+      "bytes": 95207
+    },
+    "dblp_acm_v1_frozen_config.json": {
+      "sha256": "bef0bdc125c68cbe76413b9beff8ba19b6fe3357f7d64588b188fb93f83d920a",
+      "bytes": 452606
+    },
+    "dblp_acm_v1_protocol.json": {
+      "sha256": "f6994fee7284e4b27392cf972edb43c4b338b40f9c9547a0eea9db3ff79f3b59",
+      "bytes": 1940
+    },
+    "dblp_acm_v1_input_verification.json": {
+      "sha256": "9f59f9a83e664234108b1e6ee6c94f44fc0085dedd7601013b97a3611d0cbc2a",
+      "bytes": 177
+    },
+    "dblp_acm_v1_evaluation_source.zip": {
+      "sha256": "fde47411a972b35693eb958d9b07018f308f0e29fb0dc5190fcb166500c9884d",
+      "bytes": 25530
+    },
+    "dblp_acm_v2_report.json": {
+      "sha256": "f40c996a2d7cb45042ad799ee9eb16a6a0d9e95a647323078ac9ae4c57fe6c6c",
+      "bytes": 96960
+    },
+    "dblp_acm_v2_frozen_config.json": {
+      "sha256": "f8ff3a83e95426af5edc0be5e6a050718a82ee99f6764f3fd47791562022386e",
+      "bytes": 451312
+    },
+    "dblp_acm_v2_protocol.json": {
+      "sha256": "f8db88b7656151438c988e72db0d7ffa5b5fdf8e9e36f18c7d044d3fcb10a32b",
+      "bytes": 2031
+    },
+    "dblp_acm_v2_input_verification.json": {
+      "sha256": "9f59f9a83e664234108b1e6ee6c94f44fc0085dedd7601013b97a3611d0cbc2a",
+      "bytes": 177
+    },
+    "dblp_acm_v2_evaluation_source.zip": {
+      "sha256": "600df6f8eb254954fd8ffd9e1e83b57ad5794e3608af510c86eb49b9df7a8587",
+      "bytes": 26109
+    },
+    "dblp_acm_dataset_manifest.json": {
+      "sha256": "60c648893fd76bd09d8b12d61be0b5eaf6c2380a82b0d95172c05f68d3b63ed3",
+      "bytes": 4433
+    },
+    "query_10k_baseline.json": {
+      "sha256": "e028376b91365f5eef54b58b24a9d336142e17b591e7a320216198fa63d67bd2",
+      "bytes": 5097
+    },
+    "query_10k_compare.json": {
+      "sha256": "985304a8e6fac03aff56a22c56d232fd22c61bf707b9aa7c6d8900b1e6b3596e",
+      "bytes": 10928
+    },
+    "real_workflow_10k_v03.json": {
+      "sha256": "ad17f8d53f1af70455a716a32bfa65300aea48e8da8ba03475d7ffd6d0595aad",
+      "bytes": 7602
+    },
+    "wheel_v03_validation.json": {
+      "sha256": "6f66a8a0eb07ae00f689696badc2869f5253eb23902d762e179573b13c8dd736",
+      "bytes": 340
+    },
+    "local_validation.json": {
+      "sha256": "3f5e700e723c0e8df39866a34207d6de52bf882049e2674beff8a681bcae1d3e",
+      "bytes": 754
+    }
+  },
+  "attempts": {
+    "v1": "First predeclared attempt preserved. Exact scorer thresholds were incorrectly allowed to include zero; affected exact baseline results are invalid. Other scorer counts verified unchanged in v2.",
+    "v2": "Exploratory replay after correcting exact threshold choices to 1 or reject-all. Not a new unseen holdout. Models and other hyperparameters unchanged."
+  },
+  "interpretation": "Partial labels only. Unknown predictions excluded from precision and cost. Fodors 20 positive test labels and degenerate intervals do not prove population perfection."
+}

@@ -101,11 +101,24 @@ def evaluate_pairs(predictions, candidates, truth):
 def evaluate_clusters(partitions, truth):
     entity_sizes = Counter(truth.values())
     seen, over, affected, largest, precision, recall = set(), 0, 0, 0, 0.0, 0.0
-    for members in partitions:
+    entity_partitions = defaultdict(set)
+    exact_entities, pair_tp, predicted_pairs = 0, 0, 0
+    for index, members in enumerate(partitions):
+        members = tuple(members)
+        if not members or len(members) != len(set(members)):
+            raise ValueError("Partitions must be nonempty and contain each record only once")
         if seen.intersection(members):
             raise ValueError("Partitions overlap")
+        if any(record not in truth for record in members):
+            raise ValueError("Full truth required for every partition member")
         seen.update(members)
         counts = Counter(truth[record] for record in members)
+        predicted_pairs += len(members) * (len(members) - 1) // 2
+        pair_tp += sum(size * (size - 1) // 2 for size in counts.values())
+        for entity in counts:
+            entity_partitions[entity].add(index)
+        if len(counts) == 1 and len(members) == entity_sizes[next(iter(counts))]:
+            exact_entities += 1
         if len(counts) > 1:
             over += 1
             affected += len(members)
@@ -116,6 +129,14 @@ def evaluate_clusters(partitions, truth):
             recall += correct / entity_sizes[truth[record]]
     if seen != set(truth):
         raise ValueError("Cluster evaluation requires complete truth coverage")
+    b_precision = precision / len(truth) if truth else 0
+    b_recall = recall / len(truth) if truth else 0
+    true_pairs = sum(size * (size - 1) // 2 for size in entity_sizes.values())
     return {"overmerged_clusters": over, "records_in_overmerged_clusters": affected,
-        "largest_wrong_cluster": largest, "b_cubed_precision": precision / len(truth) if truth else 0,
-        "b_cubed_recall": recall / len(truth) if truth else 0}
+        "largest_wrong_cluster": largest, "b_cubed_precision": b_precision,
+        "b_cubed_recall": b_recall,
+        "b_cubed_f1": 2 * b_precision * b_recall / (b_precision + b_recall) if b_precision + b_recall else 0,
+        "cluster_pairwise": _metrics(pair_tp, predicted_pairs - pair_tp, true_pairs - pair_tp),
+        "split_true_entities": sum(len(groups) > 1 for groups in entity_partitions.values()),
+        "exact_entity_recovery": exact_entities / len(entity_sizes) if entity_sizes else 0,
+        "requires_complete_entity_truth": True}

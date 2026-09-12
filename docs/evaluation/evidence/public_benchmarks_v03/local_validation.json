@@ -1,0 +1,22 @@
+{
+  "version": "0.3.0",
+  "date": "2026-09-12",
+  "full_suite": {
+    "passed": 158,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 27.53,
+    "postgres_store_and_recovery_enabled": true,
+    "all_tests_are_postgresql": false,
+    "log_sha256": "729e1107aa6f9c08fac8ab85b4ce9ccdc7289b3048b19414111b2866bd31185d",
+    "log_published": false
+  },
+  "warnings": [
+    "Third-party Starlette/httpx TestClient deprecation",
+    "Third-party anyio BlockingPortal alias deprecation"
+  ],
+  "real_records_workflow": "real_workflow_10k_v03.json",
+  "wheel_validation": "wheel_v03_validation.json",
+  "public_benchmarks": "INDEX.json",
+  "ci_status_at_source_export": "Awaiting this commit on remote Windows, Ubuntu and PostgreSQL jobs"
+}

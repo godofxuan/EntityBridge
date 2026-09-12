@@ -1,0 +1,2820 @@
+{
+  "benchmark": "fodors_zagats",
+  "frozen_config_sha256": "c7df06438f3439fe6f6c7cef0450c32cd8faa2c21a08904d03743e66ab896dc7",
+  "limitations": [
+    "Metrics conditional on provided labels; unknown pairs are not negatives",
+    "Entity-disjoint split differs from the original published paper protocol; scores are not leaderboard-comparable",
+    "Dropping cross-split negative pairs changes labelled class prevalence; calibration is sample-conditional",
+    "Restaurant/paper records are cross-domain diagnostics, not legal company identities",
+    "Supplied-pair classification is not candidate retrieval quality",
+    "Probability outputs are not calibrated for real deployment prevalence",
+    "Review-budget curves describe known-label recovery, not measured human time savings",
+    "Insufficient independent groups prevent a reliable bootstrap interval"
+  ],
+  "platform": "Windows-11-10.0.26200-SP0",
+  "process_peak_rss_bytes": 236093440,
+  "protocol": "known-entity-disjoint-partial-labels-v2-exact-contract",
+  "protocol_sha256": "c9fd2ccfd0e3c9c9c12128e4079594e6b9cf4640b0b7fce6f1f6705cd980460d",
+  "python": "3.12.13",
+  "results": {
+    "fixed": {
+      "exact": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [],
+          "brier": null,
+          "ece": null,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "not_probability_scores"
+        },
+        "candidate_known_positive_recall": 0.9,
+        "candidate_pairs": 18,
+        "candidate_reduction_ratio": 0.9968443197755961,
+        "conditional": {
+          "f1": 0.9411764705882353,
+          "fn": 2,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.8888888888888888,
+          "tn": 0,
+          "tp": 16
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.8888888888888888,
+          "fn": 4,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.8,
+          "tn": 35,
+          "tp": 16
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 0.9,
+              "interval": [
+                0.7220238095238096,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.8888888888888888,
+              "interval": [
+                0.7741935483870968,
+                0.9715018315018314
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.8,
+              "interval": [
+                0.631578947368421,
+                0.9445833333333332
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "All scored labelled candidates are positive; AP=1 is trivial and is not evidence of discrimination",
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 18,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 16,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 18,
+          "positive_fraction": 1.0,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": null,
+          "scope": "scored_labeled_candidates_only",
+          "status": "single_class_all_positive"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 16,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 25,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 50,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 100,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 250,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 500,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 4.0,
+        "threshold": 1.0,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "fuzzy": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [],
+          "brier": null,
+          "ece": null,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "not_probability_scores"
+        },
+        "candidate_known_positive_recall": 0.9,
+        "candidate_pairs": 18,
+        "candidate_reduction_ratio": 0.9968443197755961,
+        "conditional": {
+          "f1": 0.9714285714285714,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.9444444444444444,
+          "tn": 0,
+          "tp": 17
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.918918918918919,
+          "fn": 3,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.85,
+          "tn": 35,
+          "tp": 17
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 0.9,
+              "interval": [
+                0.7220238095238096,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.918918918918919,
+              "interval": [
+                0.8333333333333334,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.85,
+              "interval": [
+                0.7142857142857143,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "All scored labelled candidates are positive; AP=1 is trivial and is not evidence of discrimination",
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 18,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 17,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 18,
+          "positive_fraction": 1.0,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": null,
+          "scope": "scored_labeled_candidates_only",
+          "status": "single_class_all_positive"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 16,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 25,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 50,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 250,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 500,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 3.0,
+        "threshold": 0.6875,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "splink": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [
+            {
+              "count": 2,
+              "lower": 0.0,
+              "mean_probability": 0.012830641717983158,
+              "positive_fraction": 1.0,
+              "upper": 0.1
+            },
+            {
+              "count": 0,
+              "lower": 0.1,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.2
+            },
+            {
+              "count": 0,
+              "lower": 0.2,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.3
+            },
+            {
+              "count": 0,
+              "lower": 0.3,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.4
+            },
+            {
+              "count": 0,
+              "lower": 0.4,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.5
+            },
+            {
+              "count": 0,
+              "lower": 0.5,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.6
+            },
+            {
+              "count": 0,
+              "lower": 0.6,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.7
+            },
+            {
+              "count": 0,
+              "lower": 0.7,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.8
+            },
+            {
+              "count": 0,
+              "lower": 0.8,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.9
+            },
+            {
+              "count": 16,
+              "lower": 0.9,
+              "mean_probability": 0.9934132735595584,
+              "positive_fraction": 1.0,
+              "upper": 1.0
+            }
+          ],
+          "brier": 0.10843814710517874,
+          "ece": 0.11554035220061658,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "sample_conditional_probability_diagnostic"
+        },
+        "candidate_known_positive_recall": 0.9,
+        "candidate_pairs": 18,
+        "candidate_reduction_ratio": 0.9968443197755961,
+        "conditional": {
+          "f1": 1.0,
+          "fn": 0,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "tn": 0,
+          "tp": 18
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.9473684210526315,
+          "fn": 2,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.9,
+          "tn": 35,
+          "tp": 18
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 0.9,
+              "interval": [
+                0.7220238095238096,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.9473684210526315,
+              "interval": [
+                0.8385752688172043,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.9,
+              "interval": [
+                0.7220238095238096,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "All scored labelled candidates are positive; AP=1 is trivial and is not evidence of discrimination",
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 18,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 18,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 18,
+          "positive_fraction": 1.0,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": null,
+          "scope": "scored_labeled_candidates_only",
+          "status": "single_class_all_positive"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 10,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 25,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 50,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 100,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 250,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 500,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 2.0,
+        "threshold": 0.012830641717983158,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "supervised_logistic": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [
+            {
+              "count": 0,
+              "lower": 0.0,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.1
+            },
+            {
+              "count": 0,
+              "lower": 0.1,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.2
+            },
+            {
+              "count": 0,
+              "lower": 0.2,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.3
+            },
+            {
+              "count": 0,
+              "lower": 0.3,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.4
+            },
+            {
+              "count": 1,
+              "lower": 0.4,
+              "mean_probability": 0.4893479163665436,
+              "positive_fraction": 1.0,
+              "upper": 0.5
+            },
+            {
+              "count": 0,
+              "lower": 0.5,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.6
+            },
+            {
+              "count": 1,
+              "lower": 0.6,
+              "mean_probability": 0.6825862145931132,
+              "positive_fraction": 1.0,
+              "upper": 0.7
+            },
+            {
+              "count": 1,
+              "lower": 0.7,
+              "mean_probability": 0.7894773946314827,
+              "positive_fraction": 1.0,
+              "upper": 0.8
+            },
+            {
+              "count": 3,
+              "lower": 0.8,
+              "mean_probability": 0.8502542438164656,
+              "positive_fraction": 1.0,
+              "upper": 0.9
+            },
+            {
+              "count": 12,
+              "lower": 0.9,
+              "mean_probability": 0.9570808987663167,
+              "positive_fraction": 1.0,
+              "upper": 1.0
+            }
+          ],
+          "brier": 0.027691744399970745,
+          "ece": 0.11126971987575904,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "sample_conditional_probability_diagnostic"
+        },
+        "candidate_known_positive_recall": 0.9,
+        "candidate_pairs": 18,
+        "candidate_reduction_ratio": 0.9968443197755961,
+        "conditional": {
+          "f1": 0.9714285714285714,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.9444444444444444,
+          "tn": 0,
+          "tp": 17
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.918918918918919,
+          "fn": 3,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.85,
+          "tn": 35,
+          "tp": 17
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 0.9,
+              "interval": [
+                0.7220238095238096,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.918918918918919,
+              "interval": [
+                0.8333333333333334,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.85,
+              "interval": [
+                0.7142857142857143,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "All scored labelled candidates are positive; AP=1 is trivial and is not evidence of discrimination",
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 18,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 17,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 18,
+          "positive_fraction": 1.0,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": null,
+          "scope": "scored_labeled_candidates_only",
+          "status": "single_class_all_positive"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 7,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 25,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 50,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 250,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 500,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 18,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 3.0,
+        "threshold": 0.5250780305873115,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      }
+    },
+    "hybrid": {
+      "exact": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [],
+          "brier": null,
+          "ece": null,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "not_probability_scores"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 107,
+        "candidate_reduction_ratio": 0.9812412342215989,
+        "conditional": {
+          "f1": 0.8888888888888888,
+          "fn": 4,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.8,
+          "tn": 1,
+          "tp": 16
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.8888888888888888,
+          "fn": 4,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.8,
+          "tn": 35,
+          "tp": 16
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.8888888888888888,
+              "interval": [
+                0.7741935483870968,
+                0.9715018315018314
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.8,
+              "interval": [
+                0.631578947368421,
+                0.9445833333333332
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 21,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 16,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 0.9904761904761905,
+          "pairs": 21,
+          "positive_fraction": 0.9523809523809523,
+          "pr_auc_trapezoid": 0.9952380952380953,
+          "roc_auc": 0.9,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 16,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 91,
+            "budget": 25,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 17,
+            "known_positive_per_review": 0.68,
+            "known_positive_recall": 0.85,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.68,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 8
+          },
+          {
+            "boundary_tie_size": 91,
+            "budget": 50,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 0.36,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.36,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 32
+          },
+          {
+            "boundary_tie_size": 91,
+            "budget": 100,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 19,
+            "known_positive_per_review": 0.19,
+            "known_positive_recall": 0.95,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.2,
+            "reviewed_pairs": 100,
+            "unknown_reviewed_pairs": 80
+          },
+          {
+            "boundary_tie_size": 91,
+            "budget": 250,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          },
+          {
+            "boundary_tie_size": 91,
+            "budget": 500,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 4.0,
+        "threshold": 1.0,
+        "unknown_candidate_pairs": 86,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "fuzzy": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [],
+          "brier": null,
+          "ece": null,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "not_probability_scores"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 107,
+        "candidate_reduction_ratio": 0.9812412342215989,
+        "conditional": {
+          "f1": 0.975609756097561,
+          "fn": 0,
+          "fp": 1,
+          "precision": 0.9523809523809523,
+          "recall": 1.0,
+          "tn": 0,
+          "tp": 20
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.975609756097561,
+          "fn": 0,
+          "fp": 1,
+          "precision": 0.9523809523809523,
+          "recall": 1.0,
+          "tn": 34,
+          "tp": 20
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.975609756097561,
+              "interval": [
+                0.9090909090909091,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 0.9523809523809523,
+              "interval": [
+                0.8333333333333334,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Unknown predicted pairs are excluded from labelled precision; overall prediction correctness is unmeasured",
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 21,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 63,
+        "prediction_label_coverage": 0.3333333333333333,
+        "ranking": {
+          "average_precision": 0.9951190476190477,
+          "pairs": 21,
+          "positive_fraction": 0.9523809523809523,
+          "pr_auc_trapezoid": 0.9949937343358396,
+          "roc_auc": 0.9,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 16,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 25,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 19,
+            "known_positive_per_review": 0.76,
+            "known_positive_recall": 0.95,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.8,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 5
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 50,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.4,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.42,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 29
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.2,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.21,
+            "reviewed_pairs": 100,
+            "unknown_reviewed_pairs": 79
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 250,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 500,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 10.0,
+        "threshold": 0.4285714285714286,
+        "unknown_candidate_pairs": 86,
+        "unknown_predicted_pairs": 42,
+        "validation_selection_status": "selected"
+      },
+      "splink": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [
+            {
+              "count": 4,
+              "lower": 0.0,
+              "mean_probability": 0.00698839104137455,
+              "positive_fraction": 0.75,
+              "upper": 0.1
+            },
+            {
+              "count": 0,
+              "lower": 0.1,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.2
+            },
+            {
+              "count": 0,
+              "lower": 0.2,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.3
+            },
+            {
+              "count": 0,
+              "lower": 0.3,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.4
+            },
+            {
+              "count": 0,
+              "lower": 0.4,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.5
+            },
+            {
+              "count": 0,
+              "lower": 0.5,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.6
+            },
+            {
+              "count": 0,
+              "lower": 0.6,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.7
+            },
+            {
+              "count": 0,
+              "lower": 0.7,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.8
+            },
+            {
+              "count": 0,
+              "lower": 0.8,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.9
+            },
+            {
+              "count": 17,
+              "lower": 0.9,
+              "mean_probability": 0.9924825856084153,
+              "positive_fraction": 1.0,
+              "upper": 1.0
+            }
+          ],
+          "brier": 0.14037189583924972,
+          "ece": 0.14761154669006868,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "sample_conditional_probability_diagnostic"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 107,
+        "candidate_reduction_ratio": 0.9812412342215989,
+        "conditional": {
+          "f1": 1.0,
+          "fn": 0,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "tn": 1,
+          "tp": 20
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 1.0,
+          "fn": 0,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "tn": 35,
+          "tp": 20
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 21,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 20,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 21,
+          "positive_fraction": 0.9523809523809523,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": 1.0,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 10,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 5,
+            "budget": 25,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.8,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.8,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 5
+          },
+          {
+            "boundary_tie_size": 79,
+            "budget": 50,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.4,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.4,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 30
+          },
+          {
+            "boundary_tie_size": 79,
+            "budget": 100,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.2,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.21,
+            "reviewed_pairs": 100,
+            "unknown_reviewed_pairs": 79
+          },
+          {
+            "boundary_tie_size": 79,
+            "budget": 250,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          },
+          {
+            "boundary_tie_size": 79,
+            "budget": 500,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 0.0,
+        "threshold": 0.002292113205496837,
+        "unknown_candidate_pairs": 86,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "supervised_logistic": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [
+            {
+              "count": 1,
+              "lower": 0.0,
+              "mean_probability": 0.050085276415391025,
+              "positive_fraction": 0.0,
+              "upper": 0.1
+            },
+            {
+              "count": 0,
+              "lower": 0.1,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.2
+            },
+            {
+              "count": 0,
+              "lower": 0.2,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.3
+            },
+            {
+              "count": 1,
+              "lower": 0.3,
+              "mean_probability": 0.35721428978163644,
+              "positive_fraction": 1.0,
+              "upper": 0.4
+            },
+            {
+              "count": 1,
+              "lower": 0.4,
+              "mean_probability": 0.4893479163665436,
+              "positive_fraction": 1.0,
+              "upper": 0.5
+            },
+            {
+              "count": 0,
+              "lower": 0.5,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.6
+            },
+            {
+              "count": 1,
+              "lower": 0.6,
+              "mean_probability": 0.6825862145931132,
+              "positive_fraction": 1.0,
+              "upper": 0.7
+            },
+            {
+              "count": 2,
+              "lower": 0.7,
+              "mean_probability": 0.7700116850409218,
+              "positive_fraction": 1.0,
+              "upper": 0.8
+            },
+            {
+              "count": 3,
+              "lower": 0.8,
+              "mean_probability": 0.8502542438164656,
+              "positive_fraction": 1.0,
+              "upper": 0.9
+            },
+            {
+              "count": 12,
+              "lower": 0.9,
+              "mean_probability": 0.9570808987663167,
+              "positive_fraction": 1.0,
+              "upper": 1.0
+            }
+          ],
+          "brier": 0.04649336732085799,
+          "ece": 0.14024666518795506,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "sample_conditional_probability_diagnostic"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 107,
+        "candidate_reduction_ratio": 0.9812412342215989,
+        "conditional": {
+          "f1": 0.9743589743589743,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.95,
+          "tn": 1,
+          "tp": 19
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.9743589743589743,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.95,
+          "tn": 35,
+          "tp": 19
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.9743589743589743,
+              "interval": [
+                0.8965063520871144,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.95,
+              "interval": [
+                0.8124255952380952,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 21,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 19,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 21,
+          "positive_fraction": 0.9523809523809523,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": 1.0,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 7,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 25,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.8,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.84,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 4
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 50,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.4,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.42,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 29
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.2,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.21,
+            "reviewed_pairs": 100,
+            "unknown_reviewed_pairs": 79
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 250,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 500,
+            "known_negative_pairs": 1,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.18691588785046728,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 0.19626168224299065,
+            "reviewed_pairs": 107,
+            "unknown_reviewed_pairs": 86
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 1.0,
+        "threshold": 0.3575693700279022,
+        "unknown_candidate_pairs": 86,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      }
+    },
+    "supplied_pairs_only": {
+      "exact": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [],
+          "brier": null,
+          "ece": null,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "not_probability_scores"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 55,
+        "candidate_reduction_ratio": 0.9903576437587658,
+        "conditional": {
+          "f1": 0.8888888888888888,
+          "fn": 4,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.8,
+          "tn": 35,
+          "tp": 16
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.8888888888888888,
+          "fn": 4,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.8,
+          "tn": 35,
+          "tp": 16
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.8888888888888888,
+              "interval": [
+                0.7741935483870968,
+                0.9715018315018314
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.8,
+              "interval": [
+                0.631578947368421,
+                0.9445833333333332
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 55,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 16,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 0.8727272727272728,
+          "pairs": 55,
+          "positive_fraction": 0.36363636363636365,
+          "pr_auc_trapezoid": 0.9363636363636364,
+          "roc_auc": 0.9,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 16,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 39,
+            "budget": 25,
+            "known_negative_pairs": 7,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 0.72,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 39,
+            "budget": 50,
+            "known_negative_pairs": 32,
+            "known_positive_pairs": 18,
+            "known_positive_per_review": 0.36,
+            "known_positive_recall": 0.9,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 39,
+            "budget": 100,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 39,
+            "budget": 250,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 39,
+            "budget": 500,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 4.0,
+        "threshold": 1.0,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "fuzzy": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [],
+          "brier": null,
+          "ece": null,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "not_probability_scores"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 55,
+        "candidate_reduction_ratio": 0.9903576437587658,
+        "conditional": {
+          "f1": 0.9090909090909091,
+          "fn": 0,
+          "fp": 4,
+          "precision": 0.8333333333333334,
+          "recall": 1.0,
+          "tn": 31,
+          "tp": 20
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.9090909090909091,
+          "fn": 0,
+          "fp": 4,
+          "precision": 0.8333333333333334,
+          "recall": 1.0,
+          "tn": 31,
+          "tp": 20
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.9090909090909091,
+              "interval": [
+                0.8333333333333334,
+                0.973007623007623
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 0.8333333333333334,
+              "interval": [
+                0.7142857142857143,
+                0.9474342105263157
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 55,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 24,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 0.9906926406926406,
+          "pairs": 55,
+          "positive_fraction": 0.36363636363636365,
+          "pr_auc_trapezoid": 0.990465367965368,
+          "roc_auc": 0.9942857142857142,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 16,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 25,
+            "known_negative_pairs": 5,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.8,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 2,
+            "budget": 50,
+            "known_negative_pairs": 30,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.4,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 250,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 500,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 40.0,
+        "threshold": 0.4285714285714286,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "splink": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [
+            {
+              "count": 38,
+              "lower": 0.0,
+              "mean_probability": 0.001716910814522667,
+              "positive_fraction": 0.07894736842105263,
+              "upper": 0.1
+            },
+            {
+              "count": 0,
+              "lower": 0.1,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.2
+            },
+            {
+              "count": 0,
+              "lower": 0.2,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.3
+            },
+            {
+              "count": 0,
+              "lower": 0.3,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.4
+            },
+            {
+              "count": 0,
+              "lower": 0.4,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.5
+            },
+            {
+              "count": 0,
+              "lower": 0.5,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.6
+            },
+            {
+              "count": 0,
+              "lower": 0.6,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.7
+            },
+            {
+              "count": 0,
+              "lower": 0.7,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.8
+            },
+            {
+              "count": 0,
+              "lower": 0.8,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.9
+            },
+            {
+              "count": 17,
+              "lower": 0.9,
+              "mean_probability": 0.9924825856084153,
+              "positive_fraction": 1.0,
+              "upper": 1.0
+            }
+          ],
+          "brier": 0.05359783308250788,
+          "ece": 0.0556827897037287,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "sample_conditional_probability_diagnostic"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 55,
+        "candidate_reduction_ratio": 0.9903576437587658,
+        "conditional": {
+          "f1": 0.9743589743589743,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.95,
+          "tn": 35,
+          "tp": 19
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.9743589743589743,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.95,
+          "tn": 35,
+          "tp": 19
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.9743589743589743,
+              "interval": [
+                0.8965063520871144,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.95,
+              "interval": [
+                0.8124255952380952,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 55,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 19,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 0.9803030303030302,
+          "pairs": 55,
+          "positive_fraction": 0.36363636363636365,
+          "pr_auc_trapezoid": 0.9901515151515151,
+          "roc_auc": 0.9907142857142857,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 10,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 14,
+            "budget": 25,
+            "known_negative_pairs": 5,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.8,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 20,
+            "budget": 50,
+            "known_negative_pairs": 30,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.4,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 250,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 500,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 1.0,
+        "threshold": 0.012830641717983158,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      },
+      "supervised_logistic": {
+        "calibration": {
+          "binning": "equal_width_positive_class_probability",
+          "bins": [
+            {
+              "count": 35,
+              "lower": 0.0,
+              "mean_probability": 0.020399672726279076,
+              "positive_fraction": 0.0,
+              "upper": 0.1
+            },
+            {
+              "count": 0,
+              "lower": 0.1,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.2
+            },
+            {
+              "count": 0,
+              "lower": 0.2,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.3
+            },
+            {
+              "count": 1,
+              "lower": 0.3,
+              "mean_probability": 0.35721428978163644,
+              "positive_fraction": 1.0,
+              "upper": 0.4
+            },
+            {
+              "count": 1,
+              "lower": 0.4,
+              "mean_probability": 0.4893479163665436,
+              "positive_fraction": 1.0,
+              "upper": 0.5
+            },
+            {
+              "count": 0,
+              "lower": 0.5,
+              "mean_probability": null,
+              "positive_fraction": null,
+              "upper": 0.6
+            },
+            {
+              "count": 1,
+              "lower": 0.6,
+              "mean_probability": 0.6825862145931132,
+              "positive_fraction": 1.0,
+              "upper": 0.7
+            },
+            {
+              "count": 2,
+              "lower": 0.7,
+              "mean_probability": 0.7700116850409218,
+              "positive_fraction": 1.0,
+              "upper": 0.8
+            },
+            {
+              "count": 3,
+              "lower": 0.8,
+              "mean_probability": 0.8502542438164656,
+              "positive_fraction": 1.0,
+              "upper": 0.9
+            },
+            {
+              "count": 12,
+              "lower": 0.9,
+              "mean_probability": 0.9570808987663167,
+              "positive_fraction": 1.0,
+              "upper": 1.0
+            }
+          ],
+          "brier": 0.018218943585232416,
+          "ece": 0.0656196952354806,
+          "number_of_bins": 10,
+          "scope": "scored_labeled_candidates_only",
+          "status": "sample_conditional_probability_diagnostic"
+        },
+        "candidate_known_positive_recall": 1.0,
+        "candidate_pairs": 55,
+        "candidate_reduction_ratio": 0.9903576437587658,
+        "conditional": {
+          "f1": 0.9743589743589743,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.95,
+          "tn": 35,
+          "tp": 19
+        },
+        "decision_rule": "score_gte_threshold",
+        "end_to_end": {
+          "f1": 0.9743589743589743,
+          "fn": 1,
+          "fp": 0,
+          "precision": 1.0,
+          "recall": 0.95,
+          "tn": 35,
+          "tp": 19
+        },
+        "group_bootstrap": {
+          "confidence_level": 0.95,
+          "groups": 16,
+          "largest_group_pair_fraction": 0.43636363636363634,
+          "max_group_fraction": 0.5,
+          "method": "whole_group_percentile_bootstrap_fixed_pipeline",
+          "metrics": {
+            "candidate_known_positive_recall": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "f1": {
+              "defined_resamples": 400,
+              "estimate": 0.9743589743589743,
+              "interval": [
+                0.8965063520871144,
+                1.0
+              ],
+              "reason": null
+            },
+            "precision": {
+              "defined_resamples": 400,
+              "estimate": 1.0,
+              "interval": [
+                1.0,
+                1.0
+              ],
+              "reason": null
+            },
+            "recall": {
+              "defined_resamples": 400,
+              "estimate": 0.95,
+              "interval": [
+                0.8124255952380952,
+                1.0
+              ],
+              "reason": null
+            }
+          },
+          "requested_resamples": 400,
+          "seed": 20260912,
+          "size_balance_effective_groups": 4.32761087267525,
+          "status": "descriptive_group_intervals",
+          "warning": "Few groups; percentile intervals are unstable"
+        },
+        "interpretation_flags": [
+          "Few balanced independent groups; uncertainty estimates are unstable",
+          "Boundary-degenerate empirical bootstrap cannot create unobserved errors; it does not establish perfect population performance"
+        ],
+        "known_negative_pairs": 35,
+        "known_positive_pairs": 20,
+        "labeled_candidate_pairs": 55,
+        "labeled_pairs": 55,
+        "pair_universe": 5704,
+        "predicted_pairs": 19,
+        "prediction_label_coverage": 1.0,
+        "ranking": {
+          "average_precision": 1.0,
+          "pairs": 55,
+          "positive_fraction": 0.36363636363636365,
+          "pr_auc_trapezoid": 1.0,
+          "roc_auc": 1.0,
+          "scope": "scored_labeled_candidates_only",
+          "status": "both_classes"
+        },
+        "review_budget": [
+          {
+            "boundary_tie_size": 0,
+            "budget": 0,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 0,
+            "known_positive_per_review": null,
+            "known_positive_recall": 0.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": null,
+            "reviewed_pairs": 0,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 7,
+            "budget": 10,
+            "known_negative_pairs": 0,
+            "known_positive_pairs": 10,
+            "known_positive_per_review": 1.0,
+            "known_positive_recall": 0.5,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 10,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 25,
+            "known_negative_pairs": 5,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.8,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 25,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 50,
+            "known_negative_pairs": 30,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.4,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 50,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 100,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 250,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          },
+          {
+            "boundary_tie_size": 1,
+            "budget": 500,
+            "known_negative_pairs": 35,
+            "known_positive_pairs": 20,
+            "known_positive_per_review": 0.36363636363636365,
+            "known_positive_recall": 1.0,
+            "ordering": "score_desc_then_pair_id",
+            "reviewed_label_coverage": 1.0,
+            "reviewed_pairs": 55,
+            "unknown_reviewed_pairs": 0
+          }
+        ],
+        "scope": "explicit_labeled_pairs_only",
+        "test_cost": 1.0,
+        "threshold": 0.3575693700279022,
+        "unknown_candidate_pairs": 0,
+        "unknown_predicted_pairs": 0,
+        "validation_selection_status": "selected"
+      }
+    }
+  },
+  "seconds": {
+    "fit_retriever": 0.6501372999991872,
+    "fit_splink": 0.30117410000093514,
+    "fit_supervised_logistic": 0.09877650000271387,
+    "test_candidates": 0.004849199998716358,
+    "test_scores": 0.12494739999965532,
+    "validation_candidates": 0.006133599999884609,
+    "validation_scores": 0.12424119999923278
+  },
+  "test_labelled_pairs": 55,
+  "test_records": 154,
+  "test_source_counts": {
+    "fodors": 92,
+    "zagats": 62
+  },
+  "test_status": "exploratory-replayed",
+  "total_seconds": 1.4194051000013133,
+  "train_labelled_pairs": 413,
+  "train_records": 526,
+  "unavailable_methods": {},
+  "validation_labelled_pairs": 49,
+  "validation_records": 184
+}

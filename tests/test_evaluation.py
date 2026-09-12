@@ -1,3 +1,5 @@
+import pytest
+
 from entitybridge.evaluation import evaluate_clusters, evaluate_pairs
 
 
@@ -10,6 +12,25 @@ def test_candidate_miss_stays_in_end_to_end_recall_denominator():
     clusters = evaluate_clusters([("a", "b", "c"), ("d",)], truth)
     assert clusters["overmerged_clusters"] == 1
     assert clusters["records_in_overmerged_clusters"] == 3
+
+
+def test_cluster_metrics_separate_overmerge_fragmentation_and_exact_recovery():
+    truth = {"a": 1, "b": 1, "c": 2, "d": 2, "e": 3}
+    result = evaluate_clusters([("a", "b", "c"), ("d",), ("e",)], truth)
+    assert result["cluster_pairwise"]["tp"] == 1
+    assert result["cluster_pairwise"]["fp"] == 2
+    assert result["cluster_pairwise"]["fn"] == 1
+    assert result["split_true_entities"] == 1
+    assert result["exact_entity_recovery"] == pytest.approx(1 / 3)
+    assert 0 < result["b_cubed_f1"] < 1
+    correct = evaluate_clusters([("a", "b"), ("c", "d"), ("e",)], truth)
+    assert correct["b_cubed_f1"] == correct["exact_entity_recovery"] == 1
+
+
+@pytest.mark.parametrize("partitions", [[("a", "a"), ("b",)], [(), ("a", "b")], [("a", "unknown")]])
+def test_cluster_evaluator_refuses_invalid_partition_members(partitions):
+    with pytest.raises(ValueError):
+        evaluate_clusters(partitions, {"a": "one", "b": "one"})
 
 
 def test_preflight_refuses_entity_leakage_and_tampered_files(tmp_path):

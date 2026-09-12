@@ -135,7 +135,7 @@ def run_matching(store, settings, model_path=None, candidate_model_path=None):
 
 
 def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_path=None, local_demo=False):
-    app = FastAPI(title="EntityBridge", version="0.2.0")
+    app = FastAPI(title="EntityBridge", version="0.3.0")
     tokens = dict(tokens or {})
     for token, identity in tokens.items():
         if (not isinstance(token, str) or not token or not token.isascii() or any(c.isspace() for c in token)
@@ -236,12 +236,11 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     @app.get("/entities")
     def entities(response: Response, query: str = "", revision: str | None = None,
                  offset: int = Query(0, ge=0), limit: int = Query(100, ge=1, le=1000), _identity=Depends(actor)):
-        current = revision or store.current_revision()
-        rows = store.entities(query, revision=current)
-        response.headers["X-Total-Count"] = str(len(rows))
-        if current:
-            response.headers["X-Revision-Id"] = current
-        return rows[offset:offset + limit]
+        page = store.entities_page(query, revision=revision, offset=offset, limit=limit)
+        response.headers["X-Total-Count"] = str(page["total"])
+        if page["revision_id"]:
+            response.headers["X-Revision-Id"] = page["revision_id"]
+        return page["items"]
 
     @app.get("/entities/{entity_id}")
     def entity(entity_id: str, revision: str | None = None, _identity=Depends(actor)):
@@ -320,14 +319,14 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     @app.get("/", response_class=HTMLResponse)
     def home(request: Request, query: str = "", revision: str | None = None,
              offset: int = Query(0, ge=0), _identity=Depends(actor)):
-        current = revision or store.current_revision()
-        all_entities = store.entities(query, revision=current)
-        return render(request, "entities", entities=all_entities[offset:offset + 100], total=len(all_entities),
-                      query=query, offset=offset, revision=current)
+        page = store.entities_page(query, revision=revision, offset=offset, limit=100)
+        return render(request, "entities", entities=page["items"], total=page["total"],
+                      query=query, offset=offset, revision=page["revision_id"])
 
     @app.get("/entity/{entity_id}", response_class=HTMLResponse)
     def detail(request: Request, entity_id: str, revision: str | None = None, _identity=Depends(actor)):
-        return render(request, "detail", entity=store.entity(entity_id, revision=revision))
+        selected = store.entity(entity_id, revision=revision)
+        return render(request, "detail", entity=selected, revision=selected["revision_id"])
 
     @app.get("/reviews", response_class=HTMLResponse)
     def reviews(request: Request, revision: str | None = None, offset: int = Query(0, ge=0),

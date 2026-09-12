@@ -6,7 +6,13 @@
 
 项目采用 Python、Splink、DuckDB/Parquet、SQLAlchemy、PostgreSQL、FastAPI 和 Jinja2，面向数据工程、数据质量与 Python 后端的工程展示。它是可运行的单机研究原型，尚未接入真实采购或 CRM 业务。
 
-[快速运行](#快速运行) · [实际结果](#实际结果) · [架构](#逻辑结构) · [复现](#测试与实验复现) · [成熟度与岗位定位](docs/review/MATURITY_AND_POSITIONING.md)
+[快速运行](#快速运行) · [实际结果](#实际结果) · [公开基准](#公开基准与评测协议) · [架构](#逻辑结构) · [复现](#测试与实验复现) · [成熟度与岗位定位](docs/review/MATURITY_AND_POSITIONING.md) · [v0.3 验证记录](docs/evaluation/V03_VALIDATION.md)
+
+**v0.3 新增三项能力：**
+
+- **公开基准适配与实测**：接入 Fodors–Zagats、DBLP–ACM，按已知实体重新划分；保留部分标签语义，不把未知配对当成负例。
+- **更完整的评测协议**：分别衡量候选召回和给定配对分类，增加成本阈值、依赖分组置信区间、复核预算曲线与样本内概率诊断；新增仅供基准实验的监督逻辑回归。
+- **独立查询投影**：目录分页和实体详情改读已验证的关系表，稳定查询不再反复解码完整身份 JSON；保留历史版本、发布校验和可重建能力。
 
 ![企业目录与来源追溯](docs/demo/08-current-directory.png)
 
@@ -19,7 +25,7 @@
 5. **发布与追溯**：候选身份版本完整落盘后才切换当前指针；过期操作拒绝提交。旧版本可查询，旧 ID 展示合并或拆分后的全部去向。
 6. **更新与重算**：固定候选策略下，在旧、新支持图的受影响闭包内重算；超过预算或策略变化时按相同语义全量兜底。
 
-界面包含企业目录、关系复核和版本历史，目录与复核按每页 100 条展示，支持翻页及按复核状态筛选，翻页链接固定所依据的版本。分支机构、继承关系保留为来源关系，不直接推出同一法人。数据库初始化运行版本迁移；SQLite 用于快速演示，PostgreSQL 用于持久化与专项验证。
+界面包含企业目录、关系复核和版本历史，目录与复核按每页 100 条展示，支持翻页及按复核状态筛选，翻页链接固定所依据的版本。目录和实体详情通过关系查询投影读取；复核与固定版本导出仍使用完整产物。分支机构、继承关系保留为来源关系，不直接推出同一法人。数据库初始化运行版本迁移；SQLite 用于快速演示，PostgreSQL 用于持久化与专项验证。
 
 ## 快速运行
 
@@ -65,13 +71,21 @@ python3.12 -m venv .venv
 
 主实验候选召回为 99.80%，全量产生 846,212 对候选；单次离线实验约 46.46 秒、进程峰值内存约 3.96 GB。另完成真实 10k 记录的 PostgreSQL/API 整合验收。离线计算规模、数据库整合与线上吞吐是不同测量，本项目没有生产 SLA。[完整结果与口径](docs/evaluation/RESULTS.md) · [主实验数值证据](docs/evaluation/evidence/release_final_v2_report.json)
 
-v0.2.0 修复后重新完成 10k PostgreSQL 整合验收，7 项完整性检查通过，临时 schema 已清理；总计约 15.70 秒，其中通过分页读取全部企业约 1.57 秒。分页限制单次响应大小，没有证明查询提速。[本轮整合报告](docs/evaluation/evidence/real_workflow_10k_v02.json)
+v0.3.0 再次完成真实 10k 记录的 PostgreSQL/API 整合验收：7 项完整性检查通过，临时 schema 已清理。该流程的约 17.88 秒涵盖导入、匹配、准备、发布、查询和导出，不是网络吞吐测试；查询优化另有同版本、同参数的新旧路径成对测量。[本轮整合报告](docs/evaluation/evidence/public_benchmarks_v03/real_workflow_10k_v03.json) · [查询投影与测量](docs/decisions/008-query-projection.md)。[v0.2 历史整合报告](docs/evaluation/evidence/real_workflow_10k_v02.json) 保留原值。
 
 ### 曾用名的候选召回探索
 
 只有曾用名且缺少地址时，原候选覆盖很弱。新增可选的冻结字符 n-gram TF-IDF 检索，在一个**已看过的探索性测试集**上，将候选召回从 **19.51% 提高到 46.06%**，同时候选对由 539 增至 18,481。它找到了更多可能配对，但自动模糊匹配 F1 从 **30.61% 降至 19.62%**，当前 Splink 仍未接纳配对。
 
 这项增强用于复核候选探索，不能当成自动匹配质量提升，也没有替换默认匹配策略。服务中的 hybrid 模式不自动归并评分边，必须经人工明确接受；真实评分仍保留为复核证据。全局 top-k 的邻居可能因其他记录变化而改变，因此每次必须重新生成全量候选，不沿用固定桶的局部重算承诺。[匹配审查与复现](docs/review/MATCHING_AUDIT.md) · [探索性数值证据](docs/evaluation/evidence/hybrid_name_v2_summary.json)
+
+### 公开基准与评测协议
+
+新增两个作者公开提供的小规模配对基准：Fodors–Zagats 餐馆数据和 DBLP–ACM 论文数据。它们用于检验不同领域、字段缺失和标签覆盖条件下的行为；DBLP–ACM 仅将标题映射为名称，不能把结果当成企业身份识别能力，或与论文的完整字段成绩直接排名。
+
+同一组记录分别运行固定候选、混合候选和仅给定标注配对三条轨道，比较精确名、模糊名、Splink 与训练集监督逻辑回归。未知配对单独计数；候选召回、端到端与条件指标分开报告。阈值只由验证集选定，分组 bootstrap 保留共享记录间的依赖；Brier/ECE 只诊断样本中的概率分数，不宣称部署校准。[数据来源与划分](docs/data/PUBLIC_BENCHMARKS.md) · [评测协议](docs/evaluation/EVALUATION_PROTOCOL.md) · [公开基准结果](docs/evaluation/PUBLIC_BENCHMARK_RESULTS.md)
+
+当前 v2 报告明确标为 **`exploratory-replayed`**：v1 暴露了精确名称基线可被阈值 0 改成“接纳非精确名称”的语义问题，修复后在同一测试数据上重放。它不是新封存测试，也不是原论文的随机配对划分。该划分的 Fodors–Zagats 测试仅有 **55 个已标注配对、20 个正例**；即使某项满分，也不足以推断普遍准确率。新增逻辑回归 **仅供 benchmark 实验**，没有接入默认服务自动合并。
 
 ## 逻辑结构
 
@@ -84,7 +98,10 @@ flowchart LR
   H[人工判断 / 撤销事件] --> C
   C --> P[完整身份版本]
   P --> T[事务发布指针]
-  T --> U[目录 / 复核 / 历史]
+  P --> Q[可重建关系查询投影]
+  T --> Q
+  Q --> U[目录 / 实体详情]
+  T --> HUI[复核 / 历史 / 固定版本导出]
   R --> G[独立评估真值]
   B --> E[隔离效果评估]
   G --> E
@@ -95,12 +112,15 @@ flowchart LR
 | 模块 | 职责 |
 |---|---|
 | `ingestion.py`、`normalization.py` | 来源解析、版本契约、无标识特征投影 |
-| `candidates.py`、`matching.py`、`evaluation.py` | 候选、第三方模型/基线、效果与完整性评估 |
+| `candidates.py`、`matching.py`、`evaluation.py` | 候选、第三方模型/基线、登记数据效果与完整性评估 |
+| `benchmarks.py`、`benchmark_metrics.py`、`supervised.py` | 公开部分标签适配、评测协议、仅用于实验的监督基线 |
 | `resolution.py`、`identity.py`、`incremental.py` | 簇级约束、身份去向、受影响图重算 |
-| `store.py`、`schema.py`、`database.py` | 来源版本、判断事件、迁移与事务发布 |
+| `store.py`、`schema.py`、`database.py`、`query_projection.py` | 来源版本、判断事件、迁移、事务发布与可重建查询投影 |
 | `api.py`、`web/` | HTTP 接口、权限和三页界面 |
 
 项目实现的是这些模块之间的数据与治理契约；Splink 的概率关联/EM、DuckDB 的查询执行和第三方相似度算法不属于自研算法。[匹配设计](docs/decisions/001-matching.md) · [评测设计](docs/decisions/002-evaluation.md) · [身份](docs/decisions/004-identity.md) · [撤销](docs/decisions/005-revocation.md) · [增量](docs/decisions/006-incremental.md)
+
+查询投影与候选版本在同一事务中写入，发布前与冻结产物逐项校验。旧版本首次查询需要一次完整校验和回填，随后目录分页与详情读关系表。名称仍采用字面子串匹配，会扫描所选版本的精简搜索值；没有把 `%term%` 包装成对数复杂度索引检索。深分页、长历史去向、复核和导出也各有剩余成本。[ADR 008：查询投影、迁移与性能边界](docs/decisions/008-query-projection.md)
 
 ## 测试与实验复现
 
@@ -128,6 +148,18 @@ flowchart LR
 
 主实验 94,104 条发布集与曾用名条件的构造步骤见 [重新封存说明](docs/data/V4_RELEASE_HOLDOUT.md)、[数据契约](docs/data/SOURCES_AND_CONTRACT.md)和[审计结果](docs/data/data_audit.md)。原始数据、真值记录与大型模型产物不随仓库发布；公开数值见 [证据 SHA-256 清单](docs/evaluation/evidence/SHA256.json)。
 
+### 复现小规模公开基准
+
+以下命令下载作者站点上已固定 SHA-256 的小文件，并写入新的转换/报告目录。输出目录不能覆盖；重复运行请换目录名。`--test-status` 必填，重放当前测试数据应使用 `exploratory-replayed`。
+
+| 步骤 | 仓库根目录中的 PowerShell 命令 |
+| --- | --- |
+| 下载、校验与重新划分两个基准 | `.\.venv\Scripts\python.exe scripts\fetch_benchmarks.py --output-root artifacts/benchmarks/reproduced` |
+| Fodors–Zagats 评测 | `.\.venv\Scripts\python.exe scripts\run_public_benchmark.py --dataset artifacts/benchmarks/reproduced/fodors_zagats --output artifacts/reports/reproduced_fodors --test-status exploratory-replayed` |
+| DBLP–ACM 评测 | `.\.venv\Scripts\python.exe scripts\run_public_benchmark.py --dataset artifacts/benchmarks/reproduced/dblp_acm --output artifacts/reports/reproduced_dblp --test-status exploratory-replayed` |
+
+默认误配/漏配代价为 10/1、bootstrap 为 400 次，这些是实验设定，不能代替业务代价调查。原始数据和转换记录仅保存在忽略的 `artifacts/` 中；数据页未明确独立数据许可，DeepMatcher 代码的 BSD 许可不能替第三方数据授权。当前封存结果来自 `public_fodors_zagats_v2`、`public_dblp_acm_v2`，见[结果与重放说明](docs/evaluation/PUBLIC_BENCHMARK_RESULTS.md)。
+
 ### 可选 PostgreSQL
 
 已有 PostgreSQL 时设置 `DATABASE_URL`；[compose.yaml](compose.yaml) 提供数据库配置示例。`serve` 使用配置的管理、复核或只读令牌，配置格式见 [.env.example](.env.example)，命令行不会自动加载该文件。
@@ -138,9 +170,9 @@ Windows 也提供项目内 PostgreSQL 启停及隔离测试脚本；所需官方
 
 项目的主要价值是**数据对齐后的可追溯纠错和可核验工程过程**，适合展示数据契约、评估隔离、事务边界与失败恢复。与成熟方案的官方能力比较、岗位定位和可核验描述见[成熟度审查](docs/review/MATURITY_AND_POSITIONING.md)。
 
-- 数据是能通过登记号交叉验证的闭集，两源可能同源；没有真实双人标注、跨时间业务验证或人工节省工时实验。
+- 主公司实验是能通过登记号交叉验证的闭集，两源可能同源；新增餐馆、论文基准仍是跨领域诊断，没有真实双人标注、跨时间业务验证或人工节省工时实验。
 - 模型概率未校准；曾用名且缺地址时信息不足。扩大召回会增加误候选，需要独立标注和更可靠的评分策略。
-- 当前查询仍读取完整版本文件，固定策略增量也会扫描记录找桶；没有分布式执行、生产容量或长期稳定性承诺。
+- 目录与详情稳定查询已移至关系投影；名称子串仍筛查精简索引值，复核/导出仍读完整产物，固定策略增量仍扫描记录找桶。没有分布式执行、生产容量或长期稳定性承诺。
 - 权限是**本机、单工作空间的 token 角色隔离**：viewer 读取已发布目录，reviewer 复核/撤销，admin 导入/评分/发布。它不包含企业 SSO、多租户隔离或完整互联网认证体系。
 - 没有实际采购收益、生产部署或客户使用成绩；不会把候选召回改善表述为自动质量改善。
 

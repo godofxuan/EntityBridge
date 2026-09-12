@@ -1,8 +1,8 @@
 """Verified startup migrations, packaged with the application wheel.
 
-Version 0001 was released without Alembic stamps. Its only structural change in
-0002 is replacing the source-content uniqueness constraint with an index. Do
-not stamp an arbitrary pre-existing schema: compare every table first.
+Version 0001 was released without Alembic stamps. Version 0002 permits repeated
+source observations; 0003 adds rebuildable fixed-revision query projections.
+Do not stamp arbitrary pre-existing schemas: compare their structure first.
 """
 
 from alembic.autogenerate import compare_metadata
@@ -23,7 +23,8 @@ from sqlalchemy import (
 
 from .schema import metadata
 
-CURRENT_SCHEMA = "0002"
+CURRENT_SCHEMA = "0003"
+PROJECTION_TABLES = {"query_projection", "query_entity", "query_search_value"}
 version_table = Table("alembic_version", MetaData(), Column("version_num", String(32), primary_key=True))
 
 
@@ -31,12 +32,21 @@ def _matches(connection, expected):
     return compare_metadata(MigrationContext.configure(connection, opts={"compare_type": True}), expected) == []
 
 
-def _v1_metadata():
-    # This transformation describes the entire 0001 -> 0002 difference. Any
-    # unrelated schema drift still fails comparison instead of being stamped.
+def _v2_metadata():
     legacy = MetaData()
     for table in metadata.sorted_tables:
-        table.to_metadata(legacy)
+        if table.name not in PROJECTION_TABLES:
+            table.to_metadata(legacy)
+    memberships = legacy.tables["entity_membership"]
+    memberships.indexes.remove(next(index for index in memberships.indexes
+                                    if index.name == "ix_membership_revision_entity_record"))
+    return legacy
+
+
+def _v1_metadata():
+    # Transform only the declared version differences. Unrelated schema drift
+    # must fail comparison instead of being silently stamped as a known schema.
+    legacy = _v2_metadata()
     snapshots = legacy.tables["source_snapshot"]
     snapshots.indexes.remove(next(index for index in snapshots.indexes
                                  if index.name == "ix_source_snapshot_source_content"))
@@ -53,6 +63,14 @@ def _upgrade_v1(connection):
     }) as batch:
         batch.drop_constraint(unique["name"] or "uq_source_snapshot_source_id_content_sha256", type_="unique")
         batch.create_index("ix_source_snapshot_source_content", ["source_id", "content_sha256"])
+
+
+def _upgrade_v2(connection):
+    for table in metadata.sorted_tables:
+        if table.name in PROJECTION_TABLES:
+            table.create(connection)
+    next(index for index in metadata.tables["entity_membership"].indexes
+         if index.name == "ix_membership_revision_entity_record").create(connection)
 
 
 def initialize_database(engine):
@@ -72,21 +90,24 @@ def initialize_database(engine):
             if len(stamps) > 1:
                 raise RuntimeError("Multiple schema heads found; run an explicit reviewed migration")
             stamped = stamps[0] if stamps else None
-        if stamped not in {None, "0001", CURRENT_SCHEMA}:
+        if stamped not in {None, "0001", "0002", CURRENT_SCHEMA}:
             raise RuntimeError("Unsupported database schema version; upgrade the application first")
         if not tables - {"alembic_version"}:
             if stamped:
                 raise RuntimeError("Schema stamp exists without application tables; refusing to recreate history")
             metadata.create_all(connection)
         elif _matches(connection, metadata):
-            if stamped == "0001":
+            if stamped in {"0001", "0002"}:
                 raise RuntimeError("Schema and version stamp disagree; inspect the database before migration")
-        elif stamped != CURRENT_SCHEMA and _matches(connection, _v1_metadata()):
+        elif stamped in {None, "0002"} and _matches(connection, _v2_metadata()):
+            _upgrade_v2(connection)
+        elif stamped in {None, "0001"} and _matches(connection, _v1_metadata()):
             _upgrade_v1(connection)
-            if not _matches(connection, metadata):
-                raise RuntimeError("Migration did not produce the expected schema")
+            _upgrade_v2(connection)
         else:
             raise RuntimeError("Unrecognized database structure; refusing to stamp or migrate it automatically")
+        if not _matches(connection, metadata):
+            raise RuntimeError("Migration did not produce the expected schema")
         version_table.create(connection, checkfirst=True)
         if stamped:
             connection.execute(update(version_table).values(version_num=CURRENT_SCHEMA))

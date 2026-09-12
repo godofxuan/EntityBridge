@@ -1,0 +1,120 @@
+{
+  "kind": "public-partially-labelled-pairs",
+  "dataset": "dblp_acm",
+  "domain": "bibliographic",
+  "adapter_version": "public-pair-positive-component-split-v1",
+  "normalization_version": "nfkc-upper-punctuation-v1",
+  "records": 4910,
+  "partial_labels_only": true,
+  "documentation_url": "https://github.com/anhaidgroup/deepmatcher/blob/master/Datasets.md",
+  "source_files": {
+    "tableA.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/DBLP-ACM/exp_data/tableA.csv",
+      "sha256": "a83dfac196a4e263f3adac7aaf095c7198254a98fcaed0ec68d59130c74c43a7",
+      "bytes": 344698,
+      "rows": 2616
+    },
+    "tableB.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/DBLP-ACM/exp_data/tableB.csv",
+      "sha256": "bd103ffdccdff4d8b9d04c18d90d04110b70b6fc87dec83c4e52e9616c58431a",
+      "bytes": 355649,
+      "rows": 2294
+    },
+    "train.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/DBLP-ACM/exp_data/train.csv",
+      "sha256": "ad94b36b178bbf76023d3cee689565fbda1fe01b19d9a3926a51db382f45f0a5",
+      "bytes": 82310,
+      "rows": 7417
+    },
+    "valid.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/DBLP-ACM/exp_data/valid.csv",
+      "sha256": "862f848ed3f3f005ae6c8997ecf571984bd575f6bbd319fc1a2170830a91132b",
+      "bytes": 27441,
+      "rows": 2473
+    },
+    "test.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/DBLP-ACM/exp_data/test.csv",
+      "sha256": "e49adc4590d24c18b1a9bbd96011d9c745e10432e10e93e050d856a206fac394",
+      "bytes": 27429,
+      "rows": 2473
+    }
+  },
+  "license": {
+    "dataset_license": "not specified on official dataset page",
+    "software_license": "BSD-3-Clause; not assumed to license third-party dataset contents",
+    "software_license_url": "https://github.com/anhaidgroup/deepmatcher/blob/master/LICENSE",
+    "raw_data_redistribution": "not included in this repository"
+  },
+  "field_projection": {
+    "name": "title"
+  },
+  "excluded_original_columns": [
+    "id",
+    "authors",
+    "venue",
+    "year"
+  ],
+  "split_protocol": {
+    "version": "public-pair-positive-component-split-v1",
+    "seed": 20260912,
+    "fractions": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "grouping": "known-positive-label connected components; no original pair-split reuse",
+    "cross_split_labelled_pairs": "discarded with counts; never relabelled",
+    "bootstrap_grouping": "connected components of all retained positive AND negative labelled edges"
+  },
+  "statistics": {
+    "records": 4910,
+    "source_records": {
+      "dblp": 2616,
+      "acm": 2294
+    },
+    "input_label_rows": 12363,
+    "unique_label_pairs": 12363,
+    "duplicate_label_rows": 0,
+    "original_positive_pairs": 2220,
+    "original_records_in_multiple_pair_splits": 2861,
+    "original_known_entities_in_multiple_pair_splits": 1692,
+    "known_positive_components": 2690,
+    "cross_split_pairs_dropped": {
+      "0": 5367
+    },
+    "retained_label_pairs": 6996,
+    "unlabelled_pairs_policy": "unknown-excluded-from-confusion-matrix",
+    "complete_cluster_truth": false,
+    "contradictory_labels": 0,
+    "splits": {
+      "train": {
+        "records": 2981,
+        "label_pairs": 5411,
+        "positive_pairs": 1344,
+        "negative_pairs": 4067,
+        "bootstrap_groups": 493
+      },
+      "validation": {
+        "records": 958,
+        "label_pairs": 758,
+        "positive_pairs": 432,
+        "negative_pairs": 326,
+        "bootstrap_groups": 315
+      },
+      "test": {
+        "records": 971,
+        "label_pairs": 827,
+        "positive_pairs": 444,
+        "negative_pairs": 383,
+        "bootstrap_groups": 306
+      }
+    }
+  },
+  "files": {
+    "evaluator/labelled_pairs.parquet": "34ef7d9317cf49578cdba37fc50fd5fcb2e9862bdf5dfdd95b0c9426d1cb7942",
+    "evaluator/record_groups.parquet": "9c5f768f74ec27d61a5249d19c7295079e510f18a4daa5dd6cdfd6cfd2b7a102",
+    "matcher/test.parquet": "f381d5c727abd87d7955399da7ebd2c7a4d6db860a3e3abb5f38dcbc32a690b3",
+    "matcher/train.parquet": "289e1b98edf6cd2a7fdd0a6fb651bf9f3c3b8e6a1e4bebed98f58f760acd1ac4",
+    "matcher/validation.parquet": "0052dfd10ba42148f87e83f5c4de305c8546ae5b51c42195e46ca2755299ce17"
+  }
+}

@@ -49,3 +49,39 @@ jobs:
       - name: Smoke test installed wheel outside source checkout
         working-directory: ${{ runner.temp }}
         run: python -c "import tempfile; from pathlib import Path; from fastapi.testclient import TestClient; from entitybridge.api import create_app; from entitybridge.store import Store; p=Path(tempfile.mkdtemp()); s=Store('sqlite:///'+str(p/'smoke.db'),p/'artifacts'); s.initialize(); c=TestClient(create_app(s,local_demo=True)); assert c.get('/health').status_code==200; assert c.get('/').status_code==200; assert c.get('/static/app.css').status_code==200"
+
+  postgresql-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: entitybridge_ci
+          # Public, disposable credentials for this job's isolated service only.
+          POSTGRES_PASSWORD: entitybridge_ci_only
+          POSTGRES_DB: entitybridge_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U entitybridge_ci -d entitybridge_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PYTHONUTF8: "1"
+      ENTITYBRIDGE_RECOVERY_POSTGRES: "0"
+      ENTITYBRIDGE_TEST_DATABASE_URL: postgresql+psycopg://entitybridge_ci:entitybridge_ci_only@127.0.0.1:5432/entitybridge_test?connect_timeout=8
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.lock
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements.lock
+      - name: PostgreSQL regressions, query projections and crash recovery
+        run: python -m pytest -q -m "not network" tests/test_store_regressions.py tests/test_query_index.py tests/test_recovery.py

@@ -1,0 +1,122 @@
+{
+  "kind": "public-partially-labelled-pairs",
+  "dataset": "fodors_zagats",
+  "domain": "restaurant",
+  "adapter_version": "public-pair-positive-component-split-v1",
+  "normalization_version": "nfkc-upper-punctuation-v1",
+  "records": 864,
+  "partial_labels_only": true,
+  "documentation_url": "https://github.com/anhaidgroup/deepmatcher/blob/master/Datasets.md",
+  "source_files": {
+    "tableA.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/Fodors-Zagats/exp_data/tableA.csv",
+      "sha256": "dae8867efd8da4cc0ce729d08b506f4c37a9d106b977fa75929618c2a311a356",
+      "bytes": 48406,
+      "rows": 533
+    },
+    "tableB.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/Fodors-Zagats/exp_data/tableB.csv",
+      "sha256": "d31e7dfa7fe363c594bf8ebe4eaaf5018e11362125edd49042271d2aae7a1d37",
+      "bytes": 28982,
+      "rows": 331
+    },
+    "train.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/Fodors-Zagats/exp_data/train.csv",
+      "sha256": "fda195b062d7becc9abb941daef30c97aa22c4914330c3dac15e675353c52d2c",
+      "bytes": 5390,
+      "rows": 567
+    },
+    "valid.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/Fodors-Zagats/exp_data/valid.csv",
+      "sha256": "7d0b35d5e5e90defb7c88a6bd5d359057fd8919a7d36321f6dc8087ab66939e3",
+      "bytes": 1835,
+      "rows": 190
+    },
+    "test.csv": {
+      "url": "https://pages.cs.wisc.edu/~anhai/data1/deepmatcher_data/Structured/Fodors-Zagats/exp_data/test.csv",
+      "sha256": "20b066790d1a5982a360c99c88af6e58ebf13f8d3150b7ff8172720c72f07a24",
+      "bytes": 1808,
+      "rows": 189
+    }
+  },
+  "license": {
+    "dataset_license": "not specified on official dataset page",
+    "software_license": "BSD-3-Clause; not assumed to license third-party dataset contents",
+    "software_license_url": "https://github.com/anhaidgroup/deepmatcher/blob/master/LICENSE",
+    "raw_data_redistribution": "not included in this repository"
+  },
+  "field_projection": {
+    "name": "name",
+    "address": "addr",
+    "city": "city"
+  },
+  "excluded_original_columns": [
+    "id",
+    "phone",
+    "type",
+    "class"
+  ],
+  "split_protocol": {
+    "version": "public-pair-positive-component-split-v1",
+    "seed": 20260912,
+    "fractions": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "grouping": "known-positive-label connected components; no original pair-split reuse",
+    "cross_split_labelled_pairs": "discarded with counts; never relabelled",
+    "bootstrap_grouping": "connected components of all retained positive AND negative labelled edges"
+  },
+  "statistics": {
+    "records": 864,
+    "source_records": {
+      "fodors": 533,
+      "zagats": 331
+    },
+    "input_label_rows": 946,
+    "unique_label_pairs": 946,
+    "duplicate_label_rows": 0,
+    "original_positive_pairs": 110,
+    "original_records_in_multiple_pair_splits": 279,
+    "original_known_entities_in_multiple_pair_splits": 232,
+    "known_positive_components": 754,
+    "cross_split_pairs_dropped": {
+      "0": 429
+    },
+    "retained_label_pairs": 517,
+    "unlabelled_pairs_policy": "unknown-excluded-from-confusion-matrix",
+    "complete_cluster_truth": false,
+    "contradictory_labels": 0,
+    "splits": {
+      "train": {
+        "records": 526,
+        "label_pairs": 413,
+        "positive_pairs": 64,
+        "negative_pairs": 349,
+        "bootstrap_groups": 53
+      },
+      "validation": {
+        "records": 184,
+        "label_pairs": 49,
+        "positive_pairs": 26,
+        "negative_pairs": 23,
+        "bootstrap_groups": 25
+      },
+      "test": {
+        "records": 154,
+        "label_pairs": 55,
+        "positive_pairs": 20,
+        "negative_pairs": 35,
+        "bootstrap_groups": 16
+      }
+    }
+  },
+  "files": {
+    "evaluator/labelled_pairs.parquet": "2b81194be6bae6b1eb449492c78dc6d14801c0ab4c2b6a17e65ac1ce2c35f7e5",
+    "evaluator/record_groups.parquet": "5dafb5d0f0c68c518aeb708cf9ea1bec21c6466a71f93fed1f9258d6282bd416",
+    "matcher/test.parquet": "e16eb00e660bf7c2d49aba3d8bdb738f358eb830060d96df26c8553524810fc3",
+    "matcher/train.parquet": "5d54174091657233ae6d6b401f71f94f1c02712890c177d2ed7cc0aedd224da5",
+    "matcher/validation.parquet": "f17174ee23a7c7d96dace46fe21a6f8a79646c6e1e02223662b46f9d45052fdc"
+  }
+}

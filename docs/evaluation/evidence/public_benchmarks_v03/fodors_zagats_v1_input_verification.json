@@ -1,0 +1,7 @@
+{
+  "known_entity_groups": 754,
+  "label_pairs": 517,
+  "record_and_known_entity_splits_disjoint": true,
+  "records": 864,
+  "unknown_pairs_are_not_negatives": true
+}

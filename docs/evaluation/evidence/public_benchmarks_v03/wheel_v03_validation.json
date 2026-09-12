@@ -1,0 +1,10 @@
+{
+  "version": "0.3.0",
+  "wheel_sha256": "294a65e964085e8323cb52995d98270db687dd5fc8e00dc523a9323552091612",
+  "wheel_bytes": 61964,
+  "application_files_byte_identical": 21,
+  "outside_source_import": true,
+  "released_v02_to_v03_upgrade": true,
+  "projection_backfill_and_full_verification": true,
+  "ui_api_smoke": "passed"
+}

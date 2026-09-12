@@ -1,0 +1,44 @@
+{
+  "bootstrap": {
+    "group": "connected explicitly labelled-pair components",
+    "replicates": 400,
+    "seed": 20260912
+  },
+  "candidate_settings": {
+    "fit_split": "train",
+    "min_similarity": 0.2,
+    "top_k": 10
+  },
+  "costs": {
+    "false_negative": 1.0,
+    "false_positive": 10.0
+  },
+  "dataset_manifest_sha256": "6ed86e4f071ff97a05f9c705c19fdd178db82ffa8db0dcb22df89fbcb14b72b8",
+  "methods": [
+    "exact",
+    "fuzzy",
+    "splink",
+    "supervised_logistic"
+  ],
+  "requirements_sha256": "e2a953a299d0d4e816c53e20423de709757239aeb4daff9361538bf55eeb75c5",
+  "selection": "Minimum labelled validation FP/FN cost; reject-all is an explicit option",
+  "source_archive_sha256": "fde47411a972b35693eb958d9b07018f308f0e29fb0dc5190fcb166500c9884d",
+  "source_files": {
+    "scripts/run_public_benchmark.py": "58651a3367d1c42f415cde239f80385e069074d9813f0e66bb970d71d82323d0",
+    "src/entitybridge/benchmark_metrics.py": "1ba79bf6eae8f6635818da4782aa95cc2c265ffcf4bcdb9dde34255a6b914ada",
+    "src/entitybridge/benchmarks.py": "3e2ddf0ffe684e7d811a38126be77a939f25b1170591bbf1ffdc78e2b03e7379",
+    "src/entitybridge/candidates.py": "f5aed6b1310d9382d54c3247ceb52227b8b07818403f3125ac744c7be54b40ab",
+    "src/entitybridge/matching.py": "273951915c1c1fb1b2c0561a5813095bedf5f1422593c775a88273f04c795496",
+    "src/entitybridge/normalization.py": "77395c12d93606a129ec4b85c5416322b7ff4c7632612a833efec086f390dae8",
+    "src/entitybridge/supervised.py": "bdd72af13414d70a55bb5f0f525153081bcf5aa16aabcb4513d01b1ea3635297"
+  },
+  "supplied_pairs_track": "Diagnostic pair classification; candidate set supplied by benchmark, not production retrieval",
+  "test_evaluated": false,
+  "tracks": [
+    "fixed",
+    "hybrid",
+    "supplied_pairs_only"
+  ],
+  "unknown_pairs": "Unknown; never implicit negatives or complete cluster truth",
+  "written_at": "2026-09-12T12:51:55.723441+00:00"
+}
