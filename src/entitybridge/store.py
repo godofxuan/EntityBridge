@@ -136,11 +136,15 @@ class Store:
 
     def prepare_revision(self, edges, *, policy_version="default-v1", threshold=0.9, review_threshold=0.5,
                          expected_input_hash=None, verify_full=False, max_incremental_records=10000,
-                         force_full=False, force_full_reason="explicit_full_rebuild"):
+                         force_full=False, force_full_reason="explicit_full_rebuild", basis_guard=None, commit_hook=None):
         from .identity import assign_identities
         from .resolution import Edge, EdgeDecision, Resolution, resolve
 
         with self.engine.connect() as con:
+            # Internal worker hooks fence the frozen basis while reading it.
+            if basis_guard is not None:
+                self._lock(con)
+                basis_guard(con)
             parent = self.current_revision(con)
             records = self.active_records(con)
             cutoff = self._event_cutoff(con)
@@ -207,6 +211,9 @@ class Store:
         temporary.replace(path)
         from . import query_projection
         with self.engine.begin() as con:
+            if basis_guard is not None:
+                self._lock(con)
+                basis_guard(con)
             con.execute(insert(s.runs).values(run_id=revision_id, pipeline_version=policy_version, status="complete",
                 manifest={"input_hash": digest(records), "edges": len(edges), "artifact_sha256": hashlib.sha256(content).hexdigest(),
                           "threshold": threshold, "review_threshold": review_threshold, "computation": computation,
@@ -230,6 +237,8 @@ class Store:
                 con.execute(insert(s.lineage), [{"revision_id": revision_id, "from_entity": item.from_entity,
                     "to_entity": item.to_entity, "relation": item.kind} for item in identities.lineage])
             query_projection.write(con, payload, hashlib.sha256(content).hexdigest())
+            if commit_hook is not None:
+                commit_hook(con, revision_id)
         return {"revision_id": revision_id, "parent_revision": parent, "entity_count": len(entities), "computation": computation}
 
     def _payload(self, revision_id, *, published_only=True):

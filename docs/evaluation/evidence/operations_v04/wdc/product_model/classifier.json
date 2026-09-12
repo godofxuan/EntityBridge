@@ -1,0 +1,37 @@
+{
+  "C": 1.0,
+  "automatic_deployment": false,
+  "calibrated": false,
+  "coefficients": [
+    -1.645824623320058,
+    6.082558267439899,
+    0.0,
+    -0.013750091554844373,
+    0.29002036700747535,
+    0.693060267583599,
+    -0.8163716697932093,
+    0.9694032291585232,
+    -0.6670627545897487,
+    2.7181122009985645,
+    -2.2888623712510054
+  ],
+  "features": [
+    "title_ratio",
+    "title_token_set",
+    "title_exact",
+    "title_both_present",
+    "brand_ratio",
+    "brand_exact",
+    "brand_both_present",
+    "description_token_set",
+    "description_both_present",
+    "price_ratio_same_currency",
+    "price_comparable"
+  ],
+  "intercept": -4.334637114719712,
+  "scope": "WDC supplied-pair domain diagnostic only",
+  "training_features_sha256": "550921d70107385499d59b2d1babd644219aa26c3547d32c3dedb5070ffac271",
+  "training_labels_sha256": "341517c4bbc0dd24f4e6d123d52ee1da309b19d27e6f6770dc96ed7c8f99cf2b",
+  "training_pairs": 2500,
+  "version": "wdc-products-80cc-small-corrected-validation-v1"
+}

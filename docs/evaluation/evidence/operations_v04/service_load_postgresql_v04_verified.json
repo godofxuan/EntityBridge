@@ -1,0 +1,119 @@
+{
+  "format": "entitybridge-service-load-v1",
+  "backend": "postgresql",
+  "synthetic": true,
+  "seed": {
+    "records": 10000,
+    "initial_entities": 5000,
+    "registered_revisions": 1
+  },
+  "seed_seconds": 12.156740599999466,
+  "uvicorn_startup_seconds": 2.1167274999970687,
+  "configuration": {
+    "concurrency": 8,
+    "requested_seconds": 15.0,
+    "elapsed_seconds": 15.13897409999845,
+    "uvicorn_workers": 1,
+    "warmup_requests": 40,
+    "request_timeout_seconds": 10,
+    "transport": "real_loopback_http_1_1",
+    "authorization": "viewer_bearer_token",
+    "pattern_mix": "equal_round_robin_four_entity_queries",
+    "generator": "closed_loop_one_request_per_client",
+    "cache_state": "first_application_query_then_warmup; OS cache was warmed by synthetic seeding"
+  },
+  "first_authenticated_query_ms": 107.44509999858565,
+  "aggregate": {
+    "requests": 1699,
+    "errors": 0,
+    "error_codes": {},
+    "error_rate": 0.0,
+    "p50_ms": 53.261599998222664,
+    "p95_ms": 190.8009099974151,
+    "p99_ms": 277.6920460008113
+  },
+  "routes": {
+    "alias_contains": {
+      "requests": 425,
+      "errors": 0,
+      "error_codes": {},
+      "error_rate": 0.0,
+      "p50_ms": 47.368200001074,
+      "p95_ms": 194.38279999958448,
+      "p99_ms": 251.70304799961735
+    },
+    "deep_page": {
+      "requests": 426,
+      "errors": 0,
+      "error_codes": {},
+      "error_rate": 0.0,
+      "p50_ms": 67.69175000044925,
+      "p95_ms": 224.88967499975843,
+      "p99_ms": 312.70992499776185
+    },
+    "first_page": {
+      "requests": 425,
+      "errors": 0,
+      "error_codes": {},
+      "error_rate": 0.0,
+      "p50_ms": 54.46950000259676,
+      "p95_ms": 177.48078000004165,
+      "p99_ms": 284.94671600128623
+    },
+    "no_match": {
+      "requests": 423,
+      "errors": 0,
+      "error_codes": {},
+      "error_rate": 0.0,
+      "p50_ms": 41.742499997781124,
+      "p95_ms": 156.87244000073406,
+      "p99_ms": 252.24485400190997
+    }
+  },
+  "completed_requests_per_second": 112.22689125283424,
+  "server_cpu_seconds": 15.140625,
+  "server_peak_sampled_rss_bytes": 176721920,
+  "resource_probe": {
+    "identity": "worker_reported_pid_with_descendant_ownership_check",
+    "worker_differs_from_launcher": true,
+    "rss_sample_interval_seconds": 0.05
+  },
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "logical_cpus": 12,
+    "memory_bytes": 33947549696,
+    "python": "3.12.13"
+  },
+  "versions": {
+    "uvicorn": "0.52.4",
+    "fastapi": "0.141.1",
+    "httpx": "0.28.1",
+    "sqlalchemy": "2.0.52"
+  },
+  "source_sha256": {
+    "src/entitybridge/api.py": "c1e0a89c86182bf8d3d77374be6f59f54c6a225841f396adc07368788af0008e",
+    "src/entitybridge/store.py": "a5d65bb12707ea49adbece4f6308b61b9ab0b09a81b8eced77995c7ee7a47b14",
+    "src/entitybridge/schema.py": "76d107d4abbe98bb543b69e403b35d6313b953988209d6be503f23038baef770",
+    "src/entitybridge/database.py": "2a3daac0451eb120959afda83d159402a08ed2e2be4379c80f53fb9a8721bb87",
+    "src/entitybridge/query_projection.py": "8917f459ea662ddd874cd92f1fd71d53ce1d59144aa9f20bb14f50d88a87c63c",
+    "src/entitybridge/jobs.py": "624bf4f023607252fbdd96cfa0e676a83dfbd7e728042b01967c5b8ae3a9f8e4",
+    "src/entitybridge/telemetry.py": "052988eeed0cbfbfd067a73a3d80e527cc692f4d55b25400942652535977f432",
+    "src/entitybridge/identity.py": "b75d1a44099c9596419a5f8e359bd79ed9340eedd61f72d79d9e537facdbc4b9",
+    "src/entitybridge/resolution.py": "213b15d49c8ca3eb6c341822a09197a2c25f67e966803505876cb6b77feae4d7",
+    "src/entitybridge/incremental.py": "6a52613a43ac744ef27fe0ab0e3c2be632abacb85fe2c03f47f259de881e873a",
+    "scripts/check_service_load.py": "02e4f5fbce4cafd5c9a672c4e693a2b7fdab04f64eaf2071029026b2793f8a64",
+    "scripts/check_backup_restore.py": "e51bb9cb2c63876fd56bcd4c979b898ce10186f3fbfed34b8aaee032f98234dc"
+  },
+  "source_unchanged_during_run": true,
+  "checks": {
+    "unauthorized_rejected": true,
+    "authorized_seeded_revision_verified": true,
+    "all_measured_responses_valid": true
+  },
+  "limitations": [
+    "Client and server share one machine; closed-loop load hides unconstrained queue growth",
+    "Warm-cache synthetic reads only; no concurrent writes, matching jobs, TLS, proxy, SSO or WAN",
+    "One fixed load point, not maximum capacity, production SLA or a cold-disk benchmark"
+  ],
+  "disposable_postgres_schema_cleaned": true
+}

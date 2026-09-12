@@ -5,6 +5,7 @@ from uuid import uuid4
 
 import pytest
 
+from entitybridge.database import CURRENT_SCHEMA
 from entitybridge.store import Store, VersionConflict
 
 
@@ -120,7 +121,7 @@ def test_initialize_upgrades_verified_unversioned_v1_database_and_preserves_its_
     upgraded.initialize()
     with upgraded.engine.connect() as connection:
         assert connection.execute(select(schema.sources.c.source_id)).scalar_one() == "legacy"
-        assert connection.exec_driver_sql("SELECT version_num FROM alembic_version").scalar_one() == "0003"
+        assert connection.exec_driver_sql("SELECT version_num FROM alembic_version").scalar_one() == CURRENT_SCHEMA
     rows = [{"source_key": "a", "name": "ALPHA"}]
     upgraded.import_records("legacy", rows)
     upgraded.import_records("legacy", [{"source_key": "a", "name": "BETA"}])

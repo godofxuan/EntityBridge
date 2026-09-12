@@ -1,0 +1,72 @@
+{
+  "automatic_deployment": false,
+  "batch_size": 10,
+  "budgets": [
+    20,
+    50,
+    100,
+    200
+  ],
+  "calibration": "reserved_independent_partition_unused",
+  "cross_split_pairs_dropped": 0,
+  "fixed_validation_labels_in_addition_to_acquisition_budget": 112,
+  "initial_random_budget": 20,
+  "inner_dataset_manifest_sha256": "d605ace92ca43d229717986311aac2021d6ad43512dab71ae0726929f093d5ef",
+  "kind": "simulation",
+  "methods": [
+    "random",
+    "uncertainty_diversity"
+  ],
+  "original_public_partition_read": "train_only",
+  "original_public_test_read": false,
+  "scope": "Supplied known labelled pairs only; not candidate retrieval or a human user study",
+  "seeds": [
+    11,
+    29,
+    47
+  ],
+  "source_hashes": {
+    "label_file_sha256": "34ef7d9317cf49578cdba37fc50fd5fcb2e9862bdf5dfdd95b0c9426d1cb7942",
+    "manifest_sha256": "60c648893fd76bd09d8b12d61be0b5eaf6c2380a82b0d95172c05f68d3b63ed3",
+    "parsed_original_train_labels_sha256": "0a7a8f04709f0a762479fcab20f14594460d87fe848222459a80f15a97652476",
+    "train_features_sha256": "289e1b98edf6cd2a7fdd0a6fb651bf9f3c3b8e6a1e4bebed98f58f760acd1ac4"
+  },
+  "split_protocol": "all-labelled-endpoint-components-50-20-15-15-v1",
+  "split_seed": 20260912,
+  "statistics": {
+    "calibration": {
+      "groups": 71,
+      "negative": 40,
+      "pairs": 127,
+      "positive": 87,
+      "records": 179
+    },
+    "test": {
+      "groups": 82,
+      "negative": 91,
+      "pairs": 185,
+      "positive": 94,
+      "records": 204
+    },
+    "train": {
+      "groups": 253,
+      "negative": 3919,
+      "pairs": 4987,
+      "positive": 1068,
+      "records": 2254
+    },
+    "validation": {
+      "groups": 87,
+      "negative": 17,
+      "pairs": 112,
+      "positive": 95,
+      "records": 191
+    }
+  },
+  "test_role": "inner_train_partition_holdout; never used for acquisitions or algorithm selection",
+  "threshold_cost": {
+    "false_negative": 1,
+    "false_positive": 10
+  },
+  "version": "review-learning-oracle-v1"
+}

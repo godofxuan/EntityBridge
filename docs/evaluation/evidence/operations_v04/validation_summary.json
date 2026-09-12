@@ -1,0 +1,20 @@
+{
+  "version": "0.4.0",
+  "schema_version": "0005",
+  "full_suite": {
+    "passed": 298,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 110.06,
+    "postgres_enabled": true,
+    "postgres_scope": "Store/jobs/operations/workspace/recovery fixtures; not all tests are PostgreSQL"
+  },
+  "ruff": "passed",
+  "pip_check": "passed",
+  "test_log_sha256": "60a4a174438b44d79fc1f2a09817a13fc81f4c5c50c9a17adbe8177bb70bf5c8",
+  "warnings": [
+    "Starlette httpx TestClient deprecation",
+    "AnyIO BlockingPortal import alias deprecation"
+  ],
+  "prior_attempt": "First full run: 295 passed, one stale monkeypatch module after matching orchestration extraction. Corrected test to patch actual feature-version binding; regression and final suite passed. Logs remain local."
+}

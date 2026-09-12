@@ -1,0 +1,49 @@
+{
+  "format": "entitybridge-backup-rehearsal-v1",
+  "backend": "postgresql",
+  "synthetic": true,
+  "seed": {
+    "records": 1000,
+    "initial_entities": 500,
+    "registered_revisions": 4
+  },
+  "seconds": {
+    "seed": 2.761142100000143,
+    "backup": 1.0869643999976688,
+    "verify": 0.6059988999986672,
+    "restore_and_verify": 3.494316500000423
+  },
+  "total_seconds": 8.164732599998388,
+  "database_bytes": 4131180,
+  "artifact_bytes": 3680102,
+  "manifest_sha256": "1daf6eef1f82261273eb03964d0fc0cee053080aba7e00fe9e3c3ec8c2fb8691",
+  "schema_version": "0005",
+  "checks": {
+    "database_rows": true,
+    "source_versions": true,
+    "history": true,
+    "publication_pointer": true,
+    "artifact_relocation": true,
+    "artifact_hashes": true,
+    "query_projections": true,
+    "published_queries": true,
+    "active_source_equal": true,
+    "decision_events_equal": true,
+    "history_equal": true,
+    "future_sequence_insert": true
+  },
+  "job_recovery": {
+    "cancelled_nonterminal": 2,
+    "terminal_binding_preserved": true
+  },
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "logical_cpus": 12,
+    "memory_bytes": 33947549696
+  },
+  "limitations": [
+    "Application logical snapshot, not physical backup, PITR or roles",
+    "Synthetic rehearsal, not measured production RPO or RTO"
+  ],
+  "disposable_postgres_schemas_cleaned": true
+}

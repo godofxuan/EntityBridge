@@ -3,6 +3,7 @@
 from sqlalchemy import (
                         JSON,
                         Boolean,
+                        CheckConstraint,
                         Column,
                         Float,
                         ForeignKey,
@@ -94,3 +95,33 @@ query_values = Table("query_search_value", metadata,
     ForeignKeyConstraint(["revision_id", "entity_id"], ["query_entity.revision_id", "query_entity.entity_id"]))
 Index("ix_membership_revision_entity_record", memberships.c.revision_id, memberships.c.entity_id,
       memberships.c.record_id)
+
+jobs = Table("durable_job", metadata,
+    Column("job_id", String(36), primary_key=True),
+    Column("idempotency_key", String(200), nullable=False, unique=True),
+    Column("payload", JSON, nullable=False), Column("payload_hash", String(64), nullable=False),
+    Column("source_hash", String(64), nullable=False),
+    Column("parent_revision", ForeignKey("identity_revision.revision_id")),
+    Column("event_cutoff", Integer, nullable=False), Column("status", String(20), nullable=False),
+    Column("attempt", Integer, nullable=False), Column("max_attempts", Integer, nullable=False),
+    Column("created_at", Float, nullable=False), Column("updated_at", Float, nullable=False),
+    Column("lease_until", Float), Column("lease_owner", String(100)), Column("lease_token", String(36)),
+    Column("cancel_requested", Boolean, nullable=False),
+    Column("result_revision", ForeignKey("identity_revision.revision_id"), unique=True),
+    Column("last_error", JSON), Column("progress", JSON),
+    CheckConstraint("status IN ('queued','running','succeeded','failed','cancelled')", name="ck_job_status"),
+    CheckConstraint("attempt >= 0 AND max_attempts >= 1 AND attempt <= max_attempts", name="ck_job_attempts"))
+Index("ix_job_status_created", jobs.c.status, jobs.c.created_at, jobs.c.job_id)
+Index("ix_job_status_lease", jobs.c.status, jobs.c.lease_until)
+job_events = Table("durable_job_event", metadata,
+    Column("seq", Integer, primary_key=True, autoincrement=True),
+    Column("job_id", ForeignKey("durable_job.job_id"), nullable=False),
+    Column("attempt", Integer, nullable=False), Column("action", String(40), nullable=False),
+    Column("created_at", Float, nullable=False), Column("detail", JSON, nullable=False))
+Index("ix_job_event_job_seq", job_events.c.job_id, job_events.c.seq)
+
+workspace_binding = Table("workspace_binding", metadata,
+    Column("singleton", Integer, primary_key=True, autoincrement=False),
+    Column("workspace_name", String(200), nullable=False),
+    CheckConstraint("singleton = 1", name="ck_workspace_binding_singleton"),
+    CheckConstraint("length(workspace_name) BETWEEN 1 AND 200", name="ck_workspace_binding_name_length"))

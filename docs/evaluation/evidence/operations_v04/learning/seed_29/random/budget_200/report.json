@@ -1,0 +1,139 @@
+{
+  "acquired_negative": 150,
+  "acquired_positive": 50,
+  "acquisitions_sha256": "560862bfa9eb60fcd78081e315cc85682e27485d0b59ae39d4bb6f999999bea9",
+  "automatic_deployment": false,
+  "budget": 200,
+  "cumulative_compute_seconds": 1.247106700000586,
+  "frozen_config_sha256": "ee6018d177f6fac098284fdcada0e850c8a3024ddad7cd182448269a7d7f9668",
+  "method": "random",
+  "seed": 29,
+  "simulation": true,
+  "status": "evaluated",
+  "test": {
+    "calibration": {
+      "binning": "equal_width_positive_class_probability",
+      "bins": [
+        {
+          "count": 14,
+          "lower": 0.0,
+          "mean_probability": 0.0584475651391538,
+          "positive_fraction": 0.0,
+          "upper": 0.1
+        },
+        {
+          "count": 33,
+          "lower": 0.1,
+          "mean_probability": 0.14854411349001612,
+          "positive_fraction": 0.09090909090909091,
+          "upper": 0.2
+        },
+        {
+          "count": 7,
+          "lower": 0.2,
+          "mean_probability": 0.29533738262839154,
+          "positive_fraction": 0.42857142857142855,
+          "upper": 0.3
+        },
+        {
+          "count": 4,
+          "lower": 0.3,
+          "mean_probability": 0.30574292414243937,
+          "positive_fraction": 0.75,
+          "upper": 0.4
+        },
+        {
+          "count": 0,
+          "lower": 0.4,
+          "mean_probability": null,
+          "positive_fraction": null,
+          "upper": 0.5
+        },
+        {
+          "count": 0,
+          "lower": 0.5,
+          "mean_probability": null,
+          "positive_fraction": null,
+          "upper": 0.6
+        },
+        {
+          "count": 0,
+          "lower": 0.6,
+          "mean_probability": null,
+          "positive_fraction": null,
+          "upper": 0.7
+        },
+        {
+          "count": 0,
+          "lower": 0.7,
+          "mean_probability": null,
+          "positive_fraction": null,
+          "upper": 0.8
+        },
+        {
+          "count": 0,
+          "lower": 0.8,
+          "mean_probability": null,
+          "positive_fraction": null,
+          "upper": 0.9
+        },
+        {
+          "count": 127,
+          "lower": 0.9,
+          "mean_probability": 0.9055766572018346,
+          "positive_fraction": 0.6692913385826772,
+          "upper": 1.0
+        }
+      ],
+      "brier": 0.22494192264642687,
+      "ece": 0.19155742565828743,
+      "number_of_bins": 10,
+      "scope": "scored_labeled_candidates_only",
+      "status": "sample_conditional_probability_diagnostic"
+    },
+    "candidate_known_positive_recall": 1.0,
+    "candidate_pairs": 185,
+    "candidate_reduction_ratio": null,
+    "conditional": {
+      "f1": 0.7844827586206896,
+      "fn": 3,
+      "fp": 47,
+      "precision": 0.6594202898550725,
+      "recall": 0.9680851063829787,
+      "tn": 44,
+      "tp": 91
+    },
+    "decision_rule": "score_gte_threshold",
+    "end_to_end": {
+      "f1": 0.7844827586206896,
+      "fn": 3,
+      "fp": 47,
+      "precision": 0.6594202898550725,
+      "recall": 0.9680851063829787,
+      "tn": 44,
+      "tp": 91
+    },
+    "known_negative_pairs": 91,
+    "known_positive_pairs": 94,
+    "labeled_candidate_pairs": 185,
+    "labeled_pairs": 185,
+    "pair_universe": null,
+    "predicted_pairs": 138,
+    "prediction_label_coverage": 1.0,
+    "ranking": {
+      "average_precision": 0.6655113446591887,
+      "pairs": 185,
+      "positive_fraction": 0.5081081081081081,
+      "pr_auc_trapezoid": 0.8150163286145645,
+      "roc_auc": 0.7345101706803834,
+      "scope": "scored_labeled_candidates_only",
+      "status": "both_classes"
+    },
+    "scope": "explicit_labeled_pairs_only",
+    "threshold": 0.27179290130402695,
+    "unknown_candidate_pairs": 0,
+    "unknown_predicted_pairs": 0
+  },
+  "threshold": 0.27179290130402695,
+  "training_labels_sha256": "72277c5cd2de61ad22f09f8658c6f5913d1250aae93758ef38f7271f7a397320"
+}

@@ -1,0 +1,13 @@
+{
+  "version": "0.4.0",
+  "wheel_sha256": "c67371e3411c808b5558f9993fd7d9570fb51fc9988ac0c9ace26525f139292c",
+  "wheel_bytes": 97454,
+  "application_files_byte_identical": 31,
+  "outside_source_import": true,
+  "released_v03_to_v04_upgrade": true,
+  "schema_version": "0005",
+  "published_entities_preserved": true,
+  "projection_full_verification": true,
+  "ui_api_smoke": "passed",
+  "independent_cli_worker_succeeded_without_publishing": true
+}

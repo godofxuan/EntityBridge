@@ -21,7 +21,7 @@ def test_source_update_replaces_old_edges_and_incremental_workflow_equals_full(t
 
 
 def test_feature_version_change_forces_full_rebuild(tmp_path, monkeypatch):
-    from entitybridge import api
+    from entitybridge import matching_service
     store = Store(f"sqlite:///{tmp_path / 'version.db'}", tmp_path / "artifacts")
     store.initialize()
     store.import_records("left", [{"source_key": "a", "name": "ALPHA LIMITED"}])
@@ -29,7 +29,7 @@ def test_feature_version_change_forces_full_rebuild(tmp_path, monkeypatch):
     config = RunRequest(method="exact", threshold=1)
     initial = run_matching(store, config)
     store.publish(initial["revision_id"], expected_parent=None)
-    monkeypatch.setattr(api, "FEATURE_VIEW_VERSION", "a-new-view", raising=False)
+    monkeypatch.setattr(matching_service, "FEATURE_VIEW_VERSION", "a-new-view")
     rebuilt = run_matching(store, config)
     assert rebuilt["score_refresh"] is None
     assert rebuilt["computation"]["mode"] == "full"

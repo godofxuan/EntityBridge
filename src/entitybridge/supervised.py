@@ -59,10 +59,12 @@ class FrozenPairClassifier:
         return copy.deepcopy(self._state)
 
     @classmethod
-    def fit(cls, records, labelled_pairs, *, split="train"):
+    def fit(cls, records, labelled_pairs, *, split="train", allow_within_source=False):
         from sklearn.linear_model import LogisticRegression
         if split != "train":
             raise ValueError("The supervised baseline may fit train labels only")
+        if type(allow_within_source) is not bool:
+            raise ValueError("allow_within_source must be an explicit boolean")
         rows = {row["record_id"]: row for row in validate_records(records)}
         labels = {}
         for item in labelled_pairs:
@@ -72,7 +74,7 @@ class FrozenPairClassifier:
             label = item["label"]
             if label not in (0, 1) or pair[0] == pair[1] or any(key not in rows for key in pair):
                 raise ValueError("Expected explicit binary labels with known, distinct train endpoints")
-            if rows[pair[0]]["source"] == rows[pair[1]]["source"]:
+            if not allow_within_source and rows[pair[0]]["source"] == rows[pair[1]]["source"]:
                 raise ValueError("This baseline requires cross-source labelled pairs")
             if pair in labels and labels[pair] != label:
                 raise ValueError("Contradictory pair labels")
@@ -91,6 +93,8 @@ class FrozenPairClassifier:
                  "training_features_sha256": hashlib.sha256(_json(sorted(rows.values(), key=lambda r: r["record_id"])).encode()).hexdigest(),
                  "training_labels_sha256": hashlib.sha256(_json([[*pair, labels[pair]] for pair in pairs]).encode()).hexdigest(),
                  "calibrated": False, "scope": "Sampled labelled benchmark pairs; not deployment probabilities"}
+        if allow_within_source:
+            state.update(allow_within_source=True, scope="Explicit supplied pairs from a genuine shared offer pool; not deployment probabilities")
         return cls(state)
 
     def score(self, records, candidates):

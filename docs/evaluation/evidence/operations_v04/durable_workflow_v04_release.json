@@ -1,0 +1,129 @@
+{
+  "format": "entitybridge-durable-real-workflow-v1",
+  "status": "passed",
+  "started_at": "2026-09-12T14:07:36.331279+00:00",
+  "schema_version": "0005",
+  "transport": "in-process ASGI API plus independent CLI worker and actual PostgreSQL",
+  "scope": "real-source service integration; no truth labels, accuracy estimate or SLA",
+  "timings_seconds": {
+    "input_projection": 1.0687448999997287,
+    "import": 13.427197199998773,
+    "enqueue": 1.5382649999992282,
+    "cli_worker": 16.19738409999991,
+    "publish": 1.5857028999998874,
+    "fixed_revision_queries": 1.570604499996989,
+    "export": 0.4545402000003378,
+    "total_including_cleanup": 38.208013200001005
+  },
+  "checks": {
+    "source_counts_and_matcher_boundary": true,
+    "source_projection_preserves_masked_feature_values": true,
+    "api_returns_202_queued_without_publication": true,
+    "independent_cli_worker_succeeded_once": true,
+    "succeeded_prepared_result_hidden_until_publish": true,
+    "explicit_publication_moves_pointer": true,
+    "fixed_revision_directory_detail_and_projection": true,
+    "canonical_source_versions_verified": true,
+    "export_contains_each_source_record_version_once": true,
+    "input_model_pipeline_unchanged_no_invented_review_labels": true
+  },
+  "schema_cleaned": true,
+  "input": {
+    "sha256": "21de9ed29932d0f4510b4473314dd5341a215cd2b0a50ac0e6700aa199e85a1b",
+    "bytes": 8800040,
+    "records": 10000,
+    "source_counts": {
+      "gleif": 5000,
+      "companies_house": 5000
+    },
+    "submitted_fields": [
+      "address",
+      "city",
+      "country",
+      "name",
+      "postcode",
+      "source_key"
+    ],
+    "discarded_field_counts": {
+      "headquarters_address": 5000,
+      "split": 10000,
+      "record_version_id": 10000,
+      "registration_number": 10000,
+      "record_id": 10000,
+      "registration_authority": 10000,
+      "registration_number_raw": 5000,
+      "location": 10000,
+      "category": 10000,
+      "registration_status": 5000,
+      "true_entity_id": 10000,
+      "other_names": 10000,
+      "lei": 5000,
+      "status": 10000,
+      "successor_entities": 5000,
+      "associated_entity": 5000,
+      "snapshot_sha256": 10000,
+      "country_raw": 5000
+    },
+    "matcher_columns": [
+      "record_id",
+      "record_version_id",
+      "source",
+      "name",
+      "address",
+      "city",
+      "postcode",
+      "country"
+    ]
+  },
+  "model_file_sha256": {
+    "manifest.json": "35b80904609b0362edd3aa090c60728cf6f729815e027f9e76ac4757a5ace677",
+    "model.json": "f6a1d709a4e7fccc4ab031a766fcf8e17fcad9ddac4f26a7f07c78bc8f9b2576",
+    "tf_name.parquet": "0dd80852a463c3f9cb0472fee7968298da37a20a6e381656cf1835f37ca1aab8"
+  },
+  "pipeline_sha256": "6102c3d7eea85007c5382ecec250bbfdf39f1c7c627eb635f2dd056e6fcce4a3",
+  "postgres_version": "17.11",
+  "model_fingerprint": "c30093852ea3e51934c2dcddf42eed418ca79af22f1019d76472ce8ec874eec2",
+  "job_payload_sha256": "1f22ebe72a85e0da4560337ab49f792965544fa7d4118550250e131b56854e7d",
+  "source_basis_sha256": "66db35271ef25adb839473ffc4d813d3f4db91c104437bd55759761645687108",
+  "matching": {
+    "records": 10000,
+    "candidate_pairs": 13033,
+    "result_entity_count_not_truth": 4438,
+    "policy_sha256": "489762ed73ea2ae47a1994186f4b0e3127baa4b97a46af525c4c9beef683447c",
+    "artifact_sha256": "0d2a9e976eff4e66fdbe33c0222256379b293ea9fddf62bc56c42b2403d1e825",
+    "artifact_bytes": 24344507,
+    "manifest_candidate_pairs": 13033
+  },
+  "worker": {
+    "lease_seconds": 120,
+    "attempts": 1,
+    "exit_code": 0,
+    "observed_states": [
+      "queued",
+      "running",
+      "succeeded"
+    ],
+    "event_actions": [
+      "SUBMIT",
+      "CLAIM",
+      "SUCCEED"
+    ],
+    "output_bytes_discarded": {
+      "stdout": 1002,
+      "stderr": 363
+    }
+  },
+  "canonical_fields_checked": 22160,
+  "export": {
+    "rows": 10000,
+    "bytes": 2222249,
+    "sha256": "75e2ca1ebbab4d7781caf70957f618acca25702eb86fc6ff68f63123db971b4c"
+  },
+  "finished_at": "2026-09-12T14:08:14.538854+00:00",
+  "script_sha256": "80fff58dd0d7c83b8284900e95991ec31b372207d5321427e0b1a069aed9248d",
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "logical_cpus": 12,
+    "memory_bytes": 33947549696
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "acquired_negative": 20,
+  "acquired_positive": 30,
+  "acquisitions_sha256": "1fa3554739b7a91c3552b5ec8a90676d8c2e9581664a4a642094a40c2f7957cf",
+  "automatic_deployment": false,
+  "budget": 50,
+  "method": "uncertainty_diversity",
+  "model_fingerprint": "1f4af0c0a6ec9859a2c6b846b647d9e60ffcb5c5404e57a6c6fedfccbdde0bfe",
+  "plan_sha256": "eafcbe733df039a3743c53b5816c6d7a2726dfdc9f2c57827b26cd05ee98538f",
+  "seed": 47,
+  "simulation": true,
+  "status": "frozen",
+  "training_labels_sha256": "d113355ae2d74ba5b1d063bf37a618a544f48d6358a3779d1642c7e07d958a45",
+  "validation_selection": {
+    "false_negative_cost": 1.0,
+    "false_positive_cost": 10.0,
+    "known_negative_pairs": 17,
+    "known_positive_pairs": 95,
+    "labeled_pairs": 112,
+    "scope": "validation_explicit_labeled_pairs_only",
+    "selected": {
+      "cost": 0.0,
+      "decision_rule": "score_gte_threshold",
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "predicted_pairs": 95,
+      "recall": 1.0,
+      "threshold": 0.5686950214031236,
+      "tn": 17,
+      "tp": 95,
+      "unknown_predicted_pairs": 0
+    },
+    "selected_threshold": 0.5686950214031236,
+    "status": "selected",
+    "thresholds_evaluated": 16,
+    "tie_break": "reject_all_then_larger_threshold",
+    "unknown_pairs_excluded_from_cost": true
+  }
+}

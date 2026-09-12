@@ -1,0 +1,95 @@
+{
+  "original_overlap": {
+    "train:validation": {
+      "shared_offer_ids_sha256": "a6f36113434208a8e88fe11246e3b634205e2bee739e248d07ef6f3fef0d33c3",
+      "shared_offers": 110,
+      "shared_product_ids_sha256": "11004b746cdcac119f4db4e5b7de923ce7f2f4c30eb999074b7307ead61a6d66",
+      "shared_products": 250
+    }
+  },
+  "overlap": {
+    "train:validation": {
+      "shared_offer_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shared_offers": 0,
+      "shared_product_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shared_products": 0
+    }
+  },
+  "source_members": {
+    "train": {
+      "archive": "80pair.zip",
+      "compressed_member_sha256": "1915a92de76ddbf63a6c4d7ff3162df98f505033a8ad12ee7072b78b083d77c6",
+      "decompressed_sha256": "6a44150bdf53eb5be88aea75ec731f441a7ec48953c476fcb1ab673729ecf646",
+      "member": "wdcproducts80cc20rnd000un_train_small.json.gz",
+      "nested_archive": null
+    },
+    "validation": {
+      "archive": "val_pair.zip",
+      "compressed_member_sha256": "b66f53fd502cb8ecee18cfe38196edbadc93bcab05f0f1f52fd5c14741f9ab22",
+      "decompressed_sha256": "48bbd7012d2f904c3a86cb56aa919446f05b8911083058cbfd987ec7c4bcfd9a",
+      "member": "wdcproducts80cc20rnd100un_valid_small.json.gz",
+      "nested_archive": "80pair_addvalid.zip"
+    }
+  },
+  "statistics": {
+    "train": {
+      "dependency_groups": 1,
+      "hard_negative": 1000,
+      "largest_group_pair_fraction": 1.0,
+      "largest_group_pairs": 2500,
+      "negative": 2000,
+      "pairs": 2500,
+      "positive": 500,
+      "products": 500,
+      "random_negative": 1000,
+      "records": 1000
+    },
+    "validation": {
+      "dependency_groups": 4,
+      "hard_negative": 387,
+      "largest_group_pair_fraction": 0.9966555183946488,
+      "largest_group_pairs": 894,
+      "negative": 647,
+      "pairs": 897,
+      "positive": 250,
+      "products": 250,
+      "random_negative": 260,
+      "records": 500
+    }
+  },
+  "validation_correction": {
+    "official_original_protocol": false,
+    "original_positive_fraction": 0.2,
+    "original_statistics": {
+      "dependency_groups": 1,
+      "hard_negative": 1000,
+      "largest_group_pair_fraction": 1.0,
+      "largest_group_pairs": 2500,
+      "negative": 2000,
+      "pairs": 2500,
+      "positive": 500,
+      "products": 500,
+      "random_negative": 1000,
+      "records": 1000
+    },
+    "protocol": "remove_validation_pairs_touching_training_product_ids_before_test",
+    "removed_negative": 1353,
+    "removed_pairs_sha256": "9ddfe1e39084e0d786e89318f7dcaecfa74c9a07e1508f20611d16b0f960452f",
+    "removed_positive": 250,
+    "retained_pairs_sha256": "abc4706ffcf221216a02f4206f0d66b87244351b432cd485f3d0827f6920b952",
+    "retained_positive_fraction": 0.2787068004459309,
+    "retained_statistics": {
+      "dependency_groups": 4,
+      "hard_negative": 387,
+      "largest_group_pair_fraction": 0.9966555183946488,
+      "largest_group_pairs": 894,
+      "negative": 647,
+      "pairs": 897,
+      "positive": 250,
+      "products": 250,
+      "random_negative": 260,
+      "records": 500
+    },
+    "test_used_for_correction": false
+  }
+}

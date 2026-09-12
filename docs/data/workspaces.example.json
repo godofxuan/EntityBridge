@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "workspaces": {
+    "finance": {
+      "database_env": "FINANCE_DATABASE_URL",
+      "tokens_env": "FINANCE_TOKENS",
+      "artifact_root": "runtime/finance/revisions"
+    },
+    "procurement": {
+      "database_env": "PROCUREMENT_DATABASE_URL",
+      "artifact_root": "runtime/procurement/revisions",
+      "oidc": {
+        "issuer": "https://identity.example.org/",
+        "jwks_url": "https://identity.example.org/keys",
+        "audience": "entitybridge-api",
+        "workspace": "procurement"
+      }
+    }
+  }
+}

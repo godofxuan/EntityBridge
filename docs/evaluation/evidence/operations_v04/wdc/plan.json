@@ -1,0 +1,92 @@
+{
+  "automatic_deployment": false,
+  "calibration": "none; sample conditional diagnostics only",
+  "candidate_recall_measured": false,
+  "corner_case_ratio": 0.8,
+  "data_license": "not established; do not redistribute raw data",
+  "development_size": "small",
+  "exact_allowed_thresholds": [
+    1,
+    null
+  ],
+  "false_negative_cost": 1,
+  "false_positive_cost": 10,
+  "logistic_C": 1,
+  "members": {
+    "test": [
+      "80pair.zip",
+      null,
+      "wdcproducts80cc20rnd100un_gs.json.gz"
+    ],
+    "train": [
+      "80pair.zip",
+      null,
+      "wdcproducts80cc20rnd000un_train_small.json.gz"
+    ],
+    "validation": [
+      "val_pair.zip",
+      "80pair_addvalid.zip",
+      "wdcproducts80cc20rnd100un_valid_small.json.gz"
+    ]
+  },
+  "methods": [
+    "exact",
+    "fuzzy",
+    "title_logistic",
+    "product_logistic"
+  ],
+  "product_features": [
+    "title_ratio",
+    "title_token_set",
+    "title_exact",
+    "title_both_present",
+    "brand_ratio",
+    "brand_exact",
+    "brand_both_present",
+    "description_token_set",
+    "description_both_present",
+    "price_ratio_same_currency",
+    "price_comparable"
+  ],
+  "product_numeric_policy": "Positive strict decimal/scientific prices, same nonempty normalized currency, min/max ratio; otherwise missing",
+  "public_sample_exposure": "Official schema/sample pair was inspected earlier; no claim that no test example was ever visible",
+  "runtime": {
+    "numpy": "2.5.3",
+    "pyarrow": "25.0.1",
+    "python": "3.12.13",
+    "rapidfuzz": "3.14.6",
+    "scikit-learn": "1.9.1"
+  },
+  "source_archive_sha256": {
+    "pyproject.toml": "87f795c817a46ed43329b431909040006c3c8dfc3af4ef47d7a8d88624492336",
+    "scripts/run_wdc_benchmark.py": "579ab22d908d53c151fda581ab85ba211e372f8f22d0a12288d2732e4f4971e4",
+    "src/entitybridge/benchmark_metrics.py": "1ba79bf6eae8f6635818da4782aa95cc2c265ffcf4bcdb9dde34255a6b914ada",
+    "src/entitybridge/benchmarks.py": "3e2ddf0ffe684e7d811a38126be77a939f25b1170591bbf1ffdc78e2b03e7379",
+    "src/entitybridge/candidates.py": "f5aed6b1310d9382d54c3247ceb52227b8b07818403f3125ac744c7be54b40ab",
+    "src/entitybridge/matching.py": "273951915c1c1fb1b2c0561a5813095bedf5f1422593c775a88273f04c795496",
+    "src/entitybridge/normalization.py": "77395c12d93606a129ec4b85c5416322b7ff4c7632612a833efec086f390dae8",
+    "src/entitybridge/store.py": "a5d65bb12707ea49adbece4f6308b61b9ab0b09a81b8eced77995c7ee7a47b14",
+    "src/entitybridge/supervised.py": "ff3f27e27319fe49804bfd72abfe5e28485bb0c8665a4b296963779619f3599b",
+    "src/entitybridge/wdc_benchmark.py": "13ea714c3b9c988b785ab87d432253fd7df78a7e536fc4c6352eaac741ab638a"
+  },
+  "source_archives": {
+    "80pair.zip": {
+      "bytes": 21985075,
+      "sha256": "b2044939cee5ea6f12148a2f3551508de3cb77660dfc91767c44daaf9d8a9c4a",
+      "url": "https://data.dws.informatik.uni-mannheim.de/largescaleproductcorpus/data/wdc-products/80pair.zip"
+    },
+    "val_pair.zip": {
+      "bytes": 26336166,
+      "sha256": "15bb323e9aff4771be1baaeb048c9b6ef7459446ccbadca61cc9cb1272cb4143",
+      "url": "https://data.dws.informatik.uni-mannheim.de/largescaleproductcorpus/data/wdc-products/val_pair.zip"
+    }
+  },
+  "source_page": "https://webdatacommons.org/largescaleproductcorpus/wdc-products/",
+  "split_changes": "Validation only, declared before full test access; never modify test",
+  "test_gate": "Read full test only after training, validation thresholds, protocol and source snapshots are frozen",
+  "test_status": "first-scored-external-diagnostic",
+  "test_unseen_ratio": 1.0,
+  "title_projection": "NFKC uppercase punctuation-to-space; legitimate title only in existing eight-column view",
+  "validation_protocol": "corrected-validation external diagnostic; remove validation pairs touching training products",
+  "version": "wdc-products-80cc-small-corrected-validation-v1"
+}

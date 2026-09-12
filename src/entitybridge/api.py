@@ -5,19 +5,20 @@ from __future__ import annotations
 import csv
 import io
 import secrets
+import time
 from pathlib import Path
 from typing import Literal
 from urllib.parse import urlsplit
+from uuid import uuid4
 
 from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from .candidates import BLOCKING_VERSION, FrozenNameRetriever, generate_candidates
-from .matching import score_baselines
-from .normalization import FEATURE_VIEW_VERSION, NORMALIZATION_VERSION, matcher_view
+from .jobs import JobConflict
+from .matching_service import run_matching
 from .store import Store, VersionConflict, digest
 
 
@@ -63,6 +64,20 @@ class RunRequest(StrictModel):
     verify_full: bool = False
     candidate_mode: Literal["fixed", "hybrid"] = "fixed"
 
+    @model_validator(mode="after")
+    def validate_thresholds(self):
+        if self.review_threshold > self.threshold:
+            raise ValueError("Review threshold must not exceed the automatic threshold")
+        if self.method == "exact" and self.threshold == 0:
+            raise ValueError("Exact matching requires a positive threshold; zero would accept non-matches")
+        return self
+
+
+class JobRequest(StrictModel):
+    settings: RunRequest
+    idempotency_key: str = Field(min_length=1, max_length=200)
+    max_attempts: int = Field(default=3, ge=1, le=5)
+
 
 class PublishRequest(StrictModel):
     expected_parent: str | None
@@ -85,57 +100,11 @@ class RevokeRequest(StrictModel):
     preview_cutoff: int | None = Field(default=None, ge=0)
 
 
-def run_matching(store, settings, model_path=None, candidate_model_path=None):
-    raw = store.active_records()
-    records = [matcher_view(row, key, row["record_version_id"]) for key, row in raw.items()]
-    retriever = None
-    if settings.candidate_mode == "hybrid":
-        if not candidate_model_path:
-            raise ValueError("Hybrid review candidates require a frozen training-only candidate model")
-        retriever = FrozenNameRetriever.load(candidate_model_path)
-    if settings.method == "splink":
-        if not model_path:
-            raise ValueError("A frozen trained model must be configured before a Splink run")
-        from .matching import SplinkMatcher
-        model = SplinkMatcher.load(model_path)
-        score = model.score
-        model_version = model.fingerprint
-    else:
-        score = lambda rows, pairs: score_baselines(rows, pairs)[settings.method]
-        model_version = settings.method + "-name-v1"
-    policy = digest({"model": model_version, "threshold": settings.threshold,
-        "normalization": NORMALIZATION_VERSION, "feature_view": FEATURE_VIEW_VERSION,
-        "review_threshold": settings.review_threshold, "blocking": BLOCKING_VERSION, "resolver": "greedy-v2-manual-status",
-        "candidate_mode": settings.candidate_mode, "candidate_model": retriever.fingerprint if retriever else None,
-        "automatic_merge": retriever is None})
-    parent = store.current_revision()
-    previous = store._payload(parent) if parent else None
-    refresh = None
-    if settings.incremental and retriever is None and previous and previous["policy_version"] == policy:
-        from .incremental import refresh_scores
-        old_records = [matcher_view(row, key, row["record_version_id"]) for key, row in previous["records"].items()]
-        edges, refresh = refresh_scores(old_records, records, previous["edges"], score)
-        if settings.verify_full:
-            complete = score(records, generate_candidates(records))
-            as_map = lambda items: {(edge["left"], edge["right"]): edge["score"] for edge in items}
-            a, b = as_map(edges), as_map(complete)
-            if a.keys() != b.keys() or any(abs(a[pair] - b[pair]) > 1e-12 for pair in a):
-                raise RuntimeError("Incremental scores differ from full scoring")
-    else:
-        candidates = generate_candidates(records, retriever=retriever)
-        edges = score(records, candidates)
-    if retriever is not None:
-        edges = [{**edge, "auto_merge": False} for edge in edges]
-    candidate = store.prepare_revision(edges, policy_version=policy, threshold=settings.threshold,
-        review_threshold=settings.review_threshold, expected_input_hash=digest(raw), verify_full=settings.verify_full,
-        force_full=retriever is not None, force_full_reason="global_candidate_index")
-    return {**candidate, "candidate_pairs": len(edges), "records": len(records), "method": settings.method,
-            "score_refresh": refresh, "candidate_mode": settings.candidate_mode,
-            "automatic_merge": retriever is None}
-
-
-def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_path=None, local_demo=False):
-    app = FastAPI(title="EntityBridge", version="0.3.0")
+def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_path=None, local_demo=False,
+               oidc_verifier=None):
+    app = FastAPI(title="EntityBridge", version="0.4.0")
+    from .telemetry import RequestMetrics
+    metrics = RequestMetrics()
     tokens = dict(tokens or {})
     for token, identity in tokens.items():
         if (not isinstance(token, str) or not token or not token.isascii() or any(c.isspace() for c in token)
@@ -169,18 +138,41 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
         response.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self'; script-src 'self'; frame-ancestors 'none'"
         return response
 
+    @app.middleware("http")
+    async def measure(request: Request, call_next):
+        started, status_code = time.monotonic(), 500
+        request_id = str(uuid4())
+        try:
+            response = await call_next(request)
+            status_code = response.status_code
+            response.headers["X-Request-Id"] = request_id
+            return response
+        finally:
+            route = getattr(request.scope.get("route"), "path", "unmatched")
+            metrics.record(request.method, route, status_code, time.monotonic() - started)
+
+    def authenticate(token):
+        if not isinstance(token, str) or not token or not token.isascii():
+            raise HTTPException(401, "Sign in or supply a valid bearer token")
+        found = next((identity for key, identity in tokens.items() if secrets.compare_digest(token, key)), None)
+        if found is None and oidc_verifier is not None:
+            from .auth import AuthenticationError
+            try:
+                found = oidc_verifier.verify(token)
+            except AuthenticationError:
+                pass
+        if found is None:
+            raise HTTPException(401, "Sign in or supply a valid bearer token")
+        return tuple(found)
+
     def actor(request: Request):
         if local_demo and request.client and request.client.host in {"127.0.0.1", "::1", "testclient"}:
             request.state.identity = ("local-demo", "admin")
             return ("local-demo", "admin")
         token = request.headers.get("authorization", "").removeprefix("Bearer ") or request.cookies.get("eb_session", "")
-        if not token.isascii():
-            raise HTTPException(401, "Sign in or supply a valid bearer token")
-        found = next((identity for key, identity in tokens.items() if secrets.compare_digest(token, key)), None)
-        if not found:
-            raise HTTPException(401, "Sign in or supply a valid bearer token")
-        request.state.identity = tuple(found)
-        return tuple(found)
+        found = authenticate(token)
+        request.state.identity = found
+        return found
 
     def reviewer(identity=Depends(actor)):
         if identity[1] not in {"reviewer", "admin"}:
@@ -211,6 +203,10 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     async def invalid(_request, exc):
         return JSONResponse({"detail": str(exc)}, status_code=422)
 
+    @app.exception_handler(JobConflict)
+    async def job_conflict(_request, exc):
+        return JSONResponse({"detail": str(exc)}, status_code=409)
+
     @app.exception_handler(KeyError)
     async def missing(_request, _exc):
         return JSONResponse({"detail": "Resource not found"}, status_code=404)
@@ -222,6 +218,76 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     @app.post("/match-runs")
     def match_run(body: RunRequest, _identity=Depends(admin)):
         return run_matching(store, body, model_path, candidate_model_path)
+
+    @app.post("/jobs", status_code=202)
+    def submit_job(body: JobRequest, _identity=Depends(admin)):
+        from .jobs import JobQueue
+        from .worker import model_fingerprints
+        payload = {"settings": body.settings.model_dump(),
+                   "models": model_fingerprints(body.settings, model_path, candidate_model_path)}
+        result = JobQueue(store).enqueue(payload, idempotency_key=body.idempotency_key,
+                                         max_attempts=body.max_attempts)
+        return {**result, "status_url": f"/jobs/{result['job_id']}",
+                "completion_means": "prepared identity revision; administrator publication still required"}
+
+    @app.get("/jobs")
+    def list_jobs(limit: int = Query(50, ge=1, le=100), offset: int = Query(0, ge=0), _identity=Depends(admin)):
+        from .jobs import JobQueue
+        return JobQueue(store).list_jobs(limit=limit, offset=offset)
+
+    @app.get("/jobs/{job_id}")
+    def get_job(job_id: str, _identity=Depends(admin)):
+        from .jobs import JobQueue
+        return JobQueue(store).get(job_id, include_events=True)
+
+    @app.post("/jobs/{job_id}/cancel")
+    def cancel_job(job_id: str, _identity=Depends(admin)):
+        from .jobs import JobQueue
+        return JobQueue(store).cancel(job_id)
+
+    @app.post("/jobs/{job_id}/retry")
+    def retry_job(job_id: str, _identity=Depends(admin)):
+        from .jobs import JobQueue
+        return JobQueue(store).retry(job_id)
+
+    @app.get("/learning/summary")
+    def learning_summary(_identity=Depends(reviewer)):
+        from .learning import snapshot_review_labels
+        snapshot = snapshot_review_labels(store)
+        return {"summary": snapshot["summary"], "scope": "effective explicit review labels; no automatic labels"}
+
+    @app.get("/reviews/queue")
+    def learning_queue(strategy: Literal["uncertainty_diversity", "random"] = "uncertainty_diversity",
+                       limit: int = Query(50, ge=1, le=200), seed: int = 20260912, _identity=Depends(reviewer)):
+        from .learning import rank_review_candidates, snapshot_review_labels
+        snapshot = snapshot_review_labels(store)
+        revision = snapshot["revision_id"]
+        payload = store._payload(revision)
+        excluded = [(label["left_id"], label["right_id"]) for label in snapshot["labels"]]
+        excluded.extend((item["left"], item["right"]) for item in payload["edge_decisions"]
+                        if item["status"] == "suppressed")
+        candidates = [edge for edge in payload["edges"] if edge.get("score") is not None]
+        return {"revision_id": revision, "strategy": strategy,
+                "score_interpretation": "heuristic review ordering; raw scores may be uncalibrated",
+                "items": rank_review_candidates(snapshot["records"], candidates, strategy=strategy,
+                                                 seed=seed, limit=limit, excluded_pairs=excluded)}
+
+    @app.get("/ops/metrics")
+    def process_metrics(_identity=Depends(admin)):
+        return metrics.snapshot()
+
+    @app.get("/ops/status")
+    def operational_status(_identity=Depends(admin)):
+        from sqlalchemy import text
+        from sqlalchemy.exc import SQLAlchemyError
+        try:
+            with store.engine.connect() as con:
+                con.execute(text("SELECT 1"))
+            projection = store.projection_status()
+        except SQLAlchemyError:
+            raise HTTPException(503, "Database readiness check failed") from None
+        return {"database": "ready", "projection": projection,
+                "verification": "lightweight readiness; use explicit full verification for integrity audit"}
 
     @app.post("/registry-runs")
     def registry_run(_identity=Depends(admin)):
@@ -351,10 +417,33 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     def history(request: Request, _identity=Depends(reviewer)):
         return render(request, "history", history=store.history(), decisions=store.decision_history())
 
+    @app.get("/tasks", response_class=HTMLResponse)
+    def task_page(request: Request, _identity=Depends(admin)):
+        from .jobs import JobQueue
+        return render(request, "tasks", jobs=JobQueue(store).list_jobs(limit=100),
+                      request_key=str(uuid4()), model_configured=model_path is not None)
+
+    @app.post("/ui/jobs")
+    def ui_submit_job(idempotency_key: str = Form(), method: str = Form("exact"),
+                      threshold: float = Form(.9), review_threshold: float = Form(.5), identity=Depends(admin)):
+        body = JobRequest(settings=RunRequest(method=method, threshold=threshold,
+                                              review_threshold=review_threshold), idempotency_key=idempotency_key)
+        submit_job(body, identity)
+        return RedirectResponse("/tasks", status_code=303)
+
+    @app.post("/ui/jobs/{job_id}/cancel")
+    def ui_cancel_job(job_id: str, identity=Depends(admin)):
+        cancel_job(job_id, identity)
+        return RedirectResponse("/tasks", status_code=303)
+
+    @app.post("/ui/jobs/{job_id}/retry")
+    def ui_retry_job(job_id: str, identity=Depends(admin)):
+        retry_job(job_id, identity)
+        return RedirectResponse("/tasks", status_code=303)
+
     @app.post("/ui/login")
     def login(token: str = Form()):
-        if token not in tokens:
-            raise HTTPException(401, "Invalid token")
+        authenticate(token)
         response = RedirectResponse("/reviews", status_code=303)
         response.set_cookie("eb_session", token, httponly=True, samesite="strict", max_age=3600)
         return response
