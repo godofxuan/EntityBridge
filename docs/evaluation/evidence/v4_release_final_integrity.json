@@ -1,0 +1,35 @@
+{
+  "dataset": "artifacts/datasets/v4_release_final",
+  "manifest_sha256": "4ebd6e5c38cdf3e3c45d149a2e0266bef28052fab572cb725c4292e20c32ac08",
+  "preflight": {
+    "files_verified": 10,
+    "records": 94104,
+    "entities": 47052,
+    "entity_splits_disjoint": true,
+    "train_file_sha256": "642db66a8863097d281b82ba48a0b66f64049a8478930ca425f02066e9db881c"
+  },
+  "independent_checks": {
+    "old_entities": 50000,
+    "new_test_entities": 7170,
+    "entity_overlap": 0,
+    "record_id_overlap": 0,
+    "source_key_overlap": 0,
+    "new_test_records": 14340,
+    "test_feature_records": 14340,
+    "embedded_identifier_violations": 0,
+    "train_byte_identical": true,
+    "validation_byte_identical": true
+  },
+  "split_records": {
+    "train": 59764,
+    "validation": 20000,
+    "test": 14340
+  },
+  "split_entities": {
+    "train": 29882,
+    "validation": 10000,
+    "test": 7170
+  },
+  "matching_or_evaluation_run": false,
+  "source_snapshot_scope": "same frozen public sources; new entities, not new time period"
+}

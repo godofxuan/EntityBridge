@@ -1,0 +1,13 @@
+{
+  "threshold_selection": "maximum validation F1, then precision, then larger threshold",
+  "thresholds": {
+    "exact": 1.0,
+    "fuzzy": 0.5,
+    "splink": 1.0
+  },
+  "model_fingerprint": "4d085c18f988075f10bd5ce12534043620aab6c8817e8fda7b6a3a0b11c5b466",
+  "dataset_manifest_sha256": "f99ca9fc1f5fc2801299ee03151f395b0aeca6ef539a79e517b873c736d3e7b4",
+  "lock_sha256": "e2a953a299d0d4e816c53e20423de709757239aeb4daff9361538bf55eeb75c5",
+  "code_sha256": "32d4d551fad4e14bdd296bc89969ccb47599c93dc26c7b2edae68fb898cfabae",
+  "test_read_after_config_write": true
+}

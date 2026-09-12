@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17.11
+    environment:
+      POSTGRES_DB: entitybridge
+      POSTGRES_USER: entitybridge
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - entitybridge_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U entitybridge -d entitybridge"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  entitybridge_pg:

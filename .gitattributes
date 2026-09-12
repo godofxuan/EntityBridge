@@ -1,0 +1,5 @@
+# Preserve experiment/code hashes across Windows and Linux checkouts.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+*.png binary
+*.mp4 binary
+*.zip binary

@@ -1,0 +1,18 @@
+{
+  "threshold_selection": "maximum validation F1, then precision, then larger threshold",
+  "thresholds": {
+    "exact": 1.0,
+    "fuzzy": 0.5,
+    "splink": 0.99
+  },
+  "model_fingerprint": "54a4fb6b2835c9b3bf4f3ef22fdf71c63fd9af0c3878967d29e8f1570e4cdf79",
+  "dataset_manifest_sha256": "b315db7c093435a26141da336102649d4be709393e48637be00beb93a2c541d4",
+  "lock_sha256": "e2a953a299d0d4e816c53e20423de709757239aeb4daff9361538bf55eeb75c5",
+  "code_sha256": "ed3748d29c9c8f568e1fab5281520fe054f718bb4f993eb5441eb05d06b5902e",
+  "normalization_version": "nfkc-upper-punctuation-v1",
+  "feature_view_version": "identifier-missing-text-redaction-v2",
+  "blocking_version": "fixed-union-v2-missing-country",
+  "resolver_version": "greedy-v1",
+  "test_effect_evaluation_after_config_write": true,
+  "preflight_reads_test_ids_and_hashes_only_for_integrity": true
+}

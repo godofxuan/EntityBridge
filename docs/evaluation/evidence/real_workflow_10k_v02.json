@@ -1,0 +1,221 @@
+{
+  "run_id": "43ac0ef07b4e491ea4f70ca57c823e6b",
+  "started_at": "2026-09-12T11:32:00.031532+00:00",
+  "status": "passed",
+  "scope": "10k service integration; no truth-derived judgments, accuracy or gain claims",
+  "transport": "FastAPI TestClient in-process ASGI; actual PostgreSQL and Splink execution",
+  "timings_seconds": {
+    "load_validate_and_project": 0.19326820000060252,
+    "import_gleif": 4.1513190000005125,
+    "import_companies_house": 4.034942799999044,
+    "import_total": 8.186342900000454,
+    "matching_and_preparation": 3.6681547000007413,
+    "publish": 0.4503533000006428,
+    "query_all_entities": 1.5662851000015507,
+    "query_one_entity_at_fixed_revision": 0.2163782000006904,
+    "export_fixed_revision": 0.25450910000108706,
+    "total_including_setup_validation_and_cleanup": 15.703406099999484
+  },
+  "checks": {
+    "evaluator_fields_absent_from_service_and_matcher": true,
+    "prepared_revision_hidden_from_queries_and_export": true,
+    "publication_pointer_matches_complete_revision": true,
+    "canonical_values_reference_actual_member_source_versions": true,
+    "fixed_revision_csv_contains_every_record_once": true,
+    "no_human_or_truth_derived_review_decisions": true,
+    "input_and_frozen_model_files_unchanged": true
+  },
+  "schema_cleaned": true,
+  "input": {
+    "sha256": "21de9ed29932d0f4510b4473314dd5341a215cd2b0a50ac0e6700aa199e85a1b",
+    "bytes": 8800040,
+    "records": 10000,
+    "source_counts": {
+      "gleif": 5000,
+      "companies_house": 5000
+    },
+    "allowed_source_fields": [
+      "address",
+      "aliases",
+      "category",
+      "city",
+      "country",
+      "lei",
+      "name",
+      "postcode",
+      "registration_authority",
+      "registration_number",
+      "registration_status",
+      "relationships",
+      "source_key",
+      "status",
+      "tombstone"
+    ],
+    "discarded_field_counts": {
+      "registration_number_raw": 5000,
+      "location": 10000,
+      "true_entity_id": 10000,
+      "other_names": 10000,
+      "associated_entity": 5000,
+      "split": 10000,
+      "successor_entities": 5000,
+      "headquarters_address": 5000,
+      "record_id": 10000,
+      "record_version_id": 10000,
+      "snapshot_sha256": 10000,
+      "country_raw": 5000
+    }
+  },
+  "model": {
+    "fingerprint": "c30093852ea3e51934c2dcddf42eed418ca79af22f1019d76472ce8ec874eec2",
+    "file_sha256": {
+      "manifest.json": "35b80904609b0362edd3aa090c60728cf6f729815e027f9e76ac4757a5ace677",
+      "model.json": "f6a1d709a4e7fccc4ab031a766fcf8e17fcad9ddac4f26a7f07c78bc8f9b2576",
+      "tf_name.parquet": "0dd80852a463c3f9cb0472fee7968298da37a20a6e381656cf1835f37ca1aab8"
+    },
+    "tf_policy": "name-lookup-frozen-from-train",
+    "calibrated": false,
+    "unobserved_levels_using_splink_defaults": [
+      {
+        "comparison": "name",
+        "condition": "jaro_winkler_similarity(\"name_l\", \"name_r\") >= 0.95",
+        "missing": [
+          "u_probability"
+        ]
+      }
+    ]
+  },
+  "postgres_version": "17.11",
+  "imports": [
+    {
+      "source": "gleif",
+      "rows": 1000,
+      "elapsed_seconds": 0.7352150000006077,
+      "request_bytes": 417749,
+      "snapshot_id": "3102e5bf-db9d-4bdc-a3df-1d1a64abd0d0",
+      "content_sha256": "13f3af719cc780e7b1b826665ec3b1d434348597e5cc20c1a52cf6cf4ce349a0"
+    },
+    {
+      "source": "gleif",
+      "rows": 1000,
+      "elapsed_seconds": 0.8505963999996311,
+      "request_bytes": 417505,
+      "snapshot_id": "3220a8d1-4656-4541-96e1-b1298be18a89",
+      "content_sha256": "073ef26a94b1b04738c1879ded9d4b2415bce0d1b9f3901d7de8bd8830c9f213"
+    },
+    {
+      "source": "gleif",
+      "rows": 1000,
+      "elapsed_seconds": 0.8028799999992771,
+      "request_bytes": 417467,
+      "snapshot_id": "c00de721-21b5-42ff-b20c-bb3de4c5b2e1",
+      "content_sha256": "b1829a2fee0b2881dc7f1dd861fe8c0e032a09d1473589e7dc6f270b1da51519"
+    },
+    {
+      "source": "gleif",
+      "rows": 1000,
+      "elapsed_seconds": 0.8694018999995023,
+      "request_bytes": 417429,
+      "snapshot_id": "ae79c803-8df4-43e0-bfb4-2a43d07613f9",
+      "content_sha256": "0bc96096b9894284deaf9cf64b5baff3cdbc57335857f610b5b88e9296e6d425"
+    },
+    {
+      "source": "gleif",
+      "rows": 1000,
+      "elapsed_seconds": 0.8776104999997187,
+      "request_bytes": 418417,
+      "snapshot_id": "a8cb2e02-8823-4ca9-86f8-b0107a4317d6",
+      "content_sha256": "fb9785f6d565f4675c819813accccea2dffe8059da7d6abb775e126f89b97d0e"
+    },
+    {
+      "source": "companies_house",
+      "rows": 1000,
+      "elapsed_seconds": 0.8045699000012974,
+      "request_bytes": 355176,
+      "snapshot_id": "adb528c1-096d-4a1c-ba8c-d9dcaa24c295",
+      "content_sha256": "81ff381bc0df92475accc0286c8d19440385c74424553b5b741ac7bf66cd18d7"
+    },
+    {
+      "source": "companies_house",
+      "rows": 1000,
+      "elapsed_seconds": 0.7937746999996307,
+      "request_bytes": 354588,
+      "snapshot_id": "23f8be5b-f02e-45e1-a24c-b9406ae1628b",
+      "content_sha256": "b756d6a7dd742eb6dcac78b78ada79201bad8d1cb484af08e3e84e1f57908381"
+    },
+    {
+      "source": "companies_house",
+      "rows": 1000,
+      "elapsed_seconds": 0.7803665999999794,
+      "request_bytes": 354676,
+      "snapshot_id": "21483fd5-ef4e-4773-8b55-bc247ac2375e",
+      "content_sha256": "ecf137c3624a50c67823d1fedf92e6dfdcd3f88d0d9ca90607ad59df31fc9933"
+    },
+    {
+      "source": "companies_house",
+      "rows": 1000,
+      "elapsed_seconds": 0.7946852999994007,
+      "request_bytes": 354395,
+      "snapshot_id": "b3d65eee-8ec0-48ec-ba43-f22b4b2d746f",
+      "content_sha256": "06f2b58fed7a0b7ded0baf9346325b2613829591bceb8539b81416132505d050"
+    },
+    {
+      "source": "companies_house",
+      "rows": 1000,
+      "elapsed_seconds": 0.8472048999992694,
+      "request_bytes": 355781,
+      "snapshot_id": "46b5b24e-28f7-4a1a-89b4-f5ec5333ea4b",
+      "content_sha256": "b660f21b0b145538ddb1cb5afc8d21bf794f2cb153df624c1157ee2885a33925"
+    }
+  ],
+  "matching": {
+    "revision_id": "e3d7b939-fbb5-4b04-acfd-7fcaae4689cf",
+    "parent_revision": null,
+    "entity_count": 4438,
+    "computation": {
+      "mode": "full",
+      "reason": "initial_revision",
+      "affected_records": 10000
+    },
+    "candidate_pairs": 13033,
+    "records": 10000,
+    "method": "splink",
+    "score_refresh": null,
+    "candidate_mode": "fixed",
+    "automatic_merge": true
+  },
+  "query_response_bytes": 4515148,
+  "canonical_fields_checked": 22160,
+  "result_entity_count_not_truth_count": 4438,
+  "export": {
+    "rows": 10000,
+    "bytes": 2222249,
+    "sha256": "eb1b1a3de495736b3baabc13423ca368dd6365e2c8f6da9057b36169ad7018f0"
+  },
+  "postgres_schema_bytes_before_cleanup": 28024832,
+  "revision_artifact": {
+    "bytes": 25808730,
+    "sha256": "810ca99d5750842c82eaaaf41c4a68f8485d09ccefc9c25abad0b1cc23e482db"
+  },
+  "process_memory_bytes": {
+    "rss_at_end": 314060800,
+    "peak_working_set_if_available": 445874176
+  },
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "logical_cpus": 12,
+    "ram_bytes": 33947549696
+  },
+  "script_sha256": "4aa872042b1dc7d4668ced73a88b7b4559656fe9772eb45d210c3d73f9e1728a",
+  "finished_at": "2026-09-12T11:32:15.734969+00:00",
+  "publication": {
+    "source_report_sha256": "9b634d94ee3992fbafe4b001fbc1c3bc5e1a880b11cbd1dfacdfae8c4ed59890",
+    "removed_fields": [
+      "input.path",
+      "model.path",
+      "export.path",
+      "revision_artifact.path"
+    ],
+    "transformation": "Removed local artifact locations; all measurement and integrity values unchanged"
+  }
+}

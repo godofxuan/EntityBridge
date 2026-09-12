@@ -1,0 +1,15 @@
+{
+  "kind": "same-machine clean virtual environment",
+  "python": "3.12.13",
+  "installation": "requirements.lock plus pip install -e . --no-deps",
+  "pip_check": "passed",
+  "tests": "67 passed, 2 PostgreSQL opt-in tests skipped; separately tested in main environment",
+  "demo_pages": {
+    "/": 200,
+    "/reviews": 200,
+    "/history": 200,
+    "/health": 200
+  },
+  "synthetic_entities": 3,
+  "seconds": 0.1930928000001586
+}

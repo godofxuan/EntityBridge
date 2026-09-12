@@ -1,0 +1,242 @@
+{
+  "kind": "B_real_previous_name_derived",
+  "full_scale_records": 18596,
+  "full_scale_candidates": 8215,
+  "full_scale_entities": 15902,
+  "test_records": 3804,
+  "test_true_entities": 1902,
+  "test_source_counts": {
+    "gleif": 1902,
+    "companies_house": 1902
+  },
+  "test_candidate_reduction": 0.9997865990860249,
+  "results": {
+    "exact": {
+      "threshold": 1.0,
+      "known_positive_pairs": 1902,
+      "candidates": 772,
+      "predicted_pairs": 2,
+      "candidate_recall": 0.2981072555205047,
+      "end_to_end": {
+        "tp": 1,
+        "fp": 1,
+        "fn": 1901,
+        "precision": 0.5,
+        "recall": 0.0005257623554153522,
+        "f1": 0.0010504201680672268
+      },
+      "conditional": {
+        "tp": 1,
+        "fp": 1,
+        "fn": 566,
+        "precision": 0.5,
+        "recall": 0.001763668430335097,
+        "f1": 0.00351493848857645
+      },
+      "record_coverage": 0.0010515247108307045,
+      "precision_wilson95_descriptive": [
+        0.09452865480086614,
+        0.9054713451991339
+      ],
+      "clusters": {
+        "overmerged_clusters": 1,
+        "records_in_overmerged_clusters": 2,
+        "largest_wrong_cluster": 2,
+        "b_cubed_precision": 0.9997371188222923,
+        "b_cubed_recall": 0.5002628811777077
+      },
+      "review_pairs": 0
+    },
+    "fuzzy": {
+      "threshold": 0.5,
+      "known_positive_pairs": 1902,
+      "candidates": 772,
+      "predicted_pairs": 744,
+      "candidate_recall": 0.2981072555205047,
+      "end_to_end": {
+        "tp": 560,
+        "fp": 184,
+        "fn": 1342,
+        "precision": 0.7526881720430108,
+        "recall": 0.29442691903259727,
+        "f1": 0.4232804232804233
+      },
+      "conditional": {
+        "tp": 560,
+        "fp": 184,
+        "fn": 7,
+        "precision": 0.7526881720430108,
+        "recall": 0.9876543209876543,
+        "f1": 0.8543096872616323
+      },
+      "record_coverage": 0.3325446898002103,
+      "precision_wilson95_descriptive": [
+        0.7204399287124068,
+        0.7823403391945938
+      ],
+      "clusters": {
+        "overmerged_clusters": 87,
+        "records_in_overmerged_clusters": 301,
+        "largest_wrong_cluster": 9,
+        "b_cubed_precision": 0.9543598634686965,
+        "b_cubed_recall": 0.6474763406940063
+      },
+      "review_pairs": 0
+    },
+    "splink": {
+      "threshold": 0.5,
+      "known_positive_pairs": 1902,
+      "candidates": 772,
+      "predicted_pairs": 448,
+      "candidate_recall": 0.2981072555205047,
+      "end_to_end": {
+        "tp": 414,
+        "fp": 34,
+        "fn": 1488,
+        "precision": 0.9241071428571429,
+        "recall": 0.21766561514195584,
+        "f1": 0.3523404255319149
+      },
+      "conditional": {
+        "tp": 414,
+        "fp": 34,
+        "fn": 153,
+        "precision": 0.9241071428571429,
+        "recall": 0.7301587301587301,
+        "f1": 0.8157635467980295
+      },
+      "record_coverage": 0.2234490010515247,
+      "precision_wilson95_descriptive": [
+        0.8958177399658599,
+        0.9451849477016768
+      ],
+      "clusters": {
+        "overmerged_clusters": 21,
+        "records_in_overmerged_clusters": 70,
+        "largest_wrong_cluster": 6,
+        "b_cubed_precision": 0.9905187521906766,
+        "b_cubed_recall": 0.6088328075709779
+      },
+      "review_pairs": 0
+    },
+    "splink_constrained_no_human_labels": {
+      "threshold": 0.5,
+      "known_positive_pairs": 1902,
+      "candidates": 772,
+      "predicted_pairs": 448,
+      "candidate_recall": 0.2981072555205047,
+      "end_to_end": {
+        "tp": 414,
+        "fp": 34,
+        "fn": 1488,
+        "precision": 0.9241071428571429,
+        "recall": 0.21766561514195584,
+        "f1": 0.3523404255319149
+      },
+      "conditional": {
+        "tp": 414,
+        "fp": 34,
+        "fn": 153,
+        "precision": 0.9241071428571429,
+        "recall": 0.7301587301587301,
+        "f1": 0.8157635467980295
+      },
+      "record_coverage": 0.2234490010515247,
+      "precision_wilson95_descriptive": [
+        0.8958177399658599,
+        0.9451849477016768
+      ],
+      "clusters": {
+        "overmerged_clusters": 21,
+        "records_in_overmerged_clusters": 70,
+        "largest_wrong_cluster": 6,
+        "b_cubed_precision": 0.9905187521906766,
+        "b_cubed_recall": 0.6088328075709779
+      },
+      "review_pairs": 0
+    }
+  },
+  "seconds": {
+    "input_preflight": 0.06670829999984562,
+    "read_train": 0.012177699999483593,
+    "fit_splink": 1.0724402000005284,
+    "validation_candidates": 0.032012200000281155,
+    "validation_splink": 0.25289280000015424,
+    "test_candidates": 0.09431760000006761,
+    "test_baselines": 0.005012700000406767,
+    "test_splink": 0.23945830000047863,
+    "test_resolve_exact": 0.006858699999611417,
+    "test_resolve_fuzzy": 0.006510100000014063,
+    "test_resolve_splink": 0.006111400000008871,
+    "full_scale_candidates": 0.29143460000068444,
+    "full_scale_splink": 0.5193275999999969,
+    "full_scale_resolve": 0.12162050000006275
+  },
+  "total_seconds": 3.0447522999993453,
+  "process_peak_rss_bytes": 345288704,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.13",
+  "logical_cpus": 12,
+  "ram_bytes": 33947549696,
+  "model_training": {
+    "records": 11196,
+    "seed": 20260912,
+    "training_feature_sha256": "a3e987dc848d3a29473fa6765bd70615470615c1b0f331a115f2438ad7f9597d",
+    "max_u_pairs": 1000000,
+    "em_blocks": [
+      "postcode",
+      "name"
+    ],
+    "splink_version": "4.0.17",
+    "unobserved_levels_using_splink_defaults": [
+      {
+        "comparison": "name",
+        "condition": "\"name_l\" = \"name_r\"",
+        "missing": [
+          "u_probability"
+        ]
+      },
+      {
+        "comparison": "address",
+        "condition": "\"address_l\" = \"address_r\"",
+        "missing": [
+          "m_probability",
+          "u_probability"
+        ]
+      },
+      {
+        "comparison": "address",
+        "condition": "jaro_winkler_similarity(\"address_l\", \"address_r\") >= 0.9",
+        "missing": [
+          "m_probability",
+          "u_probability"
+        ]
+      },
+      {
+        "comparison": "address",
+        "condition": "jaro_winkler_similarity(\"address_l\", \"address_r\") >= 0.7",
+        "missing": [
+          "m_probability",
+          "u_probability"
+        ]
+      },
+      {
+        "comparison": "address",
+        "condition": "ELSE",
+        "missing": [
+          "m_probability",
+          "u_probability"
+        ]
+      }
+    ],
+    "tf_policy": "name-lookup-frozen-from-train",
+    "calibrated": false
+  },
+  "limitations": [
+    "Closed-world clean registry overlap; not all unnumbered companies",
+    "GLEIF and CH are not independent business noise",
+    "Uncalibrated model probabilities",
+    "No human labels in A; B3 has no advantage from hidden identifiers",
+    "Wilson intervals describe pair counts, not independent entity-level confidence"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "sha256": "0df9bc3dc36c9c3a1adb1f3e19aefdca7498a0336387081d04a50c1f27a22379",
+  "ordered_files": [
+    "scripts/run_experiment.py",
+    "src/entitybridge/__init__.py",
+    "src/entitybridge/api.py",
+    "src/entitybridge/candidates.py",
+    "src/entitybridge/cli.py",
+    "src/entitybridge/evaluation.py",
+    "src/entitybridge/identifier_rich.py",
+    "src/entitybridge/identity.py",
+    "src/entitybridge/incremental.py",
+    "src/entitybridge/ingestion.py",
+    "src/entitybridge/matching.py",
+    "src/entitybridge/normalization.py",
+    "src/entitybridge/resolution.py",
+    "src/entitybridge/schema.py",
+    "src/entitybridge/store.py"
+  ],
+  "note": "Exact source bytes at sealed evaluation; later service-only fixes widen official CH category field and retain selected revision in evidence links. No model/threshold retuning."
+}

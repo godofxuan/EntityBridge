@@ -1,0 +1,210 @@
+{
+  "kind": "A_real_cross_source_fresh_release_holdout",
+  "full_scale_records": 94104,
+  "full_scale_candidates": 846212,
+  "full_scale_entities": 52482,
+  "test_records": 14340,
+  "test_true_entities": 7170,
+  "test_source_counts": {
+    "gleif": 7170,
+    "companies_house": 7170
+  },
+  "test_candidate_reduction": 0.9994337556337521,
+  "results": {
+    "exact": {
+      "threshold": 1.0,
+      "known_positive_pairs": 7170,
+      "candidates": 29110,
+      "predicted_pairs": 7102,
+      "candidate_recall": 0.998047419804742,
+      "end_to_end": {
+        "tp": 7102,
+        "fp": 0,
+        "fn": 68,
+        "precision": 1.0,
+        "recall": 0.9905160390516039,
+        "f1": 0.9952354260089686
+      },
+      "conditional": {
+        "tp": 7102,
+        "fp": 0,
+        "fn": 54,
+        "precision": 1.0,
+        "recall": 0.9924538848518726,
+        "f1": 0.9962126525459392
+      },
+      "record_coverage": 0.9905160390516039,
+      "precision_wilson95_descriptive": [
+        0.9994593743829021,
+        1.0
+      ],
+      "clusters": {
+        "overmerged_clusters": 0,
+        "records_in_overmerged_clusters": 0,
+        "largest_wrong_cluster": 0,
+        "b_cubed_precision": 1.0,
+        "b_cubed_recall": 0.995258019525802
+      },
+      "review_pairs": 0
+    },
+    "fuzzy": {
+      "threshold": 1.0,
+      "known_positive_pairs": 7170,
+      "candidates": 29110,
+      "predicted_pairs": 7102,
+      "candidate_recall": 0.998047419804742,
+      "end_to_end": {
+        "tp": 7102,
+        "fp": 0,
+        "fn": 68,
+        "precision": 1.0,
+        "recall": 0.9905160390516039,
+        "f1": 0.9952354260089686
+      },
+      "conditional": {
+        "tp": 7102,
+        "fp": 0,
+        "fn": 54,
+        "precision": 1.0,
+        "recall": 0.9924538848518726,
+        "f1": 0.9962126525459392
+      },
+      "record_coverage": 0.9905160390516039,
+      "precision_wilson95_descriptive": [
+        0.9994593743829021,
+        1.0
+      ],
+      "clusters": {
+        "overmerged_clusters": 0,
+        "records_in_overmerged_clusters": 0,
+        "largest_wrong_cluster": 0,
+        "b_cubed_precision": 1.0,
+        "b_cubed_recall": 0.995258019525802
+      },
+      "review_pairs": 6746
+    },
+    "splink": {
+      "threshold": 0.9999,
+      "known_positive_pairs": 7170,
+      "candidates": 29110,
+      "predicted_pairs": 6357,
+      "candidate_recall": 0.998047419804742,
+      "end_to_end": {
+        "tp": 6357,
+        "fp": 0,
+        "fn": 813,
+        "precision": 1.0,
+        "recall": 0.8866108786610879,
+        "f1": 0.9398979818141494
+      },
+      "conditional": {
+        "tp": 6357,
+        "fp": 0,
+        "fn": 799,
+        "precision": 1.0,
+        "recall": 0.8883454443823365,
+        "f1": 0.9408717531266189
+      },
+      "record_coverage": 0.8866108786610879,
+      "precision_wilson95_descriptive": [
+        0.9993960547610556,
+        1.0000000000000002
+      ],
+      "clusters": {
+        "overmerged_clusters": 0,
+        "records_in_overmerged_clusters": 0,
+        "largest_wrong_cluster": 0,
+        "b_cubed_precision": 1.0,
+        "b_cubed_recall": 0.9433054393305439
+      },
+      "review_pairs": 20976
+    },
+    "splink_constrained_no_human_labels": {
+      "threshold": 0.9999,
+      "known_positive_pairs": 7170,
+      "candidates": 29110,
+      "predicted_pairs": 6357,
+      "candidate_recall": 0.998047419804742,
+      "end_to_end": {
+        "tp": 6357,
+        "fp": 0,
+        "fn": 813,
+        "precision": 1.0,
+        "recall": 0.8866108786610879,
+        "f1": 0.9398979818141494
+      },
+      "conditional": {
+        "tp": 6357,
+        "fp": 0,
+        "fn": 799,
+        "precision": 1.0,
+        "recall": 0.8883454443823365,
+        "f1": 0.9408717531266189
+      },
+      "record_coverage": 0.8866108786610879,
+      "precision_wilson95_descriptive": [
+        0.9993960547610556,
+        1.0000000000000002
+      ],
+      "clusters": {
+        "overmerged_clusters": 0,
+        "records_in_overmerged_clusters": 0,
+        "largest_wrong_cluster": 0,
+        "b_cubed_precision": 1.0,
+        "b_cubed_recall": 0.9433054393305439
+      },
+      "review_pairs": 20976
+    }
+  },
+  "seconds": {
+    "input_preflight": 0.2025071999996726,
+    "read_train": 0.058221299999786424,
+    "fit_splink": 2.4437278999994305,
+    "validation_candidates": 0.42624090000026627,
+    "validation_splink": 1.1040083000007144,
+    "test_candidates": 0.49317940000037197,
+    "test_baselines": 0.14381970000067668,
+    "test_splink": 0.8630725000002712,
+    "test_resolve_exact": 0.20761189999939234,
+    "test_resolve_fuzzy": 0.2224000000005617,
+    "test_resolve_splink": 0.23836490000030608,
+    "full_scale_candidates": 5.967362299999877,
+    "full_scale_splink": 15.16616029999932,
+    "full_scale_resolve": 9.059558999999354
+  },
+  "total_seconds": 46.464650199999596,
+  "process_peak_rss_bytes": 3961016320,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.13",
+  "logical_cpus": 12,
+  "ram_bytes": 33947549696,
+  "model_training": {
+    "records": 59764,
+    "seed": 20260912,
+    "training_feature_sha256": "d0cb6ddd34f0758f89a58538e43f743c4f94e9e7a20ed16ed7ce633515d97038",
+    "max_u_pairs": 1000000,
+    "em_blocks": [
+      "postcode",
+      "name"
+    ],
+    "splink_version": "4.0.17",
+    "unobserved_levels_using_splink_defaults": [
+      {
+        "comparison": "name",
+        "condition": "jaro_winkler_similarity(\"name_l\", \"name_r\") >= 0.95",
+        "missing": [
+          "u_probability"
+        ]
+      }
+    ],
+    "tf_policy": "name-lookup-frozen-from-train",
+    "calibrated": false
+  },
+  "limitations": [
+    "Closed-world clean registry overlap; not all unnumbered companies",
+    "GLEIF and CH are not independent business noise",
+    "Uncalibrated model probabilities",
+    "No human labels in A; B3 has no advantage from hidden identifiers",
+    "Wilson intervals describe pair counts, not independent entity-level confidence"
+  ]
+}

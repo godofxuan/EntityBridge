@@ -1,0 +1,14 @@
+{
+  "backend": "postgresql",
+  "worker_terminated": true,
+  "failure_boundary": "after_fsync_and_atomic_replace_before_database_registration",
+  "complete_orphan_file": true,
+  "orphan_bytes": 1144,
+  "orphan_not_registered": true,
+  "old_revision_readable": true,
+  "rerun_published": true,
+  "history_preserved": true,
+  "old_revision": "05551dbd-0a27-4f63-abc8-910cf28e59ec",
+  "recovered_revision": "e591ceb6-b19f-480c-b832-b698f48f8bdf",
+  "orphan_sha256": "3d3e98752b1b19ef9190ee7bed5cb75deb2b89a79cd340ea9a0c29cfef7d20bf"
+}

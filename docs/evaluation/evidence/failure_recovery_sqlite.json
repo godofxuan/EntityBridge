@@ -1,0 +1,14 @@
+{
+  "backend": "sqlite",
+  "worker_terminated": true,
+  "failure_boundary": "after_fsync_and_atomic_replace_before_database_registration",
+  "complete_orphan_file": true,
+  "orphan_bytes": 1144,
+  "orphan_not_registered": true,
+  "old_revision_readable": true,
+  "rerun_published": true,
+  "history_preserved": true,
+  "old_revision": "330437fd-673e-432e-a6b5-65dbb4161149",
+  "recovered_revision": "38e0dd4b-0b0b-4ca5-8451-bbc76e646b83",
+  "orphan_sha256": "fb16c68f1a0c0dd7e12ef4caffd6720981a748c7060fe63670929a3c3e65c012"
+}

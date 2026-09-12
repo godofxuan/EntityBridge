@@ -1,0 +1,15 @@
+{
+  "python": "3.12.13",
+  "versions": {
+    "splink": "4.0.17",
+    "duckdb": "1.5.5",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1"
+  },
+  "synthetic_only": true,
+  "training_records": 80,
+  "prediction_pairs": 40,
+  "frozen_tf_rows": 54,
+  "save_reload_unrelated_input_scores_equal": true,
+  "model_sha256": "c61300176ae95ee4007261236c9e52848956c1450aaffc64a8fbf41001c7e7f1"
+}

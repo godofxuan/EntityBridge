@@ -1,0 +1,146 @@
+{
+  "created_at": "2026-09-12T08:11:08.409899+00:00",
+  "kind": "A_real_cross_source",
+  "scope": "closed-world complete-truth subset, one clean GLEIF and one active CH record per known registry entity",
+  "requested_records": 100000,
+  "records": 100000,
+  "entities": 50000,
+  "split_records": {
+    "train": 59764,
+    "validation": 20000,
+    "test": 20236
+  },
+  "seed": 20260912,
+  "split_policy": "SHA256(entity, seed), 60/20/20",
+  "selection": "lowest seeded entity hash from complete overlap population",
+  "features": [
+    "record_id",
+    "record_version_id",
+    "source",
+    "name",
+    "address",
+    "city",
+    "postcode",
+    "country"
+  ],
+  "normalization_version": "nfkc-upper-punctuation-v1",
+  "feature_view_version": "identifier-missing-text-redaction-v2",
+  "null_after_projection_from_nonempty": {
+    "name": 6,
+    "address": 8
+  },
+  "parser_version": "official-v2",
+  "provenance": {
+    "derived_from_dataset_sha256": "c95b72fc6fc6bcdf185b41a2289f9736d558f94fc066808bc95539c8a1ae2d0a",
+    "parent_provenance": {
+      "sources": [
+        {
+          "path": "artifacts\\raw\\gleif_golden\\20260912-0000-gleif-goldencopy-lei2-golden-copy.csv.zip",
+          "source_url": "https://leidata-preview.gleif.org/storage/golden-copy-files/2026/09/12/1275275/20260912-0000-gleif-goldencopy-lei2-golden-copy.csv.zip",
+          "terms_url": "https://www.gleif.org/en/meta/lei-data-terms-of-use",
+          "downloaded_at": "2026-09-12T07:41:05.200510+00:00",
+          "source_published_at": "2026-09-12 00:00:00",
+          "bytes": 503085955,
+          "sha256": "4c349fb6023d616c2525abc8d2048e15547ab7259621580025a344efc325eeae",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Sat, 12 Sep 2026 01:44:07 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part1_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part1_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:29:00.853097+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 73152561,
+          "sha256": "4e6a7d930a709f7bdf51c0a4d83488a214c3bf588fc0350863da3ac08017956b",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:13:38 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part2_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part2_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:38:41.395287+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 73733013,
+          "sha256": "77b7be17c4e3bd8cb6cb5722b15146e84b4fabf878ff65aead53abdb2d150802",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:15:16 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part3_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part3_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:38:59.426311+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 73592405,
+          "sha256": "ecfc7ea4e508ff03ea7434651a15c7b12595a8dd22807e0b426031ddbadf5c44",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:15:39 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part4_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part4_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:39:06.387074+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 73763620,
+          "sha256": "88408c309527bcddd8006b19d180c48df51b9df6d95da7d99ef3e26cc8376168",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:17:11 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part5_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part5_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:39:15.887750+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 73524421,
+          "sha256": "e7036f8531df6180ef0fac3c214425be31649ee67ee0343ddb281a3082818a9c",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:19:43 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part6_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part6_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:40:25.892669+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 73582620,
+          "sha256": "d26c4ab6f2696d51b2d62abe122a8b7549238ab398c3732a5023831d801777d6",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:20:25 GMT"
+        },
+        {
+          "path": "artifacts\\raw\\companies_house\\BasicCompanyData-2026-09-01-part7_7.zip",
+          "source_url": "https://download.companieshouse.gov.uk/BasicCompanyData-2026-09-01-part7_7.zip",
+          "terms_url": "https://www.gov.uk/government/publications/companies-house-accreditation-to-information-fair-traders-scheme/public-task-copyright-and-crown-copyright",
+          "downloaded_at": "2026-09-12T07:40:40.980268+00:00",
+          "source_published_at": "2026-09-01",
+          "bytes": 51212754,
+          "sha256": "4caff219d74c0c0d6cfbe5f3d74aa4d984981ddd9cee6da3e72285fdff782ad5",
+          "parser_version": "official-v1",
+          "schema_version": "official-raw-v1",
+          "last_modified": "Mon, 07 Sep 2026 08:20:42 GMT"
+        }
+      ],
+      "audit_sha256": "abdddd48c5c693b7e132195ac1e7a3c24a2195a88842f44913ec259979c56572",
+      "build_script_sha256": "eacc10d0f8e8da9f27d25f895a75d29e407f520b03e4c95ef2ccd5259d833359"
+    },
+    "note": "same frozen real entity population; strict text identifier redaction added"
+  },
+  "files": {
+    "evaluator\\rich_records.jsonl": "66f5a8e2de1b37f10c3f5873f1ac04057cc131da05fecec29056b483919c0506",
+    "evaluator\\truth_map.parquet": "fbdaef8ad8916cbb3987772b9d6df6d6900efa3454f7939ff05c7cbd6b3e5a6b",
+    "matcher\\test.parquet": "84950404059f030919432ba8b39fdd59017cbf4934010bc6a1a356cabeed9e2a",
+    "matcher\\train.parquet": "642db66a8863097d281b82ba48a0b66f64049a8478930ca425f02066e9db881c",
+    "matcher\\validation.parquet": "2b53e8179e76cc57f9217b4056bad5e49736f0ba501d97cbf2c234ae0877f713"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "captioned verified screenshot walkthrough; no audio; not an uncut live recording",
+  "duration_seconds": 300,
+  "verified_frames": 600,
+  "frames_per_second": 2,
+  "chapters": [
+    [
+      "09-real-data.png",
+      45,
+      "真实双源：企业名称可能改变。登记号只供有标识入口与评估端使用。"
+    ],
+    [
+      "10-measurements.png",
+      55,
+      "新封存测试 7,170 家企业：精确名称 F1=0.9952，Splink=0.9399。没有掩盖无增益结果。"
+    ],
+    [
+      "01-directory.png",
+      20,
+      "切换到合成治理样例。初始 5 条来源记录被归入 3 个企业，存在一个错误桥接。"
+    ],
+    [
+      "02-review.png",
+      30,
+      "逐对查看名称、地址和评分依据。合成评分只用于演示治理，不进入真实算法统计。"
+    ],
+    [
+      "04-revoke-preview.png",
+      35,
+      "判定不同已将企业数改为 4。撤销旧判断前展示具体归属；撤销不必然拆分或合并。"
+    ],
+    [
+      "05-prepared.png",
+      20,
+      "撤销先生成候选版本。此时查询仍读取原发布版本，避免暴露半成品。"
+    ],
+    [
+      "03-history.png",
+      15,
+      "校验并发布后切换指针。建立、撤销与过期均为追加事件，历史判断不会消失。"
+    ],
+    [
+      "11-incremental.png",
+      50,
+      "固定模型下更名、删除、插入均逐边对照全量。旧新候选及受抑制边共同决定影响闭包。"
+    ],
+    [
+      "06-old-id.png",
+      15,
+      "旧企业 ID 返回拆分后的全部当前去向，不随机重定向到一个企业。"
+    ],
+    [
+      "07-historical.png",
+      15,
+      "指定历史版本仍能查询原来的 3 个成员及出处，导出也绑定固定版本。"
+    ]
+  ],
+  "screenshots_sha256": {
+    "09-real-data.png": "88459d1c8cb2d1237bc4f1176876b9f82b5a7292e9d89b447d4df0de1db317a5",
+    "10-measurements.png": "42ea7912b4ef23782a650e8021fe1f70fb746ce118fd6f889f765ec707b24e0e",
+    "01-directory.png": "282ff8deb461ae74dc485552b41bc812c6575ab89263460d923de8b0e78e8bcb",
+    "02-review.png": "030c0037d9ba48f72fc155e0ec49b2ae4e2de79c363234c3720363ba0d76c671",
+    "04-revoke-preview.png": "cab05056cdc951bbcfc66b5c8e7f4483bf598e789cf267f0a5d4d0b3d2b58cd4",
+    "05-prepared.png": "3ad91c3ff5ca1b8e226746beb90144e4c22ee6248fdb6bf43ac961c05528c532",
+    "03-history.png": "04bf96c64f98e5cd9396b617ec58d99eaf0eb00ba7029f4849696ddf5d55e1a3",
+    "11-incremental.png": "1c7afea5f7389bc7d396d880834eba209b21ef5b20cfb37fabd31a623ea2f834",
+    "06-old-id.png": "ad72d779c8479be35b7ff8f9dad93fa26e79b920b96ae4ec1ee90dea7cef55b0",
+    "07-historical.png": "eebfc401049d74255309abed81985965dddf6c89adda3f1684ebd99fc3b4cc30"
+  },
+  "video_sha256": "61ef311ece07f9b31333d85d19ae003388e17ae40469d269581f6f9b76d19e90",
+  "bytes": 942506
+}

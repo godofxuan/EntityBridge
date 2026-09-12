@@ -1,0 +1,63 @@
+{
+  "kind": "C_synthetic_changes_to_real_records",
+  "model": "c30093852ea3e51934c2dcddf42eed418ca79af22f1019d76472ce8ec874eec2",
+  "results": [
+    {
+      "scenario": "rename",
+      "changed_records": [
+        "00000562-2e4f-4119-b873-804024e3a685"
+      ],
+      "bucket_records": 2,
+      "rescored_pairs": 1,
+      "unchanged_pairs": 13032,
+      "records": 10000,
+      "full_pairs": 13033,
+      "affected_records": 2,
+      "mode": "incremental",
+      "reason": "old_new_candidate_closure",
+      "actual_rescored_predictions": 1,
+      "incremental_seconds": 0.36651379999966593,
+      "full_seconds": 1.1176235000002634,
+      "scores_equal_atol_1e-12": true,
+      "partitions_equal": true
+    },
+    {
+      "scenario": "delete",
+      "changed_records": [
+        "00000562-2e4f-4119-b873-804024e3a685"
+      ],
+      "bucket_records": 1,
+      "rescored_pairs": 0,
+      "unchanged_pairs": 13032,
+      "records": 9999,
+      "full_pairs": 13032,
+      "affected_records": 2,
+      "mode": "incremental",
+      "reason": "old_new_candidate_closure",
+      "actual_rescored_predictions": 0,
+      "incremental_seconds": 0.06864959999984421,
+      "full_seconds": 1.1562761000004684,
+      "scores_equal_atol_1e-12": true,
+      "partitions_equal": true
+    },
+    {
+      "scenario": "insert",
+      "changed_records": [
+        "ff38e47a-3aa8-4586-91d1-a4db4cc102d3"
+      ],
+      "bucket_records": 3,
+      "rescored_pairs": 1,
+      "unchanged_pairs": 13033,
+      "records": 10001,
+      "full_pairs": 13034,
+      "affected_records": 3,
+      "mode": "incremental",
+      "reason": "old_new_candidate_closure",
+      "actual_rescored_predictions": 1,
+      "incremental_seconds": 0.29461559999981546,
+      "full_seconds": 1.2245582000005015,
+      "scores_equal_atol_1e-12": true,
+      "partitions_equal": true
+    }
+  ]
+}

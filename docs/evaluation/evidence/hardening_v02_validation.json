@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "verified_at": "2026-09-12T11:41:00.471971+00:00",
+  "full_suite": {
+    "passed": 104,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 14.34,
+    "postgres_store_enabled": true,
+    "postgres_recovery_enabled": true,
+    "log_sha256": "6888929bb656fe617e2608f0eafb01eb46593e9cc7113970c158dd005ac85b04",
+    "scope": "One full pytest invocation with actual PostgreSQL isolation and recovery enabled; not 104 PostgreSQL-only tests"
+  },
+  "prior_integration_attempt": {
+    "passed": 100,
+    "failed": 3,
+    "reason": "Independent oracle still expected the old scored-row display states while manual-status fix was being integrated; updated explicit reference contract and added new randomized cases, then reran full suite.",
+    "log_sha256": "b9d03f1de4005f5ee2ff04a93ff35a1cb06751bca77efc0afb936d9eb2d9f97a"
+  },
+  "lint": "ruff passed",
+  "git_diff_check": "passed",
+  "wheel": {
+    "version": "0.2.0",
+    "bytes": 45002,
+    "sha256": "64208f901ae6c440635f358de4544bee2429b320289141249f68874b3470bccb",
+    "archive_members": 22,
+    "isolated_install_pages": {
+      "/health": 200,
+      "/": 200,
+      "/reviews": 200,
+      "/history": 200,
+      "/static/app.css": 200
+    },
+    "synthetic_entities": 3
+  },
+  "real_workflow": "See real_workflow_10k_v02.json; actual PostgreSQL and ASGI TestClient, not a network throughput benchmark.",
+  "warnings": [
+    "Third-party Starlette/httpx deprecations",
+    "Pytest cache directory permission warning; test execution completed"
+  ],
+  "remote_ci": "Tracked separately by the public GitHub Actions run; not inferred from local checks.",
+  "test_logs": "Retained locally; excluded from public export because they contain machine-specific paths."
+}

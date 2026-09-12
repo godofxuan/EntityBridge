@@ -1,0 +1,200 @@
+{
+  "kind": "A_real_cross_source",
+  "full_scale_records": 10000,
+  "full_scale_candidates": 11309,
+  "full_scale_entities": 6393,
+  "test_records": 2020,
+  "test_true_entities": 1010,
+  "test_source_counts": {
+    "companies_house": 1010,
+    "gleif": 1010
+  },
+  "test_candidate_reduction": 0.9989638270757769,
+  "results": {
+    "exact": {
+      "threshold": 1.0,
+      "known_positive_pairs": 1010,
+      "candidates": 1057,
+      "predicted_pairs": 786,
+      "candidate_recall": 0.7871287128712872,
+      "end_to_end": {
+        "tp": 786,
+        "fp": 0,
+        "fn": 224,
+        "precision": 1.0,
+        "recall": 0.7782178217821782,
+        "f1": 0.8752783964365256
+      },
+      "conditional": {
+        "tp": 786,
+        "fp": 0,
+        "fn": 9,
+        "precision": 1.0,
+        "recall": 0.9886792452830189,
+        "f1": 0.9943074003795066
+      },
+      "record_coverage": 0.7782178217821782,
+      "precision_wilson95_descriptive": [
+        0.9951362399752052,
+        1.0
+      ],
+      "clusters": {
+        "overmerged_clusters": 0,
+        "records_in_overmerged_clusters": 0,
+        "largest_wrong_cluster": 0,
+        "b_cubed_precision": 1.0,
+        "b_cubed_recall": 0.8891089108910891
+      },
+      "review_pairs": 0
+    },
+    "fuzzy": {
+      "threshold": 0.98,
+      "known_positive_pairs": 1010,
+      "candidates": 1057,
+      "predicted_pairs": 786,
+      "candidate_recall": 0.7871287128712872,
+      "end_to_end": {
+        "tp": 786,
+        "fp": 0,
+        "fn": 224,
+        "precision": 1.0,
+        "recall": 0.7782178217821782,
+        "f1": 0.8752783964365256
+      },
+      "conditional": {
+        "tp": 786,
+        "fp": 0,
+        "fn": 9,
+        "precision": 1.0,
+        "recall": 0.9886792452830189,
+        "f1": 0.9943074003795066
+      },
+      "record_coverage": 0.7782178217821782,
+      "precision_wilson95_descriptive": [
+        0.9951362399752052,
+        1.0
+      ],
+      "clusters": {
+        "overmerged_clusters": 0,
+        "records_in_overmerged_clusters": 0,
+        "largest_wrong_cluster": 0,
+        "b_cubed_precision": 1.0,
+        "b_cubed_recall": 0.8891089108910891
+      },
+      "review_pairs": 106
+    },
+    "splink": {
+      "threshold": 0.999,
+      "known_positive_pairs": 1010,
+      "candidates": 1057,
+      "predicted_pairs": 735,
+      "candidate_recall": 0.7871287128712872,
+      "end_to_end": {
+        "tp": 725,
+        "fp": 10,
+        "fn": 285,
+        "precision": 0.9863945578231292,
+        "recall": 0.7178217821782178,
+        "f1": 0.8309455587392549
+      },
+      "conditional": {
+        "tp": 725,
+        "fp": 10,
+        "fn": 70,
+        "precision": 0.9863945578231292,
+        "recall": 0.9119496855345912,
+        "f1": 0.9477124183006537
+      },
+      "record_coverage": 0.7178217821782178,
+      "precision_wilson95_descriptive": [
+        0.9751377383859442,
+        0.9925933693372809
+      ],
+      "clusters": {
+        "overmerged_clusters": 5,
+        "records_in_overmerged_clusters": 20,
+        "largest_wrong_cluster": 4,
+        "b_cubed_precision": 0.995049504950495,
+        "b_cubed_recall": 0.8589108910891089
+      },
+      "review_pairs": 244
+    },
+    "splink_constrained_no_human_labels": {
+      "threshold": 0.999,
+      "known_positive_pairs": 1010,
+      "candidates": 1057,
+      "predicted_pairs": 735,
+      "candidate_recall": 0.7871287128712872,
+      "end_to_end": {
+        "tp": 725,
+        "fp": 10,
+        "fn": 285,
+        "precision": 0.9863945578231292,
+        "recall": 0.7178217821782178,
+        "f1": 0.8309455587392549
+      },
+      "conditional": {
+        "tp": 725,
+        "fp": 10,
+        "fn": 70,
+        "precision": 0.9863945578231292,
+        "recall": 0.9119496855345912,
+        "f1": 0.9477124183006537
+      },
+      "record_coverage": 0.7178217821782178,
+      "precision_wilson95_descriptive": [
+        0.9751377383859442,
+        0.9925933693372809
+      ],
+      "clusters": {
+        "overmerged_clusters": 5,
+        "records_in_overmerged_clusters": 20,
+        "largest_wrong_cluster": 4,
+        "b_cubed_precision": 0.995049504950495,
+        "b_cubed_recall": 0.8589108910891089
+      },
+      "review_pairs": 244
+    }
+  },
+  "seconds": {
+    "read_train": 0.023394299999381474,
+    "fit_splink": 1.0233339000005799,
+    "validation_candidates": 0.013179099999433674,
+    "validation_splink": 2.644611200000327,
+    "test_candidates": 0.016296699999656994,
+    "test_baselines": 0.04794309999942925,
+    "test_splink": 2.794481700000688,
+    "test_resolve_exact": 0.006985699999859207,
+    "test_resolve_fuzzy": 0.004362200000286975,
+    "test_resolve_splink": 0.004635199999938777,
+    "full_scale_candidates": 0.14218530000016472,
+    "full_scale_splink": 28.762620499999684,
+    "full_scale_resolve": 0.09274240000013378
+  },
+  "total_seconds": 35.760187199999564,
+  "process_peak_rss_bytes": 330182656,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.13",
+  "logical_cpus": 12,
+  "ram_bytes": 33947549696,
+  "model_training": {
+    "records": 6042,
+    "seed": 20260912,
+    "max_u_pairs": 1000000,
+    "em_blocks": [
+      "postcode",
+      "name"
+    ],
+    "splink_version": "4.0.17",
+    "unobserved_levels_using_splink_defaults": [],
+    "tf_policy": "name-lookup-frozen-from-train",
+    "calibrated": false
+  },
+  "limitations": [
+    "Closed-world clean registry overlap; not all unnumbered companies",
+    "GLEIF and CH are not independent business noise",
+    "Uncalibrated model probabilities",
+    "No human labels in A; B3 has no advantage from hidden identifiers",
+    "Wilson intervals describe pair counts, not independent entity-level confidence"
+  ]
+}
