@@ -50,11 +50,13 @@ def seed_demo(store):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=["demo", "serve", "init-db", "worker", "submit-job", "job", "cancel-job", "retry-job",
-        "backup", "verify-backup", "restore-backup", "export-labels", "train-review-model",
+        "backup", "verify-backup", "restore-backup", "export-labels", "train-review-model", "train-review-ditto",
         "verify-projection", "rebuild-projection"])
     parser.add_argument("--portable-postgres", action="store_true")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--model", type=Path)
+    parser.add_argument("--base-model", type=Path, help="Local RoBERTa safetensors directory for Ditto training")
+    parser.add_argument("--device", default="cpu", help="Ditto training device, e.g. cpu or cuda; service inference uses CPU")
     parser.add_argument("--candidate-model", type=Path, help="Frozen training-only retriever for optional hybrid review candidates")
     parser.add_argument("--database-url", help="Database URL; DATABASE_URL environment is preferred for secrets")
     parser.add_argument("--artifact-root", type=Path, help="Identity artifact directory")
@@ -79,7 +81,7 @@ def main():
     root = Path.cwd()
     def show(value):
         print(json.dumps(value, ensure_ascii=False, default=str))
-    if args.command in {"verify-backup", "restore-backup", "train-review-model"}:
+    if args.command in {"verify-backup", "restore-backup", "train-review-model", "train-review-ditto"}:
         if args.input is None:
             parser.error("This command requires --input")
         if args.command == "verify-backup":
@@ -91,6 +93,13 @@ def main():
             if not target_url or args.output is None:
                 parser.error("Restore requires an explicit empty target database and --output artifact directory")
             show(restore_backup(args.input, target_url, args.output))
+        elif args.command == "train-review-ditto":
+            from .ditto_learning import train_review_ditto
+            if args.output is None or args.base_model is None:
+                parser.error("Ditto training requires --base-model and --output")
+            if args.calibrate:
+                parser.error("Ditto probabilities are uncalibrated; --calibrate is not supported")
+            show(train_review_ditto(args.input, args.output, base_model=args.base_model, device=args.device))
         else:
             from .learning import train_candidate_model
             if args.output is None:

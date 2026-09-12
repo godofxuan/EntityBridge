@@ -1,0 +1,71 @@
+{
+  "correction": {
+    "official_original_protocol": false,
+    "original_positive_fraction": 0.2,
+    "original_statistics": {
+      "dependency_groups": 1,
+      "hard_negative": 1000,
+      "largest_group_pair_fraction": 1.0,
+      "largest_group_pairs": 2500,
+      "negative": 2000,
+      "pairs": 2500,
+      "positive": 500,
+      "products": 500,
+      "random_negative": 1000,
+      "records": 1000
+    },
+    "protocol": "remove_validation_pairs_touching_training_product_ids_before_test",
+    "removed_negative": 1353,
+    "removed_pairs_sha256": "9ddfe1e39084e0d786e89318f7dcaecfa74c9a07e1508f20611d16b0f960452f",
+    "removed_positive": 250,
+    "retained_pairs_sha256": "abc4706ffcf221216a02f4206f0d66b87244351b432cd485f3d0827f6920b952",
+    "retained_positive_fraction": 0.2787068004459309,
+    "retained_statistics": {
+      "dependency_groups": 4,
+      "hard_negative": 387,
+      "largest_group_pair_fraction": 0.9966555183946488,
+      "largest_group_pairs": 894,
+      "negative": 647,
+      "pairs": 897,
+      "positive": 250,
+      "products": 250,
+      "random_negative": 260,
+      "records": 500
+    },
+    "test_used_for_correction": false
+  },
+  "original_overlap": {
+    "train:validation": {
+      "shared_offer_ids_sha256": "a6f36113434208a8e88fe11246e3b634205e2bee739e248d07ef6f3fef0d33c3",
+      "shared_offers": 110,
+      "shared_product_ids_sha256": "11004b746cdcac119f4db4e5b7de923ce7f2f4c30eb999074b7307ead61a6d66",
+      "shared_products": 250
+    }
+  },
+  "statistics": {
+    "train": {
+      "dependency_groups": 1,
+      "hard_negative": 1000,
+      "largest_group_pair_fraction": 1.0,
+      "largest_group_pairs": 2500,
+      "negative": 2000,
+      "pairs": 2500,
+      "positive": 500,
+      "products": 500,
+      "random_negative": 1000,
+      "records": 1000
+    },
+    "validation": {
+      "dependency_groups": 4,
+      "hard_negative": 387,
+      "largest_group_pair_fraction": 0.9966555183946488,
+      "largest_group_pairs": 894,
+      "negative": 647,
+      "pairs": 897,
+      "positive": 250,
+      "products": 250,
+      "random_negative": 260,
+      "records": 500
+    }
+  }
+}

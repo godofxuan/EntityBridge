@@ -8,7 +8,8 @@ from .matching_service import run_matching
 def pipeline_fingerprint():
     package = Path(__file__).parent
     files = ("matching_service.py", "matching.py", "candidates.py", "normalization.py", "resolution.py",
-             "incremental.py", "identity.py", "store.py", "query_projection.py", "worker.py")
+             "incremental.py", "identity.py", "store.py", "query_projection.py", "worker.py",
+             "ditto.py", "vendor/ditto_model.py")
     pipeline = hashlib.sha256()
     for name in files:
         pipeline.update(name.encode() + b"\0" + (package / name).read_bytes())
@@ -23,6 +24,14 @@ def model_fingerprints(settings, model_path=None, candidate_model_path=None):
             raise ValueError("A frozen Splink model must be configured")
         from .matching import SplinkMatcher
         result["model"] = SplinkMatcher.load(model_path).fingerprint
+    if settings.method == "ditto":
+        if model_path is None:
+            raise ValueError("A frozen company-domain Ditto model must be configured")
+        from .ditto import bundle_manifest
+        manifest = bundle_manifest(model_path)
+        if manifest["domain"] != "company":
+            raise ValueError("Company matching requires a company-domain Ditto model")
+        result["model"] = manifest["fingerprint"]
     if settings.candidate_mode == "hybrid":
         if candidate_model_path is None:
             raise ValueError("A frozen candidate model must be configured")

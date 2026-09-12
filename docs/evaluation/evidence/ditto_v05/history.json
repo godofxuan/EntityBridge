@@ -1,0 +1,382 @@
+[
+  {
+    "elapsed_seconds": 99.49477710000065,
+    "epoch": 1,
+    "loss": 0.552916748046875,
+    "selected": true,
+    "validation": {
+      "cost_10_1": {
+        "cost": 250.0,
+        "decision_rule": "reject_all",
+        "f1": 0.0,
+        "fn": 250,
+        "fp": 0,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": null,
+        "predicted_pairs": 0,
+        "recall": 0.0,
+        "threshold": null,
+        "tn": 647,
+        "tp": 0,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 2674.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.533715925394548,
+        "fn": 64,
+        "fp": 261,
+        "objective": "maximum_validation_f1",
+        "precision": 0.4161073825503356,
+        "predicted_pairs": 447,
+        "recall": 0.744,
+        "threshold": 0.18498119711875916,
+        "tn": 386,
+        "tp": 186,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 352.84834769999725,
+    "epoch": 2,
+    "loss": 0.40508579559326174,
+    "selected": true,
+    "validation": {
+      "cost_10_1": {
+        "cost": 245.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.0392156862745098,
+        "fn": 245,
+        "fp": 0,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 1.0,
+        "predicted_pairs": 5,
+        "recall": 0.02,
+        "threshold": 0.8851719498634338,
+        "tn": 647,
+        "tp": 5,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 1273.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.6924428822495606,
+        "fn": 53,
+        "fp": 122,
+        "objective": "maximum_validation_f1",
+        "precision": 0.6175548589341693,
+        "predicted_pairs": 319,
+        "recall": 0.788,
+        "threshold": 0.2864539325237274,
+        "tn": 525,
+        "tp": 197,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 580.3366315000021,
+    "epoch": 3,
+    "loss": 0.30710670623779296,
+    "selected": true,
+    "validation": {
+      "cost_10_1": {
+        "cost": 249.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.00796812749003984,
+        "fn": 249,
+        "fp": 0,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 1.0,
+        "predicted_pairs": 1,
+        "recall": 0.004,
+        "threshold": 0.7482954263687134,
+        "tn": 647,
+        "tp": 1,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 1176.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7195767195767195,
+        "fn": 46,
+        "fp": 113,
+        "objective": "maximum_validation_f1",
+        "precision": 0.6435331230283912,
+        "predicted_pairs": 317,
+        "recall": 0.816,
+        "threshold": 0.4746337831020355,
+        "tn": 534,
+        "tp": 204,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 673.371067,
+    "epoch": 4,
+    "loss": 0.24701404571533203,
+    "selected": true,
+    "validation": {
+      "cost_10_1": {
+        "cost": 219.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.4369230769230769,
+        "fn": 179,
+        "fp": 4,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.9466666666666667,
+        "predicted_pairs": 75,
+        "recall": 0.284,
+        "threshold": 0.7518137693405151,
+        "tn": 643,
+        "tp": 71,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 753.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7391304347826086,
+        "fn": 63,
+        "fp": 69,
+        "objective": "maximum_validation_f1",
+        "precision": 0.73046875,
+        "predicted_pairs": 256,
+        "recall": 0.748,
+        "threshold": 0.10016258805990219,
+        "tn": 578,
+        "tp": 187,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 929.2438105999972,
+    "epoch": 5,
+    "loss": 0.2028222671508789,
+    "selected": true,
+    "validation": {
+      "cost_10_1": {
+        "cost": 240.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.27303754266211605,
+        "fn": 210,
+        "fp": 3,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.9302325581395349,
+        "predicted_pairs": 43,
+        "recall": 0.16,
+        "threshold": 0.9145857691764832,
+        "tn": 644,
+        "tp": 40,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 730.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7722007722007722,
+        "fn": 50,
+        "fp": 68,
+        "objective": "maximum_validation_f1",
+        "precision": 0.746268656716418,
+        "predicted_pairs": 268,
+        "recall": 0.8,
+        "threshold": 0.4704778492450714,
+        "tn": 579,
+        "tp": 200,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 1134.4425447999965,
+    "epoch": 6,
+    "loss": 0.18033889656066895,
+    "selected": true,
+    "validation": {
+      "cost_10_1": {
+        "cost": 222.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.5901639344262295,
+        "fn": 142,
+        "fp": 8,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.9310344827586207,
+        "predicted_pairs": 116,
+        "recall": 0.432,
+        "threshold": 0.9256662726402283,
+        "tn": 639,
+        "tp": 108,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 742.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7878787878787878,
+        "fn": 42,
+        "fp": 70,
+        "objective": "maximum_validation_f1",
+        "precision": 0.7482014388489209,
+        "predicted_pairs": 278,
+        "recall": 0.832,
+        "threshold": 0.4500062167644501,
+        "tn": 577,
+        "tp": 208,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 1223.0789608999985,
+    "epoch": 7,
+    "loss": 0.13808383598327637,
+    "selected": false,
+    "validation": {
+      "cost_10_1": {
+        "cost": 209.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.33774834437086093,
+        "fn": 199,
+        "fp": 1,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.9807692307692307,
+        "predicted_pairs": 52,
+        "recall": 0.204,
+        "threshold": 0.9868519902229309,
+        "tn": 646,
+        "tp": 51,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 704.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7671232876712328,
+        "fn": 54,
+        "fp": 65,
+        "objective": "maximum_validation_f1",
+        "precision": 0.7509578544061303,
+        "predicted_pairs": 261,
+        "recall": 0.784,
+        "threshold": 0.12052372843027115,
+        "tn": 582,
+        "tp": 196,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 1307.9074325999973,
+    "epoch": 8,
+    "loss": 0.10675939750671387,
+    "selected": false,
+    "validation": {
+      "cost_10_1": {
+        "cost": 203.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.37012987012987014,
+        "fn": 193,
+        "fp": 1,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.9827586206896551,
+        "predicted_pairs": 58,
+        "recall": 0.228,
+        "threshold": 0.9579983353614807,
+        "tn": 646,
+        "tp": 57,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 809.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7628083491461101,
+        "fn": 49,
+        "fp": 76,
+        "objective": "maximum_validation_f1",
+        "precision": 0.7256317689530686,
+        "predicted_pairs": 277,
+        "recall": 0.804,
+        "threshold": 0.007261323276907206,
+        "tn": 571,
+        "tp": 201,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 1392.6697845000017,
+    "epoch": 9,
+    "loss": 0.08521024265289306,
+    "selected": false,
+    "validation": {
+      "cost_10_1": {
+        "cost": 201.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.5189504373177842,
+        "fn": 161,
+        "fp": 4,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.956989247311828,
+        "predicted_pairs": 93,
+        "recall": 0.356,
+        "threshold": 0.9967746138572693,
+        "tn": 643,
+        "tp": 89,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 713.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7680311890838206,
+        "fn": 53,
+        "fp": 66,
+        "objective": "maximum_validation_f1",
+        "precision": 0.7490494296577946,
+        "predicted_pairs": 263,
+        "recall": 0.788,
+        "threshold": 0.12302009016275406,
+        "tn": 581,
+        "tp": 197,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  },
+  {
+    "elapsed_seconds": 1522.477649499997,
+    "epoch": 10,
+    "loss": 0.07507001390457153,
+    "selected": false,
+    "validation": {
+      "cost_10_1": {
+        "cost": 212.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.5131195335276968,
+        "fn": 162,
+        "fp": 5,
+        "objective": "minimum_validation_10FP_plus_FN",
+        "precision": 0.946236559139785,
+        "predicted_pairs": 93,
+        "recall": 0.352,
+        "threshold": 0.9758598208427429,
+        "tn": 642,
+        "tp": 88,
+        "unknown_predicted_pairs": 0
+      },
+      "f1": {
+        "cost": 896.0,
+        "decision_rule": "score_gte_threshold",
+        "f1": 0.7569573283858998,
+        "fn": 46,
+        "fp": 85,
+        "objective": "maximum_validation_f1",
+        "precision": 0.7058823529411765,
+        "predicted_pairs": 289,
+        "recall": 0.816,
+        "threshold": 0.009905099868774414,
+        "tn": 562,
+        "tp": 204,
+        "unknown_predicted_pairs": 0
+      }
+    }
+  }
+]

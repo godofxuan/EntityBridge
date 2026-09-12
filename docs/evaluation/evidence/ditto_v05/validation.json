@@ -1,0 +1,35 @@
+{
+  "full_suite": {
+    "tests": "321",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "89.771"
+  },
+  "postgresql_fixtures_enabled": true,
+  "optional_neural_enabled": true,
+  "additional_publication_tests": {
+    "passed": 4,
+    "new_license_regression": 1
+  },
+  "ruff": "passed",
+  "pip_check": "passed",
+  "wheel": {
+    "version": "0.5.0",
+    "wheel_sha256": "5d9da8c0eda7a056835bf78fd393a34b3c8d8ee01562ceb5813dddebc85bc55d",
+    "wheel_bytes": 114756,
+    "application_files_byte_identical": 38,
+    "outside_source_import": true,
+    "released_v04_to_v05_upgrade": true,
+    "schema_version": "0005",
+    "published_entities_preserved": true,
+    "projection_full_verification": true,
+    "ui_api_smoke": "passed",
+    "independent_cli_worker_succeeded_without_publishing": true
+  },
+  "training_snapshot_release_differences": [
+    "pyproject.toml"
+  ],
+  "raw_data_or_pair_predictions_published": false,
+  "pytest_console_seconds": 96.52
+}

@@ -21,23 +21,33 @@ def run_matching(store, settings, model_path=None, candidate_model_path=None, *,
         model = SplinkMatcher.load(model_path)
         score = model.score
         model_version = model.fingerprint
+    elif settings.method == "ditto":
+        if not model_path:
+            raise ValueError("A frozen company-domain Ditto model must be configured")
+        from .ditto import DittoMatcher
+        model = DittoMatcher.load(model_path)
+        if model.manifest["domain"] != "company":
+            raise ValueError("Company matching requires a company-domain Ditto model")
+        score = model.score
+        model_version = model.fingerprint
     else:
         score = lambda rows, pairs: score_baselines(rows, pairs)[settings.method]
         model_version = settings.method + "-name-v1"
     if expected_models is not None:
         from .jobs import StaleJob
-        if ((settings.method == "splink" and model_version != expected_models.get("model"))
+        if ((settings.method in {"splink", "ditto"} and model_version != expected_models.get("model"))
                 or (retriever is not None and retriever.fingerprint != expected_models.get("candidate_model"))):
             raise StaleJob("Loaded matching model differs from the submitted frozen model")
+    review_only = retriever is not None or settings.method == "ditto"
     policy = digest({"model": model_version, "threshold": settings.threshold,
         "normalization": NORMALIZATION_VERSION, "feature_view": FEATURE_VIEW_VERSION,
         "review_threshold": settings.review_threshold, "blocking": BLOCKING_VERSION, "resolver": "greedy-v2-manual-status",
         "candidate_mode": settings.candidate_mode, "candidate_model": retriever.fingerprint if retriever else None,
-        "automatic_merge": retriever is None})
+        "automatic_merge": not review_only})
     parent = store.current_revision()
     previous = store._payload(parent) if parent else None
     refresh = None
-    if settings.incremental and retriever is None and previous and previous["policy_version"] == policy:
+    if settings.incremental and not review_only and previous and previous["policy_version"] == policy:
         from .incremental import refresh_scores
         old_records = [matcher_view(row, key, row["record_version_id"]) for key, row in previous["records"].items()]
         edges, refresh = refresh_scores(old_records, records, previous["edges"], score)
@@ -50,13 +60,13 @@ def run_matching(store, settings, model_path=None, candidate_model_path=None, *,
     else:
         candidates = generate_candidates(records, retriever=retriever)
         edges = score(records, candidates)
-    if retriever is not None:
+    if review_only:
         edges = [{**edge, "auto_merge": False} for edge in edges]
     candidate = store.prepare_revision(edges, policy_version=policy, threshold=settings.threshold,
         review_threshold=settings.review_threshold, expected_input_hash=digest(raw), verify_full=settings.verify_full,
-        force_full=retriever is not None, force_full_reason="global_candidate_index",
+        force_full=review_only, force_full_reason="global_candidate_index" if retriever else "neural_review_candidates",
         basis_guard=basis_guard, commit_hook=commit_hook)
     return {**candidate, "candidate_pairs": len(edges), "records": len(records), "method": settings.method,
             "score_refresh": refresh, "candidate_mode": settings.candidate_mode,
-            "automatic_merge": retriever is None}
+            "automatic_merge": not review_only}
 

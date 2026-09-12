@@ -69,3 +69,16 @@ def test_wheel_without_web_resources_fails_publication_check(tmp_path):
         archive.writestr("entitybridge/../../.env", "synthetic")
     with pytest.raises(ValueError, match="Unsafe wheel member"):
         publication.check_wheel(wheel)
+
+
+def test_vendored_ditto_wheel_requires_the_upstream_license(tmp_path):
+    wheel = tmp_path / "entitybridge-0.5.0-py3-none-any.whl"
+    with zipfile.ZipFile(wheel, "w") as archive:
+        archive.writestr("entitybridge/web/templates/app.html", "<main>Fixture</main>")
+        archive.writestr("entitybridge/web/static/app.css", "main {color: black;}")
+        archive.writestr("entitybridge/vendor/ditto_model.py", "# Synthetic packaging fixture")
+    with pytest.raises(ValueError, match="DITTO_LICENSE"):
+        publication.check_wheel(wheel)
+    with zipfile.ZipFile(wheel, "a") as archive:
+        archive.writestr("entitybridge/vendor/DITTO_LICENSE.md", "Synthetic license fixture")
+    assert publication.check_wheel(wheel) == 4

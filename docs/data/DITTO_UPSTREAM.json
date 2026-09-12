@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/megagonlabs/ditto",
+  "revision": "52985564a93fb11308439516d3e17a033d43ec8f",
+  "license": "Apache-2.0",
+  "original_files": {
+    "LICENSE": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+    "ditto_light/ditto.py": "03b8048c91a25eef9374ac60fb95ff22667d3650e8e556b8cc0ee5522674c105",
+    "ditto_light/augment.py": "4d11ac00dc648cf75d429abd6289faa9100edfcb54a96eb4dde10a77e85770df",
+    "ditto_light/dataset.py": "f181691c77da71cb58c382c571ad8025a2065a93b42a88612924940ca8c73441"
+  },
+  "changes": [
+    "Vendored augmentation with explicit label-slice bug fix; only del used",
+    "Model core adapted for attention masks and injected encoder",
+    "Use torch AdamW/AMP; no Apex or upstream train/evaluate loop",
+    "Test features remain unopened until validation/model freeze"
+  ]
+}

@@ -57,7 +57,7 @@ class ImportRequest(StrictModel):
 
 
 class RunRequest(StrictModel):
-    method: Literal["exact", "fuzzy", "splink"] = "splink"
+    method: Literal["exact", "fuzzy", "splink", "ditto"] = "splink"
     threshold: float = Field(default=0.9, ge=0, le=1)
     review_threshold: float = Field(default=0.5, ge=0, le=1)
     incremental: bool = True
@@ -102,7 +102,7 @@ class RevokeRequest(StrictModel):
 
 def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_path=None, local_demo=False,
                oidc_verifier=None):
-    app = FastAPI(title="EntityBridge", version="0.4.0")
+    app = FastAPI(title="EntityBridge", version="0.5.0")
     from .telemetry import RequestMetrics
     metrics = RequestMetrics()
     tokens = dict(tokens or {})
@@ -420,8 +420,11 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     @app.get("/tasks", response_class=HTMLResponse)
     def task_page(request: Request, _identity=Depends(admin)):
         from .jobs import JobQueue
+        model_method = None
+        if model_path is not None:
+            model_method = "ditto" if (Path(model_path) / "model.safetensors").is_file() else "splink"
         return render(request, "tasks", jobs=JobQueue(store).list_jobs(limit=100),
-                      request_key=str(uuid4()), model_configured=model_path is not None)
+                      request_key=str(uuid4()), model_method=model_method)
 
     @app.post("/ui/jobs")
     def ui_submit_job(idempotency_key: str = Form(), method: str = Form("exact"),

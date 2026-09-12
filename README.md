@@ -8,13 +8,15 @@
 
 [快速运行](#快速运行) · [实际结果](#实际结果) · [公开基准](#公开基准与评测协议) · [架构](#逻辑结构) · [复现](#测试与实验复现) · [成熟度与岗位定位](docs/review/MATURITY_AND_POSITIONING.md) · [v0.4 验证记录](docs/evaluation/V04_VALIDATION.md)
 
+**v0.5 接入 Ditto / RoBERTa 神经匹配：** 采用上游 CLS、MixDA 与删除增强，保留 Apache-2.0 来源和许可证；提供验证集选模、双阈值对比、冻结 safetensors 产物及公司审核数据训练入口。WDC 商品配对复测中，同口径 F1 从商品逻辑回归的 **34.36% 提高至 61.96%**；但高误合并成本规则下仍更差，保留人工复核。商品结果不外推为公司质量。[实际结果](docs/evaluation/DITTO_RESULTS.md) · [验证](docs/evaluation/V05_VALIDATION.md) · [设计](docs/decisions/014-ditto-neural-matching.md) · [安装与复现](docs/evaluation/DITTO_REPRODUCTION.md)
+
 **v0.4 增加了任务执行、复核学习与运维验证：**
 
 - **持久后台任务**：提交、幂等、租约、取消、重试与崩溃恢复；候选版本和任务成功原子提交，正式发布单独进行。[ADR 009](docs/decisions/009-durable-jobs.md)
 - **可审计复核学习**：导出有效人工判断，按依赖组件划分训练/验证/校准/测试，冻结候选模型；比较随机和主动采样。固定预算模拟未发现 F1 提升，不自动部署模型。[ADR 010](docs/decisions/010-review-learning.md)
 - **备份、监控和真实 HTTP 实测**：双后端逻辑备份/恢复验证、受限指标与就绪接口，10k 合成记录的实际网络负载点。[ADR 011](docs/decisions/011-operations.md)
 - **身份与工作区边界**：验证已签发的 RS256 JWT 与工作区角色，独立数据库/产物/进程配置；保留本地静态令牌方式。[身份验证](docs/decisions/012-identity-boundary.md) · [隔离工作区](docs/decisions/013-workspace-isolation.md)
-- **更难的外部评测**：WDC 商品未见实体诊断，先审计并修正训练/验证重叠，再冻结四组方法进行测试；目前召回偏低，增加字段未改善声明的错误成本。[结果与限制](docs/evaluation/WDC_UNSEEN_RESULTS.md)
+- **更难的外部评测**：WDC 商品未见实体诊断，先审计并修正训练/验证重叠，再冻结四组方法进行测试；v0.4 四组基线在成本阈值下召回偏低，增加字段未改善声明的错误成本。[历史结果与限制](docs/evaluation/WDC_UNSEEN_RESULTS.md)
 
 v0.3 的餐馆/论文基准、成本与概率诊断、独立关系查询投影继续保留。[历史验证记录](docs/evaluation/V03_VALIDATION.md)
 
@@ -120,6 +122,7 @@ flowchart LR
 | `ingestion.py`、`normalization.py` | 来源解析、版本契约、无标识特征投影 |
 | `candidates.py`、`matching.py`、`evaluation.py` | 候选、第三方模型/基线、登记数据效果与完整性评估 |
 | `benchmarks.py`、`benchmark_metrics.py`、`supervised.py` | 公开部分标签适配、评测协议、仅用于实验的监督基线 |
+| `ditto.py`、`ditto_training.py`、`ditto_learning.py` | 冻结神经模型、验证集选模与公司人工标签训练 |
 | `resolution.py`、`identity.py`、`incremental.py` | 簇级约束、身份去向、受影响图重算 |
 | `store.py`、`schema.py`、`database.py`、`query_projection.py` | 来源版本、判断事件、迁移、事务发布与可重建查询投影 |
 | `api.py`、`web/` | HTTP 接口、权限和三页界面 |

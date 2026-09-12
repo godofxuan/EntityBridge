@@ -1,0 +1,74 @@
+{
+  "base_model": "FacebookAI/roberta-base",
+  "base_revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+  "base_weight_sha256": "5bde1d28afb363d0103324efeb5afc8b2b397fe5e04beabb9b1ef355255ade81",
+  "baselines": "Reuse historical frozen weights",
+  "checkpoint_objective": "validation F1",
+  "dataset": "WDC Products 80% corner cases / small train / 100% unseen test",
+  "device": "cuda",
+  "limitations": [
+    "Single seed with bounded local compute; not an official-paper score reproduction",
+    "Product-domain supplied-pair classification, not company quality or candidate recall",
+    "Both thresholds share a checkpoint chosen by validation F1; cost is a secondary diagnostic",
+    "Validation prevalence changes after overlap removal; no deployment calibration",
+    "No raw-data or trained-weight redistribution; dataset redistribution terms unestablished"
+  ],
+  "runtime": {
+    "numpy": "2.5.3",
+    "safetensors": "0.8.0",
+    "scikit-learn": "1.9.1",
+    "torch": "2.9.1+cu128",
+    "transformers": "4.57.6"
+  },
+  "source_archives": {
+    "80pair.zip": {
+      "bytes": 21985075,
+      "sha256": "b2044939cee5ea6f12148a2f3551508de3cb77660dfc91767c44daaf9d8a9c4a",
+      "url": "https://data.dws.informatik.uni-mannheim.de/largescaleproductcorpus/data/wdc-products/80pair.zip"
+    },
+    "val_pair.zip": {
+      "bytes": 26336166,
+      "sha256": "15bb323e9aff4771be1baaeb048c9b6ef7459446ccbadca61cc9cb1272cb4143",
+      "url": "https://data.dws.informatik.uni-mannheim.de/largescaleproductcorpus/data/wdc-products/val_pair.zip"
+    }
+  },
+  "source_code_sha256": {
+    "pyproject.toml": "dba47c58a25c30bcba367b6fc43b7174f97d2b89fc44c304df98b1f16d12fbf9",
+    "scripts/run_ditto_benchmark.py": "ed32d398b348f8c1b625f1b3d90f0aa817c22a741a5570db396f42e70e7d86e5",
+    "scripts/run_wdc_benchmark.py": "579ab22d908d53c151fda581ab85ba211e372f8f22d0a12288d2732e4f4971e4",
+    "src/entitybridge/benchmark_metrics.py": "1ba79bf6eae8f6635818da4782aa95cc2c265ffcf4bcdb9dde34255a6b914ada",
+    "src/entitybridge/candidates.py": "f5aed6b1310d9382d54c3247ceb52227b8b07818403f3125ac744c7be54b40ab",
+    "src/entitybridge/ditto.py": "e039a0732ef284cf24550d93cadc8753bf30ee90161eea789f1d6338f0907dbd",
+    "src/entitybridge/ditto_training.py": "a520e298943e22130e74a16fbca6fe34058eef74d2eaebe66001b7e8752a42c1",
+    "src/entitybridge/matching.py": "273951915c1c1fb1b2c0561a5813095bedf5f1422593c775a88273f04c795496",
+    "src/entitybridge/normalization.py": "77395c12d93606a129ec4b85c5416322b7ff4c7632612a833efec086f390dae8",
+    "src/entitybridge/store.py": "a5d65bb12707ea49adbece4f6308b61b9ab0b09a81b8eced77995c7ee7a47b14",
+    "src/entitybridge/supervised.py": "ff3f27e27319fe49804bfd72abfe5e28485bb0c8665a4b296963779619f3599b",
+    "src/entitybridge/vendor/ditto_augment.py": "166a41428930e7a60a2c889d4564eb5461ae6555ad15ac340c62ebcae35d2b39",
+    "src/entitybridge/vendor/ditto_model.py": "b27729e9aa2d4482609946dc7c15f3f7c6281fa10cb0e20ff904217f611b1906",
+    "src/entitybridge/wdc_benchmark.py": "13ea714c3b9c988b785ab87d432253fd7df78a7e536fc4c6352eaac741ab638a"
+  },
+  "test_exposure": "WDC test previously scored in v0.3/v0.4",
+  "test_gate": "Model and thresholds written before test features are read",
+  "test_status": "exploratory-replayed",
+  "threshold_objectives": [
+    "validation F1",
+    "validation 10FP + FN"
+  ],
+  "training_config": {
+    "accumulation": 8,
+    "alpha_aug": 0.8,
+    "batch_size": 8,
+    "bf16": true,
+    "epochs": 20,
+    "gradient_checkpointing": true,
+    "learning_rate": 5e-05,
+    "max_length": 256,
+    "patience": 4,
+    "seed": 20260913,
+    "warmup_fraction": 0.06,
+    "weight_decay": 0.01
+  },
+  "validation": "Remove original validation pairs touching any training product; test unchanged",
+  "weight_hash_authority": "https://huggingface.co/FacebookAI/roberta-base/blob/main/model.safetensors"
+}

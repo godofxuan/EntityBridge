@@ -33,6 +33,12 @@ EntityBridge 自身尚未选择发布许可证，仓库没有添加项目 `LICEN
 
 可选 PostgreSQL 17.11 使用 [PostgreSQL 官方许可](https://www.postgresql.org/about/licence/)，Windows 二进制归档来自 [官方 Windows 下载入口](https://www.postgresql.org/download/windows/)链接的 EDB 发行。项目内归档的来源、字节数和 SHA256 保存在本地 `.tools/postgresql-manifest.json`；归档附属组件仍适用其各自许可。
 
+## 可选神经匹配组件
+
+[Ditto](https://github.com/megagonlabs/ditto) 的模型核心和数据增强代码在 revision `52985564a93fb11308439516d3e17a033d43ec8f` 上派生，许可证为 Apache-2.0。随本项目保留 [上游完整许可证](src/entitybridge/vendor/DITTO_LICENSE.md) 和 [原文件 SHA256/修改说明](docs/data/DITTO_UPSTREAM.json)，wheel 也包含许可证。修改涵盖正确的 padding attention mask、删除增强标签切片修复、本地安全格式权重边界及独立训练循环。算法来源归于 Ditto 作者，不称为 EntityBridge 自研。
+
+可选运行依赖包括 PyTorch 2.9.1（BSD-3-Clause 及其随附第三方 notices）、Transformers 4.57.6（Apache-2.0）、tokenizers 0.22.2（Apache-2.0）和 safetensors 0.8.0（Apache-2.0）。[RoBERTa 基础模型卡](https://huggingface.co/FacebookAI/roberta-base)声明 MIT。本项目未分发 CUDA/PyTorch 二进制、基础权重或微调权重；完整传递依赖版本在 [神经依赖锁文件](requirements-neural.lock)。
+
 ## 公开数据
 
 | 来源 | 本轮数据与条款 |

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "entitybridge"
-version = "0.4.0"
+version = "0.5.0"
 description = "Evidence-preserving company entity resolution and reversible identity governance"
 requires-python = ">=3.12,<3.14"
 dependencies = [
@@ -17,6 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.3", "hypothesis>=6.125", "ruff>=0.11"]
+neural = ["torch==2.9.1", "transformers==4.57.6", "safetensors>=0.6"]
 
 [project.scripts]
 entitybridge = "entitybridge.cli:main"
@@ -25,7 +26,7 @@ entitybridge = "entitybridge.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-entitybridge = ["web/templates/*.html", "web/static/*.css"]
+entitybridge = ["web/templates/*.html", "web/static/*.css", "vendor/DITTO_LICENSE.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -39,3 +40,6 @@ line-length = 110
 
 [tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = ["fastapi.Depends", "fastapi.Form", "fastapi.Query"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/entitybridge/vendor/ditto_augment.py" = ["ALL"]

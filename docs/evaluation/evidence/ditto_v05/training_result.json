@@ -1,0 +1,41 @@
+{
+  "best_epoch": 6,
+  "elapsed_seconds": 1552.069695600003,
+  "epochs_completed": 10,
+  "inference_precision": "float32",
+  "model_fingerprint": "eb5703b652c98b08880f1ad6f615c8526f74977371964ccb4526c36a0a0862a9",
+  "peak_gpu_allocated_bytes": 2600351744,
+  "training_precision": "bf16 autocast",
+  "validation_policies": {
+    "cost_10_1": {
+      "cost": 222.0,
+      "decision_rule": "score_gte_threshold",
+      "f1": 0.5901639344262295,
+      "fn": 142,
+      "fp": 8,
+      "objective": "minimum_validation_10FP_plus_FN",
+      "precision": 0.9310344827586207,
+      "predicted_pairs": 116,
+      "recall": 0.432,
+      "threshold": 0.9256662726402283,
+      "tn": 639,
+      "tp": 108,
+      "unknown_predicted_pairs": 0
+    },
+    "f1": {
+      "cost": 742.0,
+      "decision_rule": "score_gte_threshold",
+      "f1": 0.7878787878787878,
+      "fn": 42,
+      "fp": 70,
+      "objective": "maximum_validation_f1",
+      "precision": 0.7482014388489209,
+      "predicted_pairs": 278,
+      "recall": 0.832,
+      "threshold": 0.4500062167644501,
+      "tn": 577,
+      "tp": 208,
+      "unknown_predicted_pairs": 0
+    }
+  }
+}

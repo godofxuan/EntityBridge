@@ -20,7 +20,7 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 ROOT_FILES = {
-    "README.md", "THIRD_PARTY_NOTICES.md", "pyproject.toml", "requirements.lock",
+    "README.md", "THIRD_PARTY_NOTICES.md", "pyproject.toml", "requirements.lock", "requirements-neural.lock",
     "compose.yaml", "alembic.ini", ".gitignore", ".gitattributes", ".env.example", "LICENSE",
     "PUBLICATION_MANIFEST.json",
 }
@@ -156,6 +156,8 @@ def check_wheel(path: Path) -> int:
     with zipfile.ZipFile(path) as archive:
         names = {item.filename for item in archive.infolist() if not item.is_dir()}
         missing = REQUIRED_WHEEL - names
+        if "entitybridge/vendor/ditto_model.py" in names and "entitybridge/vendor/DITTO_LICENSE.md" not in names:
+            missing.add("entitybridge/vendor/DITTO_LICENSE.md")
         if missing:
             raise ValueError(f"Wheel is missing runtime resources: {sorted(missing)}")
         for name in names:
@@ -165,7 +167,7 @@ def check_wheel(path: Path) -> int:
             first = member.parts[0]
             if first != "entitybridge" and not first.endswith(".dist-info"):
                 raise ValueError(f"Unexpected wheel content: {name}")
-            if first == "entitybridge" and member.suffix not in {".py", ".html", ".css"}:
+            if first == "entitybridge" and member.suffix not in {".py", ".html", ".css"} and name != "entitybridge/vendor/DITTO_LICENSE.md":
                 raise ValueError(f"Unexpected application data in wheel: {name}")
             content = archive.read(name)
             inspect_content(name, content)

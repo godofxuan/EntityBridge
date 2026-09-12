@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "title_model/classifier.json": true,
+    "title_model/manifest.json": true,
+    "product_model/classifier.json": true,
+    "product_model/manifest.json": true,
+    "same_raw_archive_hashes": true
+  },
+  "old_frozen_config_sha256": "a883eada32c7249769e0bc6e6869328fd4beeb73b4edc9bc35c7ff879cf080f0",
+  "historical_models_retrained": false
+}

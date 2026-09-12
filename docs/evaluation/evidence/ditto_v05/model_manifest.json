@@ -1,0 +1,60 @@
+{
+  "alpha_aug": 0.8,
+  "automatic_deployment": false,
+  "best_epoch": 6,
+  "calibrated": false,
+  "domain": "product",
+  "fields": [
+    "title",
+    "brand",
+    "description",
+    "price",
+    "priceCurrency"
+  ],
+  "files": {
+    "config.json": "6e71eab24ff56ea40fa16528ae1acb5f20bb38c43b50ad2064316335dc28bc4f",
+    "model.safetensors": "12c46a7f4776891f1c944b8da836bd9913915563fa52a726552b9597a449eb7d",
+    "tokenizer/merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+    "tokenizer/special_tokens_map.json": "8574792bfefae68f2ce2eae93a4145d95b1232c59e71094bcdcb49dbcb549c97",
+    "tokenizer/tokenizer.json": "fa6e9e4de220a47ece0c8f9c1865f4e353419331bf8ba21ea9d34230a702ffcb",
+    "tokenizer/tokenizer_config.json": "253e231e9ae9fd6e64762375b14c8f7f266c711b75d2b74a17170e6f3defe729",
+    "tokenizer/vocab.json": "ed19656ea1707df69134c4af35c8ceda2cc9860bf2c3495026153a133670ab5e"
+  },
+  "fingerprint": "eb5703b652c98b08880f1ad6f615c8526f74977371964ccb4526c36a0a0862a9",
+  "format": "entitybridge-ditto-roberta-v1",
+  "max_length": 256,
+  "training_plan_sha256": "c4255ff355b2bb95cbf5d7f139a1d192b6ce63bfbbe36ddba70d78500163816f",
+  "upstream_revision": "52985564a93fb11308439516d3e17a033d43ec8f",
+  "validation_policies": {
+    "cost_10_1": {
+      "cost": 222.0,
+      "decision_rule": "score_gte_threshold",
+      "f1": 0.5901639344262295,
+      "fn": 142,
+      "fp": 8,
+      "objective": "minimum_validation_10FP_plus_FN",
+      "precision": 0.9310344827586207,
+      "predicted_pairs": 116,
+      "recall": 0.432,
+      "threshold": 0.9256662726402283,
+      "tn": 639,
+      "tp": 108,
+      "unknown_predicted_pairs": 0
+    },
+    "f1": {
+      "cost": 742.0,
+      "decision_rule": "score_gte_threshold",
+      "f1": 0.7878787878787878,
+      "fn": 42,
+      "fp": 70,
+      "objective": "maximum_validation_f1",
+      "precision": 0.7482014388489209,
+      "predicted_pairs": 278,
+      "recall": 0.832,
+      "threshold": 0.4500062167644501,
+      "tn": 577,
+      "tp": 208,
+      "unknown_predicted_pairs": 0
+    }
+  }
+}

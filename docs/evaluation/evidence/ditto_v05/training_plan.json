@@ -1,0 +1,37 @@
+{
+  "augmentation": "upstream del + pair flip + MixDA",
+  "base_files": {
+    "config.json": "ef0185e2aae6e06c5f105a285006952c340e20c7dbf43c86ec82601b13fc45e9",
+    "merges.txt": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+    "model.safetensors": "5bde1d28afb363d0103324efeb5afc8b2b397fe5e04beabb9b1ef355255ade81",
+    "tokenizer.json": "847bbeab6174d66a88898f729d52fa8d355fafe1bea101cf960dd404581df70e",
+    "tokenizer_config.json": "994f46754c5bf4014f1aa92d34b1374319c3a6b3f702105cd5b742beaecd18ce",
+    "vocab.json": "9e7f63c2d15d666b52e21d250d2e513b87c9b713cfa6987a82ed89e5e6e50655"
+  },
+  "config": {
+    "accumulation": 8,
+    "alpha_aug": 0.8,
+    "batch_size": 8,
+    "bf16": true,
+    "epochs": 20,
+    "gradient_checkpointing": true,
+    "learning_rate": 5e-05,
+    "max_length": 256,
+    "patience": 4,
+    "seed": 20260913,
+    "warmup_fraction": 0.06,
+    "weight_decay": 0.01
+  },
+  "development_sha256": "84fe3a1c27c26fb2e3d0e4a985a3118ac20fe5668f1b09249a2e8584a059d6a2",
+  "device": "cuda",
+  "domain": "product",
+  "provenance": {
+    "base_revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+    "benchmark_plan_sha256": "ad01885ab6b28276988bdd5d024b8dc7b10732c5ec97a2773b4d58bb511074e2"
+  },
+  "selection": "best validation F1; earliest epoch and highest threshold on ties",
+  "test_input": false,
+  "training_pairs": 2500,
+  "upstream_revision": "52985564a93fb11308439516d3e17a033d43ec8f",
+  "validation_pairs": 897
+}
