@@ -1,7 +1,7 @@
 {
   "format": "entitybridge-public-source-v1",
   "project_version": "0.6.0.dev0",
-  "source_revision": "44af6ab63efd3ff2580a781f77cfe746c33e5d20",
+  "source_revision": "053a6b203db8cb92e3e0bb657ad7652f8d584d77",
   "history": "Exported working tree; no original Git history included",
   "license": "No license selected by exporter; see included LICENSE if the author provided one",
   "excluded": [
@@ -384,6 +384,11 @@
       "sha256": "d487dd3bc890eebe3d6304f2e458962377b6b776e568cdeda78bf147080f92fc",
       "source_sha256": "d487dd3bc890eebe3d6304f2e458962377b6b776e568cdeda78bf147080f92fc",
       "bytes": 3059
+    },
+    "docs/evaluation/V06_CI_RECOVERY.md": {
+      "sha256": "4cad7e748c5501de3dfbff2d33b14e9867cb64b195b9bb4b78448f57225a9d6a",
+      "source_sha256": "4cad7e748c5501de3dfbff2d33b14e9867cb64b195b9bb4b78448f57225a9d6a",
+      "bytes": 1725
     },
     "docs/evaluation/WDC_UNSEEN_RESULTS.md": {
       "sha256": "abf9a0f3994fa85a2b5199eea0b02c692f9fce9bd5415e079721b79ce9e1f236",
@@ -1496,9 +1501,9 @@
       "bytes": 16133
     },
     "scripts/check_review_recovery.py": {
-      "sha256": "3fc014b71e6121226e1852666705a272281204fbda993e955c9ef5dce463beee",
-      "source_sha256": "3fc014b71e6121226e1852666705a272281204fbda993e955c9ef5dce463beee",
-      "bytes": 5477
+      "sha256": "65d0c9189dbf31f27f0d5552b6cf5f0015bc95a6174e126cfbfa6ec735d220b4",
+      "source_sha256": "65d0c9189dbf31f27f0d5552b6cf5f0015bc95a6174e126cfbfa6ec735d220b4",
+      "bytes": 5973
     },
     "scripts/check_review_upgrade.py": {
       "sha256": "64d2f2ee4bafff60c72881614789f5e04af53dfda8f1de423ddd1125316a6d41",

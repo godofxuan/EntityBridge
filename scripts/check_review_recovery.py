@@ -59,8 +59,15 @@ def check_review_recovery(url, directory, *, boundary):
         'reviewer': 'probe', 'policy_version': 'default-v1'}
     settings = {'url': make_url(url).render_as_string(hide_password=False), 'artifacts': str(artifacts),
                 'marker': str(marker), 'boundary': boundary, 'request': request}
+    # pytest's pythonpath setting changes only the parent interpreter. Propagate
+    # the actual loaded package root so a clean checkout's child needs no editable
+    # installation, and an installed-wheel probe keeps using that same wheel.
+    package_root = str(Path(s.__file__).resolve().parents[1])
+    environment = {**os.environ, 'PYTHONUTF8': '1', 'PYTHONPATH': os.pathsep.join(
+        part for part in (package_root, os.environ.get('PYTHONPATH', '')) if part)}
     process = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), '--worker'],
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8',
+        env=environment,
         creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
     try:
         process.stdin.write(json.dumps(settings) + '\n')
