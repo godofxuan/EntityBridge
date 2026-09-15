@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "entitybridge"
-version = "0.5.0"
+version = "0.6.0.dev0"
 description = "Evidence-preserving company entity resolution and reversible identity governance"
 requires-python = ">=3.12,<3.14"
 dependencies = [
@@ -13,6 +13,7 @@ dependencies = [
   "sqlalchemy>=2.0,<3", "alembic>=1.14", "psycopg[binary]>=3.2",
   "fastapi>=0.115", "uvicorn>=0.34", "jinja2>=3.1", "python-multipart>=0.0.20",
   "httpx>=0.28", "psutil>=6", "PyJWT[crypto]==2.14.0",
+  "pycountry==24.6.1", "cleanco==2.3",
 ]
 
 [project.optional-dependencies]

@@ -6,6 +6,12 @@
 
 项目采用 Python、Splink、DuckDB/Parquet、SQLAlchemy、PostgreSQL、FastAPI 和 Jinja2，面向数据工程、数据质量与 Python 后端的工程展示。它是可运行的单机研究原型，尚未接入真实采购或 CRM 业务。
 
+**开发版 0.6.0.dev0：** 人工判断现在有持久回执、客户端幂等键和显式失败恢复，候选准备后仍需单独发布。新增[六条企业记录操作卡](examples/company_workflow/OPERATION_CARD.md)，可自动走通导入、复核失败恢复、冲突拒绝、撤销和历史追溯。样例明确为合成数据；业务侧[公司复核评测](docs/evaluation/COMPANY_REVIEW_EVALUATION.md)仍等待独立人工标签。开发版不等于已发布版本。[恢复契约与兼容变化](docs/decisions/015-review-receipts.md) · [本地升级与实验验证](docs/evaluation/LOCAL_V06_VALIDATION.md)
+
+**后续算法优化与外部验证：** ISO 国家名称规范化将 MaDI 复测的已知候选召回从 **57.39% 提高至 90.34%**，候选 2,052→3,121；新增参考 ING EMM 的公司特征模型和独立校准/策略划分。四模型对照未支持替换原实验基线，NIST FEIII 的 2,207 对专家二元裁决暴露跨域误匹配，保留人工复核。397 项全量回归和新安装包双后端工作流通过。[完整收益与负面结果](docs/evaluation/COMPANY_OPTIMIZATION_RESULTS.md) · [复现与使用](docs/evaluation/COMPANY_OPTIMIZATION_REPRODUCTION.md) · [实现设计](docs/decisions/016-company-country-features.md)
+
+**上一轮公开公司研究：** 已完成MaDI-Bench Companies数据审计、保护已知实体的划分、四候选轨道×七评分器对照、三个Ditto种子和成对置信区间，保留596对测试标签。放宽检索国家限制使已知正例召回57.39%→100%，候选2,052→9,033；但Ditto前100对已知正例均值89，低于逻辑回归96，未证明神经模型增益，不替换默认策略。最终380项回归通过。[真实结果与代价](docs/evaluation/MADI_COMPANIES_RESULTS.md) · [公开数据与复现](docs/evaluation/MADI_REPRODUCTION.md)
+
 [快速运行](#快速运行) · [实际结果](#实际结果) · [公开基准](#公开基准与评测协议) · [架构](#逻辑结构) · [复现](#测试与实验复现) · [成熟度与岗位定位](docs/review/MATURITY_AND_POSITIONING.md) · [v0.4 验证记录](docs/evaluation/V04_VALIDATION.md)
 
 **v0.5 接入 Ditto / RoBERTa 神经匹配：** 采用上游 CLS、MixDA 与删除增强，保留 Apache-2.0 来源和许可证；提供验证集选模、双阈值对比、冻结 safetensors 产物及公司审核数据训练入口。WDC 商品配对复测中，同口径 F1 从商品逻辑回归的 **34.36% 提高至 61.96%**；但高误合并成本规则下仍更差，保留人工复核。商品结果不外推为公司质量。[实际结果](docs/evaluation/DITTO_RESULTS.md) · [验证](docs/evaluation/V05_VALIDATION.md) · [设计](docs/decisions/014-ditto-neural-matching.md) · [安装与复现](docs/evaluation/DITTO_REPRODUCTION.md)

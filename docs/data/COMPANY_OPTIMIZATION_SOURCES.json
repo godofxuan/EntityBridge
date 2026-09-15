@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-09-15",
+  "packages": [
+    {
+      "name": "pycountry",
+      "version": "24.6.1",
+      "license": "LGPL-2.1-only",
+      "filename": "pycountry-24.6.1-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/b1/ec/1fb891d8a2660716aadb2143235481d15ed1cbfe3ad669194690b0604492/pycountry-24.6.1-py3-none-any.whl",
+      "sha256": "f1a4fb391cd7214f8eefd39556d740adcc233c778a27f8942c8dca351d6ce06f"
+    },
+    {
+      "name": "cleanco",
+      "version": "2.3",
+      "license": "MIT",
+      "filename": "cleanco-2.3-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/f8/4e/e4a24eec01fbfda0df23582bc9be5d8c32b324d79481edf6d1ff52b03733/cleanco-2.3-py3-none-any.whl",
+      "sha256": "7ab4672cdfdabe2375a608686da86005b33df6f347ebf7849c9d0e2651f27e01"
+    }
+  ],
+  "design_reference": {
+    "name": "ING EntityMatchingModel",
+    "url": "https://github.com/ing-bank/EntityMatchingModel",
+    "revision": "aa7c6e89f462d013c3f9fc308dd6d78a74620ae6",
+    "license": "MIT",
+    "usage": "feature design reference; no copied EMM code; our boosted model uses sklearn rather than XGBoost"
+  },
+  "external": {
+    "name": "NIST FEIII 2016",
+    "url": "https://ir.nist.gov/feiii/data/feiii-data-2016-final.zip",
+    "bytes": 46790463,
+    "sha256": "13e0a099ddaa32950f27267d5a7327f1a4c00a72585400cd0c8b1061db899413",
+    "formats": "FFIEC/SEC CSV; LEI official Unicode XLSX due malformed CSV encoding",
+    "redistribution": "Raw tables and labels remain local; no blanket license inferred"
+  }
+}

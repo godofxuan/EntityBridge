@@ -1,0 +1,74 @@
+{
+  "version": "company-optimization-20260915-v1",
+  "status": "declared before new model fitting or validation scores",
+  "seed": 20260915,
+  "hypotheses": [
+    "Exact ISO country aliases recover candidates lost to spelling differences without dropping all country constraints.",
+    "Legal-form-aware, abbreviation and train-only rare-token features improve company pair ranking and reduce false matches.",
+    "A validation-selected threshold and Platt calibration can fail under dataset shift; test this explicitly."
+  ],
+  "data": {
+    "development": "Existing immutable MaDI train and validation partitions from madi_companies_v1",
+    "replay": "MaDI test has already been inspected; all new results are exploratory replay, never an independent confirmation.",
+    "external": "NIST FEIII 2016 official FFIEC-LEI and FFIEC-SEC explicitly adjudicated pairs, zero-shot transfer of all frozen MaDI models and policies. No FEIII training, tuning, calibration or model selection.",
+    "feiii_zip_sha256": "13e0a099ddaa32950f27267d5a7327f1a4c00a72585400cd0c8b1061db899413",
+    "external_labels": "TP=1, TN=0, Ambiguous excluded from confusion counts and separately counted; all unadjudicated pairs unknown.",
+    "external_scope": "Supplied-pair classification only. Expert candidate sampling does not support population accuracy or full-universe blocking recall. Historical 2016 data is not a future-time holdout.",
+    "external_overlap": "Report conservative sensitivity excluding pairs with any exact normalized-name overlap with MaDI train/validation. This is not proof of legal-entity disjointness.",
+    "identifiers": "Opaque source IDs for joins only, no LEI/CIK/registration identifiers as features. No cleaned-name, former-name, relationship, or finance columns.",
+    "contradictions": "Quarantine contradictory known-positive components and all incident pairs; never relabel.",
+    "raw_distribution": "Local only; publish aggregates and hashes, no raw data or per-pair predictions.",
+    "feiii_projection": {
+      "ffiec": "original institution name/address/city/zip; country absent, never inferred",
+      "lei": "LegalName, LegalAddress_Line1..4, LegalAddress_City/PostalCode/Country",
+      "sec": "CONFORMED_NAME, B_STREET/B_CITY/B_POSTAL/B_COUNTRY; business versus legal address mismatch remains a limitation"
+    }
+  },
+  "models": {
+    "legacy_lr": "Existing fixed C=1 logistic baseline, fit on MaDI train only",
+    "iso_lr": "Same 11 features and C=1 logistic except country conflict uses pycountry exact ISO lookup",
+    "company_lr": "ISO 11 features plus fixed legal-base similarities, legal-form removal indicators, token Jaccard, train-IDF weighted Jaccard, abbreviation, length ratio, numeric-token conflict; C=1 logistic",
+    "company_gb": "Same company features; sklearn GradientBoostingClassifier, 100 trees, max_depth=2, min_samples_leaf=10, learning_rate=0.05, random_state=20260915, no hyperparameter search",
+    "legal_forms": "cleanco 2.3; retain original-name features alongside legal-base features; removal alone never implies identity",
+    "country": "pycountry 24.6.1 exact alpha_2/alpha_3/numeric/name/official_name/common_name aliases after existing text normalization. No fuzzy search, inferred subdivisions, hand-tuned test aliases, or territory collapsing.",
+    "neural": "No additional Ditto training in this round; previous three-seed negative result remains unchanged."
+  },
+  "development": {
+    "calibration_partition": "MaDI validation dependency groups assigned by SHA256('calibration-v1:' + group_id) parity; parity 0 fits Platt only, parity 1 selects policies/models. No group crosses halves.",
+    "calibration": "One monotonic Platt logistic C=1 fit on raw logit with calibration half labels only. If slope <=0 or either class has <20 pairs, retain identity calibration with explicit reason. Raw and calibrated Brier/ECE both reported.",
+    "selection": "Choose one of the four models by maximum known positives at budget 100 on supplied policy-validation pairs; tie by lower 10FP+FN cost, then higher AP, then declared model order. Report all four models regardless of winner.",
+    "thresholds": "F1 and cost=10FP+FN chosen on policy-validation only; conservative ties prefer reject_all then higher threshold. Neither is an automatic merge policy.",
+    "fit_budget": "Exactly four fits and at most four one-dimensional calibration fits; no retries for better scores. Implementation defects require an explicit invalidated-run record.",
+    "candidate_validation_cohort": "Only endpoints of policy-half labels enter development retrieval; calibration endpoints are excluded from policy retrieval. Report this adjudication-selected cohort; no population precision claims."
+  },
+  "retrieval": {
+    "tracks": [
+      "fixed_legacy",
+      "hybrid_legacy",
+      "hybrid_iso",
+      "hybrid_soft",
+      "supplied_pairs_only"
+    ],
+    "settings": "Reuse immutable MaDI train-fitted character TF-IDF, symmetric top_k=10, min_similarity=0.2; no vocabulary/IDF refit on development or test.",
+    "policy": "hybrid_iso changes only candidate-country comparison; hybrid_soft removes country only during retrieval; scores receive original features.",
+    "sources": "Forbes-DBpedia and Forbes-FullContact separately, then union; no DBpedia-FullContact labels inferred.",
+    "unknowns": "Unknown pairs consume budget; never treat them as negatives. No confidence interval for full-candidate benefit with unknown labels."
+  },
+  "evaluation": {
+    "primary": "Known positives captured at supplied-pair review budget 100",
+    "secondary": [
+      "budgets 25 and 50",
+      "precision/recall/F1",
+      "AP",
+      "10FP+FN",
+      "raw and calibrated Brier/ECE",
+      "candidate recall/count/unknown fraction",
+      "training/scoring elapsed time and model size"
+    ],
+    "uncertainty": "1000 paired dependency-component bootstrap replicates, seed=20260915; compare validation-selected model with legacy_lr at budget100/F1/cost. Conditional fixed-model intervals, not repeated-training uncertainty. No statistical win if interval crosses zero.",
+    "external_reports": "Report FFIEC-LEI and FFIEC-SEC separately plus overlap-excluded sensitivity. Never select a model based on external scores.",
+    "freeze": "Save model/input/source hashes, selected model and thresholds before scoring MaDI replay or reading FEIII projected name/address features."
+  },
+  "integration": "Opt-in ISO candidates and frozen company model in API/worker/CLI/UI. Company and ISO candidate runs are review-only, full recompute, frozen pipeline/model fingerprints, never automatic publication or merge.",
+  "completion": "Implement, run finite comparisons, record negative findings, run affected/full regression and publication checks. Human author understanding and real user acceptance are separate and cannot be completed by automation."
+}

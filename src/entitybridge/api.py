@@ -11,14 +11,17 @@ from typing import Literal
 from urllib.parse import urlsplit
 from uuid import uuid4
 
-from fastapi import Depends, FastAPI, Form, HTTPException, Query, Request
+from fastapi import Depends, FastAPI, Form, Header, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from sqlalchemy.exc import SQLAlchemyError
 
+from . import __version__
 from .jobs import JobConflict
 from .matching_service import run_matching
+from .review_operations import ReviewOperations
 from .store import Store, VersionConflict, digest
 
 
@@ -39,7 +42,7 @@ class SourceRow(StrictModel):
     address: str | None = Field(None, max_length=1000)
     city: str | None = Field(None, max_length=200)
     postcode: str | None = Field(None, max_length=40)
-    country: str | None = Field(None, max_length=10)
+    country: str | None = Field(None, max_length=128)
     aliases: list[str] = Field(default_factory=list, max_length=30)
     registration_authority: str | None = Field(None, max_length=30)
     registration_number: str | None = Field(None, max_length=50)
@@ -57,12 +60,12 @@ class ImportRequest(StrictModel):
 
 
 class RunRequest(StrictModel):
-    method: Literal["exact", "fuzzy", "splink", "ditto"] = "splink"
+    method: Literal["exact", "fuzzy", "splink", "ditto", "company"] = "splink"
     threshold: float = Field(default=0.9, ge=0, le=1)
     review_threshold: float = Field(default=0.5, ge=0, le=1)
     incremental: bool = True
     verify_full: bool = False
-    candidate_mode: Literal["fixed", "hybrid"] = "fixed"
+    candidate_mode: Literal["fixed", "hybrid", "fixed_iso", "hybrid_iso"] = "fixed"
 
     @model_validator(mode="after")
     def validate_thresholds(self):
@@ -101,10 +104,11 @@ class RevokeRequest(StrictModel):
 
 
 def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_path=None, local_demo=False,
-               oidc_verifier=None):
-    app = FastAPI(title="EntityBridge", version="0.5.0")
+               oidc_verifier=None, review_recovery_enabled=True):
+    app = FastAPI(title="EntityBridge", version=__version__)
     from .telemetry import RequestMetrics
     metrics = RequestMetrics()
+    reviews_service = ReviewOperations(store)
     tokens = dict(tokens or {})
     for token, identity in tokens.items():
         if (not isinstance(token, str) or not token or not token.isascii() or any(c.isspace() for c in token)
@@ -202,6 +206,12 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     @app.exception_handler(ValueError)
     async def invalid(_request, exc):
         return JSONResponse({"detail": str(exc)}, status_code=422)
+
+    @app.exception_handler(SQLAlchemyError)
+    async def storage_unavailable(_request, _exc):
+        return JSONResponse({'code': 'storage_unavailable',
+            'detail': 'Storage unavailable; review save status is unknown. Retry with the same Idempotency-Key.'},
+            status_code=503)
 
     @app.exception_handler(JobConflict)
     async def job_conflict(_request, exc):
@@ -324,18 +334,45 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
             "links": [edge for edge in payload["edges"] if record_id in (edge["left"], edge["right"])]}
 
     @app.post("/reviews/decision")
-    def decide(body: DecisionRequest, identity=Depends(reviewer)):
-        return store.decide(**body.model_dump(), reviewer=identity[0])
+    def decide(body: DecisionRequest, idempotency_key: str = Header(min_length=1, max_length=200),
+               identity=Depends(reviewer)):
+        return review_response(store.decide(**body.model_dump(), reviewer=identity[0], idempotency_key=idempotency_key))
+
+    def review_response(receipt):
+        return JSONResponse(receipt, status_code=200 if receipt['status'] == 'prepared' else 202,
+                            headers={'Location': receipt['status_url']})
+
+    @app.get('/review-operations')
+    def review_operation_list(limit: int = Query(100, ge=1, le=200), _identity=Depends(reviewer)):
+        return {'items': reviews_service.list(limit=limit)}
+
+    @app.get('/review-operations/{operation_id}')
+    def review_operation(operation_id: str, _identity=Depends(reviewer)):
+        return reviews_service.get(operation_id)
+
+    def recover_review(operation_id, identity):
+        if not review_recovery_enabled:
+            raise HTTPException(503, 'Review recovery is disabled; saved judgments and receipts remain readable')
+        receipt = reviews_service.get(operation_id)
+        if identity[1] != 'admin' and receipt['reviewer'] != identity[0]:
+            raise HTTPException(403, 'Only the original reviewer or an administrator can recover this operation')
+        return reviews_service.retry(operation_id)
+
+    @app.post('/review-operations/{operation_id}/retry')
+    def retry_review(operation_id: str, identity=Depends(reviewer)):
+        return review_response(recover_review(operation_id, identity))
 
     @app.post("/decisions/{decision_id}/revoke-preview")
     def revoke_preview(decision_id: str, body: RevokeRequest, _identity=Depends(reviewer)):
         return store.revoke_preview(decision_id, base_revision=body.base_revision)
 
     @app.post("/decisions/{decision_id}/revoke")
-    def revoke(decision_id: str, body: RevokeRequest, identity=Depends(reviewer)):
+    def revoke(decision_id: str, body: RevokeRequest,
+               idempotency_key: str = Header(min_length=1, max_length=200), identity=Depends(reviewer)):
         if body.preview_cutoff is None:
             raise ValueError("Confirm the exact preview_cutoff shown by revoke-preview")
-        return store.revoke(decision_id, **body.model_dump(), reviewer=identity[0])
+        return review_response(store.revoke(decision_id, **body.model_dump(), reviewer=identity[0],
+                                            idempotency_key=idempotency_key))
 
     @app.post("/revisions/{revision_id}/publish")
     def publish(revision_id: str, body: PublishRequest, _identity=Depends(admin)):
@@ -408,29 +445,44 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
                     continue
                 pair = tuple(sorted((decision["left"], decision["right"])))
                 queue.append({**decision, "left_record": payload["records"][decision["left"]],
-                    "right_record": payload["records"][decision["right"]], "evidence": evidence[pair].get("evidence", {})})
+                    "right_record": payload["records"][decision["right"]], "evidence": evidence[pair].get("evidence", {}),
+                    'request_key': str(uuid4()), 'candidate_rules': evidence[pair].get('candidate_rules', [])})
             queue.sort(key=lambda row: (row["status"] == "accepted", abs(row["score"] - 0.5)))
         return render(request, "reviews", queue=queue[offset:offset + 100], total=len(queue), payload=payload,
                       offset=offset, status=status, revision=current)
 
     @app.get("/history", response_class=HTMLResponse)
     def history(request: Request, _identity=Depends(reviewer)):
-        return render(request, "history", history=store.history(), decisions=store.decision_history())
+        return render(request, "history", history=store.history(), decisions=store.decision_history(),
+                      review_operations=reviews_service.list())
+
+    @app.get('/review-operation/{operation_id}', response_class=HTMLResponse)
+    def review_receipt_page(request: Request, operation_id: str, _identity=Depends(reviewer)):
+        return render(request, 'review_operation', operation=reviews_service.get(operation_id),
+                      recovery_enabled=review_recovery_enabled)
+
+    @app.post('/ui/review-operations/{operation_id}/retry')
+    def ui_retry_review(operation_id: str, identity=Depends(reviewer)):
+        recover_review(operation_id, identity)
+        return RedirectResponse(f'/review-operation/{operation_id}', status_code=303)
 
     @app.get("/tasks", response_class=HTMLResponse)
     def task_page(request: Request, _identity=Depends(admin)):
         from .jobs import JobQueue
         model_method = None
         if model_path is not None:
-            model_method = "ditto" if (Path(model_path) / "model.safetensors").is_file() else "splink"
+            model_method = ("company" if (Path(model_path) / "company_model.json").is_file() else
+                            "ditto" if (Path(model_path) / "model.safetensors").is_file() else "splink")
         return render(request, "tasks", jobs=JobQueue(store).list_jobs(limit=100),
-                      request_key=str(uuid4()), model_method=model_method)
+                      request_key=str(uuid4()), model_method=model_method, has_retriever=candidate_model_path is not None)
 
     @app.post("/ui/jobs")
     def ui_submit_job(idempotency_key: str = Form(), method: str = Form("exact"),
-                      threshold: float = Form(.9), review_threshold: float = Form(.5), identity=Depends(admin)):
+                      threshold: float = Form(.9), review_threshold: float = Form(.5),
+                      candidate_mode: str = Form("fixed"), identity=Depends(admin)):
         body = JobRequest(settings=RunRequest(method=method, threshold=threshold,
-                                              review_threshold=review_threshold), idempotency_key=idempotency_key)
+                                              review_threshold=review_threshold, candidate_mode=candidate_mode),
+                          idempotency_key=idempotency_key)
         submit_job(body, identity)
         return RedirectResponse("/tasks", status_code=303)
 
@@ -454,10 +506,11 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
     @app.post("/ui/decision")
     def ui_decision(left: str = Form(), right: str = Form(), action: str = Form(), reason: str = Form(),
                     base_revision: str = Form(), left_version: str = Form(), right_version: str = Form(),
-                    policy_version: str = Form(), identity=Depends(reviewer)):
-        store.decide(left, right, action=action, reason=reason, reviewer=identity[0], base_revision=base_revision,
-            left_version=left_version, right_version=right_version, policy_version=policy_version)
-        return RedirectResponse("/history", status_code=303)
+                    policy_version: str = Form(), idempotency_key: str = Form(), identity=Depends(reviewer)):
+        receipt = store.decide(left, right, action=action, reason=reason, reviewer=identity[0], base_revision=base_revision,
+            left_version=left_version, right_version=right_version, policy_version=policy_version,
+            idempotency_key=idempotency_key)
+        return RedirectResponse(f"/review-operation/{receipt['operation_id']}", status_code=303)
 
     @app.post("/ui/publish")
     def ui_publish(revision_id: str = Form(), expected_parent: str = Form(""), _identity=Depends(admin)):
@@ -469,13 +522,14 @@ def create_app(store: Store, *, tokens=None, model_path=None, candidate_model_pa
         preview = store.revoke_preview(decision_id, base_revision=base_revision)
         records = store._payload(base_revision)["records"]
         groups = [[records[record] for record in group] for group in preview["partitions"]]
-        return render(request, "preview", preview=preview, groups=groups)
+        return render(request, "preview", preview=preview, groups=groups, request_key=str(uuid4()))
 
     @app.post("/ui/revoke")
     def ui_revoke(decision_id: str = Form(), base_revision: str = Form(), reason: str = Form(),
-                  preview_cutoff: int = Form(), identity=Depends(reviewer)):
-        store.revoke(decision_id, base_revision=base_revision, reason=reason, reviewer=identity[0], preview_cutoff=preview_cutoff)
-        return RedirectResponse("/history", status_code=303)
+                  preview_cutoff: int = Form(), idempotency_key: str = Form(), identity=Depends(reviewer)):
+        receipt = store.revoke(decision_id, base_revision=base_revision, reason=reason, reviewer=identity[0],
+                               preview_cutoff=preview_cutoff, idempotency_key=idempotency_key)
+        return RedirectResponse(f"/review-operation/{receipt['operation_id']}", status_code=303)
 
     @app.get("/health")
     def health():

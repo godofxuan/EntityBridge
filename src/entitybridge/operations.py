@@ -158,6 +158,8 @@ def _validate_state(tables, artifacts):
         states = [item for item in tables[s.query_projections.name] if item["revision_id"] == revision]
         if actual != expected or states != [query_projection.expected_state(payload, row["artifact_sha256"], expected)]:
             raise ValueError("Backup projection is incomplete or corrupt; rebuild it before backup")
+    from .review_operations import validate_snapshot
+    validate_snapshot(tables)
 
 
 def create_backup(store: Store, destination, *, expected_workspace=None) -> dict:
@@ -358,6 +360,8 @@ def restore_backup(directory, target_database_url, target_artifact_root) -> dict
             if "durable_job" in s.metadata.tables:
                 from .jobs import cancel_restored_jobs
                 cancelled_jobs = cancel_restored_jobs(connection)
+            from .review_operations import interrupt_restored_reviews
+            interrupted_reviews = interrupt_restored_reviews(connection)
             for row in tables[s.revisions.name]:
                 query_projection.verify(connection, _json(artifacts[_revision_name(row["revision_id"])]),
                                         row["artifact_sha256"])
@@ -370,6 +374,7 @@ def restore_backup(directory, target_database_url, target_artifact_root) -> dict
                 "backup_manifest_sha256": _hash(encoded(manifest)), "schema_version": CURRENT_SCHEMA,
                 "artifacts": len(artifacts), "table_counts": manifest["summary"]["table_counts"],
                 "recovery_cancelled_jobs": cancelled_jobs,
+                "recovery_interrupted_reviews": interrupted_reviews,
                 "checks": {name: True for name in ["database_rows", "source_versions", "history", "publication_pointer",
                            "artifact_relocation", "artifact_hashes", "query_projections", "published_queries"]}}
     except BaseException:

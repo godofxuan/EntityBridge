@@ -9,7 +9,7 @@ def pipeline_fingerprint():
     package = Path(__file__).parent
     files = ("matching_service.py", "matching.py", "candidates.py", "normalization.py", "resolution.py",
              "incremental.py", "identity.py", "store.py", "query_projection.py", "worker.py",
-             "ditto.py", "vendor/ditto_model.py")
+             "ditto.py", "vendor/ditto_model.py", "country.py", "company_matching.py", "supervised.py")
     pipeline = hashlib.sha256()
     for name in files:
         pipeline.update(name.encode() + b"\0" + (package / name).read_bytes())
@@ -32,7 +32,15 @@ def model_fingerprints(settings, model_path=None, candidate_model_path=None):
         if manifest["domain"] != "company":
             raise ValueError("Company matching requires a company-domain Ditto model")
         result["model"] = manifest["fingerprint"]
-    if settings.candidate_mode == "hybrid":
+    if settings.method == "company":
+        if model_path is None:
+            raise ValueError("A frozen company feature model must be configured")
+        from .company_matching import FrozenCompanyMatcher
+        result["model"] = FrozenCompanyMatcher.load(model_path).fingerprint
+    if settings.candidate_mode in {"fixed_iso", "hybrid_iso"}:
+        from .country import country_fingerprint
+        result["country_comparison"] = country_fingerprint()
+    if settings.candidate_mode in {"hybrid", "hybrid_iso"}:
         if candidate_model_path is None:
             raise ValueError("A frozen candidate model must be configured")
         from .candidates import FrozenNameRetriever

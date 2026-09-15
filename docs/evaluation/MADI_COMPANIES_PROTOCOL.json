@@ -1,0 +1,146 @@
+{
+  "version": "madi-company-research-v1",
+  "status": "frozen_before_model_fitting_and_test_scoring",
+  "written_at": "2026-09-15T05:39:06.455524+00:00",
+  "baseline_commit": "2315ebacc7503db55475ef2c706c6c7b830f0da8",
+  "upstream_commit": "8751b856af84288fd5c490b6f66b7c3390b7e6e1",
+  "snapshot_sha256": "99f273afa9e485eb6e7f5d2ef0e7c65c26d3aa2b396d814ee0ca95685bafa00e",
+  "scope": "Published company benchmark, reduced name/city/country view; not legal-entity/CRM production certification or comparable to full-attribute paper rankings",
+  "data_rules": {
+    "missing_endpoints": "quarantine pair; do not infer identity from URL",
+    "contradictory_positive_closure": "quarantine entire conflicting positive component and every incident label/record before split",
+    "test_priority": "keep valid original test labels; purge train/validation pairs touching any known-positive component of test endpoints",
+    "validation_priority": "then purge training labels touching retained validation components",
+    "remaining_unlabelled_components": "stable component-hash seed20260915, 60/20/20; never infer negative labels",
+    "duplicate_pairs": "collapse same-label same-split duplicates; test then validation wins across splits; conflicting labels quarantine",
+    "minimum_train": {
+      "pairs": 50,
+      "each_class": 10
+    },
+    "minimum_validation": {
+      "pairs": 50,
+      "each_class": 10
+    },
+    "gold_status": "partial explicit labels only; no exhaustive cluster truth"
+  },
+  "feature_projection": {
+    "forbes": {
+      "name": "company",
+      "country": "region"
+    },
+    "dbpedia": {
+      "name": "org_name",
+      "country": "nation",
+      "city": "headquarters"
+    },
+    "fullcontact": {
+      "name": "Attribute_2",
+      "country": "Attribute_3",
+      "city": "Attribute_4"
+    }
+  },
+  "excluded": [
+    "source URLs",
+    "registration IDs",
+    "original IDs as features",
+    "financial fields",
+    "founding dates",
+    "people",
+    "industry",
+    "fusion gold",
+    "synthetic variants"
+  ],
+  "normalization": "existing NFKC uppercase punctuation removal, no learned country aliases",
+  "candidate_tracks": [
+    "fixed",
+    "hybrid_strict_country",
+    "hybrid_soft_country",
+    "supplied_pairs_only"
+  ],
+  "candidate_settings": {
+    "top_k": 10,
+    "min_similarity": 0.2,
+    "fit": "train_names_only",
+    "soft_country": "copy records with country=None ONLY for retrieval; score original fields; no service default change",
+    "allowed_source_pairs": [
+      [
+        "forbes",
+        "dbpedia"
+      ],
+      [
+        "forbes",
+        "fullcontact"
+      ]
+    ]
+  },
+  "scorers": [
+    "exact",
+    "fuzzy",
+    "splink",
+    "supervised_logistic",
+    "ditto_seed11",
+    "ditto_seed23",
+    "ditto_seed47"
+  ],
+  "primary_comparison": {
+    "track": "supplied_pairs_only",
+    "methods": "mean of all three Ditto seeds vs fixed supervised_logistic",
+    "metric": "known positive pairs at review budget100",
+    "no_test_seed_selection": true
+  },
+  "secondary_metrics": [
+    "review budget25/50",
+    "AP/PR-AUC on labelled candidates",
+    "candidate known-positive recall and candidate count",
+    "P/R/F1 with candidate misses counted",
+    "10FP+FN under validation-selected threshold",
+    "unknown candidates/predictions/reviewed counts",
+    "source-pair slices",
+    "missing city and conflicting-country slices"
+  ],
+  "thresholds": {
+    "f1": "maximum validation F1, conservative threshold ties",
+    "cost": "minimum validation 10FP+FN, reject-all allowed",
+    "exact": "threshold1 or reject-all only"
+  },
+  "uncertainty": {
+    "bootstrap": 1000,
+    "seed": 20260915,
+    "unit": "components of known-positive relations and all retained test label edges",
+    "paired": true,
+    "refuse_if": "fewer than2 groups or largest group>50%",
+    "interpretation": "conditional on fitted pipelines; neither training uncertainty nor population representativeness certified"
+  },
+  "neural": {
+    "seeds": [
+      11,
+      23,
+      47
+    ],
+    "epochs": 20,
+    "patience": 4,
+    "max_length": 128,
+    "batch_size": 8,
+    "accumulation": 4,
+    "learning_rate": 5e-05,
+    "weight_decay": 0.01,
+    "warmup_fraction": 0.06,
+    "alpha_aug": 0.8,
+    "gradient_checkpointing": true,
+    "bf16": true,
+    "base_model": "existing pinned roberta-base safetensors; no product-finetuned weights",
+    "maximum_training_runs": 3,
+    "hyperparameter_search": false,
+    "device": "cuda only after shared GPU slot confirmation"
+  },
+  "adoption": "research-only; no automatic merge/model deployment. Report positive/null/negative outcomes; accuracy claims require matching scope. No production cost threshold supplied",
+  "test_access": "Structural preflight may inspect label relationships and schemas. Learners read held-out features only after all model bundles and validation thresholds are frozen. No tuning after results",
+  "stop_rules": [
+    "Unresolved structural integrity violation",
+    "Insufficient clean train/validation labels",
+    "Nonfinite training",
+    "GPU unavailable: complete CPU tracks and document neural status",
+    "At most three neural runs; no test-driven retries"
+  ],
+  "old_evidence": "WDC/Fodors/DBLP/registry reports retained unchanged; this is a new external benchmark study"
+}

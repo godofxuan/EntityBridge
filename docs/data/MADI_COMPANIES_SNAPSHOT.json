@@ -1,0 +1,76 @@
+{
+  "dataset": "MaDI-Bench Companies base",
+  "repository": "https://github.com/wbsg-uni-mannheim/MaDI-Bench",
+  "commit": "8751b856af84288fd5c490b6f66b7c3390b7e6e1",
+  "paper": "https://arxiv.org/html/2606.30371v1",
+  "test_annotation": "Paper section II-A states Companies test pairs were hand verified; not independently re-annotated here",
+  "files": {
+    "data/dbpedia.csv": {
+      "path": "use cases/companies/base/input/data/dbpedia.csv",
+      "bytes": 1171597,
+      "sha256": "c3e154fdd068d939b1724b57b4b2cd84b157a977a532646004a206cd2b418a37"
+    },
+    "data/dbpedia_metadata.json": {
+      "path": "use cases/companies/base/input/data/dbpedia_metadata.json",
+      "bytes": 2917,
+      "sha256": "beb102f80e8f592f47b300590a23049f3f888ea7d384193e87b0e828a747e9cf"
+    },
+    "data/forbes.csv": {
+      "path": "use cases/companies/base/input/data/forbes.csv",
+      "bytes": 333808,
+      "sha256": "1b95f9a611e6500aac69bf7dea27c1e1aa2b067181cea069158119da0f6580f3"
+    },
+    "data/forbes_metadata.json": {
+      "path": "use cases/companies/base/input/data/forbes_metadata.json",
+      "bytes": 2439,
+      "sha256": "63b806ff8acb6e14d71708345a182ed75b00cfbf69a51515c9772ec5455db497"
+    },
+    "data/fullcontact.csv": {
+      "path": "use cases/companies/base/input/data/fullcontact.csv",
+      "bytes": 115503,
+      "sha256": "40947bea53f0ccbc8b0e159d6a0b4081678fb087c946ab8605f2d7ff621449a3"
+    },
+    "data/fullcontact_metadata.json": {
+      "path": "use cases/companies/base/input/data/fullcontact_metadata.json",
+      "bytes": 2447,
+      "sha256": "4834fae0c70200950abe3281b17e7041d84eddcd3443cdb7453bfd930840cdc2"
+    },
+    "entitymatching/forbes_2_dbpedia_test.csv": {
+      "path": "use cases/companies/base/input/entitymatching/forbes_2_dbpedia_test.csv",
+      "bytes": 13445,
+      "sha256": "cf7f2476c8002324f3f19676791f500e72a86de7020211188dc8627ae25d8874"
+    },
+    "entitymatching/forbes_2_dbpedia_train.csv": {
+      "path": "use cases/companies/base/input/entitymatching/forbes_2_dbpedia_train.csv",
+      "bytes": 44761,
+      "sha256": "9d8839dc8c1be1bca17e3d6f6f06752c0f53a646caba3db50cdfbda4d2f9d4b2"
+    },
+    "entitymatching/forbes_2_dbpedia_val.csv": {
+      "path": "use cases/companies/base/input/entitymatching/forbes_2_dbpedia_val.csv",
+      "bytes": 20953,
+      "sha256": "4eff6ebcac443864ae42ba230b3e2dd2f07c53ce72e31871b60a500a4696928b"
+    },
+    "entitymatching/forbes_2_fullcontact_test.csv": {
+      "path": "use cases/companies/base/input/entitymatching/forbes_2_fullcontact_test.csv",
+      "bytes": 30975,
+      "sha256": "16097ceaa87df47644993f1e64226ac9af851c7c9c17b46cd46a09439d3fae12"
+    },
+    "entitymatching/forbes_2_fullcontact_train.csv": {
+      "path": "use cases/companies/base/input/entitymatching/forbes_2_fullcontact_train.csv",
+      "bytes": 102091,
+      "sha256": "85beaa268ccadb17e0f1f07917bc1d00d59b4bac6bff376853a7413efe7347c8"
+    },
+    "entitymatching/forbes_2_fullcontact_val.csv": {
+      "path": "use cases/companies/base/input/entitymatching/forbes_2_fullcontact_val.csv",
+      "bytes": 49147,
+      "sha256": "fbfa59bfab0f2fa813c5d4a06ce87ae2373dfd0127a41bd8d94feeabc341c53e"
+    }
+  },
+  "license_status": {
+    "dbpedia": "upstream metadata declares CC-BY-SA-3.0",
+    "forbes": "upstream metadata declares CC-BY-4.0",
+    "fullcontact": "no license field in upstream metadata",
+    "pair_labels": "no standalone license found at repository root"
+  },
+  "redistribution": "Raw and converted data remain local; publish adapters, hashes and aggregates only"
+}

@@ -111,4 +111,4 @@ jobs:
       - name: Install locked dependencies
         run: python -m pip install -r requirements.lock
       - name: PostgreSQL regressions, query projections and crash recovery
-        run: python -m pytest -q -m "not network" tests/test_store_regressions.py tests/test_query_index.py tests/test_recovery.py tests/test_jobs.py tests/test_operations.py tests/test_workspace_binding.py
+        run: python -m pytest -q -m "not network" tests/test_store_regressions.py tests/test_query_index.py tests/test_recovery.py tests/test_jobs.py tests/test_operations.py tests/test_workspace_binding.py tests/test_review_operations.py tests/test_review_recovery.py

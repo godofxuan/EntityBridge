@@ -3,6 +3,7 @@
 Version 0001 was released without Alembic stamps. Version 0002 permits repeated
 source observations; 0003 adds query projections; 0004 adds durable jobs.
 Version 0005 binds a database to its administrator-selected workspace name.
+Version 0006 adds durable human review receipts and fenced recovery.
 Do not stamp arbitrary pre-existing schemas: compare their structure first.
 """
 
@@ -24,7 +25,7 @@ from sqlalchemy import (
 
 from .schema import metadata
 
-CURRENT_SCHEMA = "0005"
+CURRENT_SCHEMA = "0006"
 PROJECTION_TABLES = {"query_projection", "query_entity", "query_search_value"}
 JOB_TABLES = {"durable_job", "durable_job_event"}
 version_table = Table("alembic_version", MetaData(), Column("version_num", String(32), primary_key=True))
@@ -34,9 +35,17 @@ def _matches(connection, expected):
     return compare_metadata(MigrationContext.configure(connection, opts={"compare_type": True}), expected) == []
 
 
-def _v4_metadata():
+def _v5_metadata():
     legacy = MetaData()
     for table in metadata.sorted_tables:
+        if table.name != "review_operation":
+            table.to_metadata(legacy)
+    return legacy
+
+
+def _v4_metadata():
+    legacy = MetaData()
+    for table in _v5_metadata().sorted_tables:
         if table.name != "workspace_binding":
             table.to_metadata(legacy)
     return legacy
@@ -101,6 +110,10 @@ def _upgrade_v4(connection):
     metadata.tables["workspace_binding"].create(connection)
 
 
+def _upgrade_v5(connection):
+    metadata.tables["review_operation"].create(connection)
+
+
 def initialize_database(engine):
     """Create an empty DB or upgrade only an exactly verified released schema."""
     with engine.begin() as connection:
@@ -118,29 +131,35 @@ def initialize_database(engine):
             if len(stamps) > 1:
                 raise RuntimeError("Multiple schema heads found; run an explicit reviewed migration")
             stamped = stamps[0] if stamps else None
-        if stamped not in {None, "0001", "0002", "0003", "0004", CURRENT_SCHEMA}:
+        if stamped not in {None, "0001", "0002", "0003", "0004", "0005", CURRENT_SCHEMA}:
             raise RuntimeError("Unsupported database schema version; upgrade the application first")
         if not tables - {"alembic_version"}:
             if stamped:
                 raise RuntimeError("Schema stamp exists without application tables; refusing to recreate history")
             metadata.create_all(connection)
         elif _matches(connection, metadata):
-            if stamped in {"0001", "0002", "0003", "0004"}:
+            if stamped in {"0001", "0002", "0003", "0004", "0005"}:
                 raise RuntimeError("Schema and version stamp disagree; inspect the database before migration")
+        elif stamped in {None, "0005"} and _matches(connection, _v5_metadata()):
+            _upgrade_v5(connection)
         elif stamped in {None, "0004"} and _matches(connection, _v4_metadata()):
             _upgrade_v4(connection)
+            _upgrade_v5(connection)
         elif stamped in {None, "0003"} and _matches(connection, _v3_metadata()):
             _upgrade_v3(connection)
             _upgrade_v4(connection)
+            _upgrade_v5(connection)
         elif stamped in {None, "0002"} and _matches(connection, _v2_metadata()):
             _upgrade_v2(connection)
             _upgrade_v3(connection)
             _upgrade_v4(connection)
+            _upgrade_v5(connection)
         elif stamped in {None, "0001"} and _matches(connection, _v1_metadata()):
             _upgrade_v1(connection)
             _upgrade_v2(connection)
             _upgrade_v3(connection)
             _upgrade_v4(connection)
+            _upgrade_v5(connection)
         else:
             raise RuntimeError("Unrecognized database structure; refusing to stamp or migrate it automatically")
         if not _matches(connection, metadata):

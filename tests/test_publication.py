@@ -24,6 +24,9 @@ def test_public_export_excludes_private_material_and_preserves_code(tmp_path):
         "docs/evaluation/evidence/pytest.log": "PRIVATE_PATH",
         ".tools/database.json": "PRIVATE_CREDENTIAL",
         "artifacts/raw.csv": "PRIVATE_DATA",
+        "examples/company_workflow/sources.json": '{"synthetic": true}',
+        "examples/company_workflow/OPERATION_CARD.md": "Synthetic workflow guide",
+        "examples/company_workflow/private.json": "PRIVATE_EXAMPLE",
     }
     for name, value in files.items():
         target = root / name
@@ -32,6 +35,7 @@ def test_public_export_excludes_private_material_and_preserves_code(tmp_path):
     manifest = publication.export_public(root, output, "synthetic-revision")
     names = {path.relative_to(output).as_posix() for path in output.rglob("*") if path.is_file()}
     assert "docs/planning/private.md" not in names
+    assert set(publication.PUBLIC_EXAMPLES) <= names
     assert not any("PRIVATE_" in path.read_text(encoding="utf-8") for path in output.rglob("*") if path.is_file())
     assert (output / "src/entitybridge/cli.py").read_bytes() == (root / "src/entitybridge/cli.py").read_bytes()
     assert "[Usage](src/entitybridge/cli.py)" in (output / "README.md").read_text(encoding="utf-8")

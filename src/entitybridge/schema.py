@@ -125,3 +125,23 @@ workspace_binding = Table("workspace_binding", metadata,
     Column("workspace_name", String(200), nullable=False),
     CheckConstraint("singleton = 1", name="ck_workspace_binding_singleton"),
     CheckConstraint("length(workspace_name) BETWEEN 1 AND 200", name="ck_workspace_binding_name_length"))
+
+review_operations = Table("review_operation", metadata,
+    Column("operation_id", String(36), primary_key=True),
+    Column("idempotency_key", String(200), nullable=False, unique=True),
+    Column("request_hash", String(64), nullable=False), Column("payload", JSON, nullable=False),
+    Column("kind", String(20), nullable=False), Column("reviewer", String(100), nullable=False),
+    Column("decision_id", ForeignKey("review_decision.decision_id"), nullable=False),
+    Column("event_seq", ForeignKey("decision_event.seq"), nullable=False, unique=True),
+    Column("base_revision", ForeignKey("identity_revision.revision_id"), nullable=False),
+    Column("source_hash", String(64), nullable=False), Column("policy_version", String(200), nullable=False),
+    Column("status", String(20), nullable=False), Column("attempt", Integer, nullable=False),
+    Column("lease_token", String(36)), Column("lease_until", Float),
+    Column("candidate_revision_id", ForeignKey("identity_revision.revision_id"), unique=True),
+    Column("safe_error_code", String(40)), Column("created_at", Float, nullable=False),
+    Column("updated_at", Float, nullable=False),
+    CheckConstraint("kind IN ('decision','revoke')", name="ck_review_operation_kind"),
+    CheckConstraint("status IN ('accepted','building','prepared','build_failed','stale_basis')",
+                    name="ck_review_operation_status"),
+    CheckConstraint("attempt >= 0", name="ck_review_operation_attempt"))
+Index("ix_review_operation_created", review_operations.c.created_at, review_operations.c.operation_id)

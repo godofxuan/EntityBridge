@@ -1,4 +1,6 @@
 """Real HTTP governance lifecycle for review-only hybrid candidates."""
+from uuid import uuid4
+
 from fastapi.testclient import TestClient
 
 from entitybridge.api import create_app
@@ -18,7 +20,7 @@ def frozen_retriever(path, top_k=1):
 
 
 def post(client, path, body):
-    response = client.post(path, json=body)
+    response = client.post(path, json=body, headers={"Idempotency-Key": str(uuid4())})
     assert response.status_code == 200, response.text
     return response.json()
 

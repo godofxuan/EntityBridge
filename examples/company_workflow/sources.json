@@ -1,0 +1,22 @@
+{
+  "scope": "synthetic governance fixture, not customer data or model quality gold",
+  "sources": [
+    {"source": "supplier_master", "rows": [
+      {"source_key": "s1", "name": "NORTHSTAR COMPONENTS LIMITED", "address": "1 ALPHA ROAD", "postcode": "AB1 2CD", "country": "GB"},
+      {"source_key": "s2", "name": "CEDAR TRADING LIMITED", "address": "2 CEDAR ROAD", "postcode": "CD2 3EF", "country": "GB"},
+      {"source_key": "s3", "name": "SILVERDALE SERVICES", "address": "3 SILVER ROAD", "postcode": "EF3 4GH", "country": "GB"}
+    ]},
+    {"source": "customer_master", "rows": [
+      {"source_key": "c1", "name": "NORTHSTAR PARTS LTD", "aliases": ["NORTHSTAR COMPONENTS LIMITED"], "address": "1 ALPHA ROAD", "postcode": "AB1 2CD", "country": "GB"},
+      {"source_key": "c2", "name": "NORTHSTAR COMPONENTS LIMITED", "address": "99 OTHER ROAD", "postcode": "XY9 9ZZ", "country": "GB"},
+      {"source_key": "c3", "name": "CEDAR TRADING LIMITED", "address": "2 CEDAR ROAD", "postcode": "CD2 3EF", "country": "GB"}
+    ]}
+  ],
+  "scenario": {
+    "different": ["supplier_master:s1", "customer_master:c2"],
+    "same": ["supplier_master:s1", "customer_master:c1"],
+    "forbidden_transitive": ["customer_master:c1", "customer_master:c2"],
+    "attribute_update": "supplier_master:s3",
+    "note": "Same/different are prescribed synthetic exercise roles, not actual human company labels."
+  }
+}

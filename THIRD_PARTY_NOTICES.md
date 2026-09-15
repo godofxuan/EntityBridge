@@ -53,6 +53,10 @@ EntityBridge 自身尚未选择发布许可证，仓库没有添加项目 `LICEN
 
 ## 方法和项目贡献
 
+2026-09-15 公司优化补充：使用 [pycountry 24.6.1](https://github.com/pycountry/pycountry)（PyPI 声明 LGPL-2.1-only，随包 ISO 数据以其附带许可为准）做标准字段精确映射，使用 [cleanco 2.3](https://github.com/psolin/cleanco)（MIT）处理公司法律后缀。两者通过依赖安装，不在项目中复制完整词表。公司特征设计参考 [ING EntityMatchingModel 固定 revision](https://github.com/ing-bank/EntityMatchingModel/tree/aa7c6e89f462d013c3f9fc308dd6d78a74620ae6)（MIT）；未复制其源代码、未安装完整 EMM，也未声称实现相同系统。包来源及 SHA256 见 [来源清单](docs/data/COMPANY_OPTIMIZATION_SOURCES.json)。
+
+[NIST FEIII 2016](https://ir.nist.gov/feiii/2016-challenge.html) 的官方压缩包提供金融企业数据与专家裁决，本轮只在本地使用。其公开可下载性不等于本项目获得所有原始来源的再分发许可；不附原始公司表、工作簿、配对预测或训练权重。公开材料为方法、字段投影、文件哈希和汇总指标；原始来源及限制见[研究报告](docs/evaluation/COMPANY_OPTIMIZATION_RESULTS.md)。
+
 Splink 的概率关联、EM、比较层和 TF 机制来自上游；DuckDB 查询引擎、RapidFuzz 相似度等也是第三方能力。EntityBridge 实现的部分是数据契约/防泄漏、固定规则候选组织、字段证据接线、独立约束决策、版本化身份、撤销抑制、事务发布、增量闭包和相应业务界面。
 
 启动阶段还调研过 dedupe、ING EntityMatchingModel 和 UK DBT Matchbox，作为路线参考；它们没有作为本项目运行依赖安装，也没有因此取得这些组织的生产背书。来源记录保存在 原始调研说明（本地材料，未包含在公开导出中）。

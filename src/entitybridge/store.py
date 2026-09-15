@@ -418,31 +418,11 @@ class Store:
         return payload, records
 
     def decide(self, left, right, *, action, reason, reviewer, base_revision, left_version,
-               right_version, policy_version):
-        from .resolution import Edge, resolve
-
-        if action not in {"accept", "reject", "abstain"} or not reason.strip() or not reviewer.strip():
-            raise ValueError("Decision requires accept/reject/abstain, a reason and reviewer")
-        with self.engine.begin() as con:
-            self._lock(con)
-            payload, records = self._check_basis(con, base_revision, left=left, right=right,
-                left_version=left_version, right_version=right_version, policy=policy_version)
-            constraints = self._constraints(con, records, policy_version, self._event_cutoff(con))
-            kind = {"accept": "must_link", "reject": "cannot_link", "abstain": "suppressed"}[action]
-            constraints[kind].append((left, right))
-            # Check proposed constraints before recording any event. A contradictory
-            # judgment must be corrected explicitly rather than silently winning.
-            resolve(records, [Edge(e["left"], e["right"], e["score"], e.get("auto_merge", True)) for e in payload["edges"]],
-                    threshold=payload["threshold"], review_threshold=payload["review_threshold"], **constraints)
-            decision_id = str(uuid4())
-            con.execute(insert(s.decisions).values(decision_id=decision_id, left_id=left, right_id=right,
-                left_version=left_version, right_version=right_version, action=action, reason=reason,
-                reviewer=reviewer, base_revision=base_revision, policy_version=policy_version))
-            con.execute(insert(s.events).values(decision_id=decision_id, action="CREATE", created_at=now(),
-                reason=reason, reviewer=reviewer, policy_version=policy_version))
-        candidate = self.prepare_revision(payload["edges"], policy_version=policy_version,
-            threshold=payload["threshold"], review_threshold=payload["review_threshold"])
-        return {**candidate, "decision_id": decision_id}
+               right_version, policy_version, idempotency_key=None):
+        from .review_operations import ReviewOperations
+        return ReviewOperations(self).submit("decision", {"left": left, "right": right, "action": action,
+            "reason": reason, "reviewer": reviewer, "base_revision": base_revision, "left_version": left_version,
+            "right_version": right_version, "policy_version": policy_version}, idempotency_key=idempotency_key)
 
     def revoke_preview(self, decision_id, *, base_revision):
         from .resolution import Edge, resolve
@@ -466,21 +446,10 @@ class Store:
             "partitions": resolution.partitions, "entity_count_before": len(payload["entities"]),
             "entity_count_after": len(resolution.partitions)}
 
-    def revoke(self, decision_id, *, base_revision, reviewer, reason, preview_cutoff):
-        if not reviewer.strip() or not reason.strip():
-            raise ValueError("Revocation requires a reviewer and reason")
-        preview = self.revoke_preview(decision_id, base_revision=base_revision)
-        if preview_cutoff != preview["event_cutoff"]:
-            raise VersionConflict("The displayed preview is stale; preview again")
-        with self.engine.begin() as con:
-            self._lock(con)
-            payload, _ = self._check_basis(con, base_revision)
-            if self._event_cutoff(con) != preview["event_cutoff"]:
-                raise VersionConflict("Decisions changed since preview; preview again")
-            con.execute(insert(s.events).values(decision_id=decision_id, action="REVOKE", created_at=now(),
-                reason=reason, reviewer=reviewer, policy_version=payload["policy_version"]))
-        return self.prepare_revision(payload["edges"], policy_version=payload["policy_version"],
-            threshold=payload["threshold"], review_threshold=payload["review_threshold"])
+    def revoke(self, decision_id, *, base_revision, reviewer, reason, preview_cutoff, idempotency_key=None):
+        from .review_operations import ReviewOperations
+        return ReviewOperations(self).submit("revoke", {"decision_id": decision_id, "base_revision": base_revision,
+            "reviewer": reviewer, "reason": reason, "preview_cutoff": preview_cutoff}, idempotency_key=idempotency_key)
 
     def entity(self, entity_id, *, revision=None):
         selected = revision or self.current_revision()
@@ -542,4 +511,5 @@ class Store:
             for item in items:
                 item["events"] = [dict(row) for row in con.execute(select(s.events)
                     .where(s.events.c.decision_id == item["decision_id"]).order_by(s.events.c.seq)).mappings()]
+            items.sort(key=lambda item: (item['events'][0]['seq'] if item['events'] else 0, item['decision_id']))
             return items

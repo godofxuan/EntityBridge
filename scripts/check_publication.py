@@ -25,6 +25,7 @@ ROOT_FILES = {
     "PUBLICATION_MANIFEST.json",
 }
 SOURCE_DIRS = {"src", "scripts", "tests", "migrations", ".github"}
+PUBLIC_EXAMPLES = {"examples/company_workflow/sources.json", "examples/company_workflow/OPERATION_CARD.md"}
 DOC_DIRS = {"data", "decisions", "demo", "evaluation"}
 PUBLIC_REVIEW = {
     "MATURITY_AND_POSITIONING.md", "MATCHING_AUDIT.md", "STORE_AUDIT.md", "SECURITY_AND_API.md",
@@ -51,6 +52,8 @@ def public_path(name: str) -> bool:
         return False
     if len(parts) == 1:
         return name in ROOT_FILES
+    if path.as_posix() in PUBLIC_EXAMPLES:
+        return True
     if parts[0] in SOURCE_DIRS:
         return path.suffix in {".py", ".html", ".css", ".mako", ".yml", ".yaml", ".md"}
     if parts[0] != "docs" or len(parts) < 3:
@@ -94,7 +97,7 @@ def export_public(root: Path, destination: Path, source_revision: str | None = N
     if destination == root or (destination.exists() and any(destination.iterdir())):
         raise ValueError("Public export requires a new or empty directory distinct from the source")
     selected = []
-    for top in sorted(ROOT_FILES | SOURCE_DIRS | {"docs"}):
+    for top in sorted(ROOT_FILES | SOURCE_DIRS | {"docs", "examples"}):
         path = root / top
         if path.is_dir():
             selected.extend(p for p in path.rglob("*") if p.is_file() and public_path(p.relative_to(root).as_posix()))

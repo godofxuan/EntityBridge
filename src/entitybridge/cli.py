@@ -73,6 +73,8 @@ def main():
     parser.add_argument("--revision")
     parser.add_argument("--workspace-config", type=Path, help="Startup-only isolated workspace configuration")
     parser.add_argument("--workspace", help="Workspace name; cannot be changed by an HTTP request")
+    parser.add_argument("--disable-review-recovery", action="store_true",
+                        help="Disable explicit review recovery while retaining receipts and historical reads")
     args = parser.parse_args()
     if bool(args.workspace_config) != bool(args.workspace):
         parser.error("Supply --workspace-config and --workspace together")
@@ -186,7 +188,8 @@ def main():
     import uvicorn
     print(f"EntityBridge local URL: http://127.0.0.1:{args.port}")
     uvicorn.run(create_app(store, tokens=token_config, model_path=args.model, candidate_model_path=args.candidate_model,
-                         local_demo=args.command == "demo", oidc_verifier=verifier),
+                         local_demo=args.command == "demo", oidc_verifier=verifier,
+                         review_recovery_enabled=not args.disable_review_recovery),
                 host="127.0.0.1", port=args.port, access_log=False)
 
 

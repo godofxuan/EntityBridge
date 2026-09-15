@@ -29,6 +29,7 @@ def app_state(tmp_path, issuer):
     app = create_app(store, tokens={"legacy-token": ("legacy-reviewer", "reviewer")},
                      oidc_verifier=OidcVerifier(config))
     with TestClient(app) as client:
+        client.headers["Idempotency-Key"] = "identity-audit"
         yield store, client, config
     store.engine.dispose()
 

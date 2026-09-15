@@ -90,7 +90,7 @@ def test_plain_store_is_not_implicitly_bound(store):
         assert con.execute(select(s.workspace_binding)).all() == []
 
 
-@pytest.mark.parametrize("version", ["0001", "0002", "0003", "0004"])
+@pytest.mark.parametrize("version", ["0001", "0002", "0003", "0004", "0005"])
 def test_known_schema_upgrades_preserve_records_and_enable_binding(store, version):
     from alembic import command
     from alembic.config import Config

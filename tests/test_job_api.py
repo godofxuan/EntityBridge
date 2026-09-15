@@ -158,7 +158,7 @@ def test_learning_api_uses_published_human_labels_and_suppresses_reviewed_pairs(
     assert client.get("/learning/summary").json()["summary"]["valid_labels"] == 0
     edge = queue["items"][0]
     payload = store._payload(revision)
-    result = client.post("/reviews/decision", json={"left": edge["left"], "right": edge["right"],
+    result = client.post("/reviews/decision", headers={"Idempotency-Key": "review-job-basis"}, json={"left": edge["left"], "right": edge["right"],
         "left_version": edge["left_version"], "right_version": edge["right_version"],
         "policy_version": payload["policy_version"], "base_revision": revision, "action": action,
         "reason": "Explicit synthetic human judgment"})
